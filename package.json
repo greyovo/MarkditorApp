@@ -1,8 +1,8 @@
 {
   "name": "markditor",
-  "version": "2.2.0",
+  "version": "0.1.0",
   "main": "dist-electron/main/index.js",
-  "description": "Electron Vite React boilerplate.",
+  "description": "A [mark]down e[ditor] that features in WYSIWYG mode.",
   "author": "greyovo <grey@foxmail.com>",
   "license": "MIT",
   "private": true,
@@ -13,6 +13,7 @@
   },
   "scripts": {
     "dev": "vite --mode=electron",
+    "dev:tauri": "vite --mode=tauri",
     "build": "tsc && vite build && electron-builder",
     "preview": "vite preview",
     "pree2e": "vite build --mode=test",

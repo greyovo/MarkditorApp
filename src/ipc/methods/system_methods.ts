@@ -1,5 +1,4 @@
-import { ipcRenderer } from "electron";
-import { ISystemMethods } from "../types";
+import { ISystemMethods } from "../invokers";
 import { NotImplementError } from "@/utils/errors";
 
 export const electronSystemMethods: ISystemMethods = {
@@ -10,6 +9,7 @@ export const electronSystemMethods: ISystemMethods = {
 
 }
 
+// -----------------------------------------------
 
 export const tauriSystemMethods: ISystemMethods = {
 

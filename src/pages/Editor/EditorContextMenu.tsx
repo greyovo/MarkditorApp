@@ -1,20 +1,11 @@
-import { useEffect, useRef, useState } from "react";
-import Vditor from "vditor";
-import DirectorySideBar from "@/components/DirectorySideBar";
 import { toggleRangeBold, toggleRangeItalic, toggleRangeDeleteline } from "./EditorActions";
 import * as Toggle from '@radix-ui/react-toggle';
 import { Bold, Code, Italic, ItalicIcon, Link, StrikethroughIcon, Underline } from "lucide-react";
 import { FolderIcon } from "@heroicons/react/24/outline";
 import { ContextMenu, Flex } from "@radix-ui/themes";
+import Vditor from "vditor";
 
-
-let vditor: Vditor;
-
-function closeContextMenu() {
-  document.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape" }))
-}
-
-function EditorContextToolbar() {
+function EditorContextToolbar({ vditor }: { vditor: Vditor }) {
   const selected = vditor.getSelection()
 
   let isBold = false
@@ -58,7 +49,10 @@ function EditorContextToolbar() {
   )
 }
 
-function EditorContextMenu({ children }: { children: React.ReactNode }) {
+export function EditorContextMenu(
+  { children, vditor }:
+  { children: React.ReactNode, vditor: Vditor }
+) {
   return (
     <ContextMenu.Root>
       <ContextMenu.Trigger>
@@ -66,7 +60,7 @@ function EditorContextMenu({ children }: { children: React.ReactNode }) {
       </ContextMenu.Trigger>
       <ContextMenu.Content>
 
-        <EditorContextToolbar />
+        <EditorContextToolbar vditor={vditor}/>
         <ContextMenu.Item shortcut="⌘ D">Duplicate</ContextMenu.Item>
         <ContextMenu.Separator />
         <ContextMenu.Item shortcut="⌘ N">Archive</ContextMenu.Item>
@@ -90,42 +84,5 @@ function EditorContextMenu({ children }: { children: React.ReactNode }) {
         </ContextMenu.Item>
       </ContextMenu.Content>
     </ContextMenu.Root>
-  )
-}
-
-export default function Editor() {
-  const [vditorInstance, setVditorInstance] = useState<Vditor>();
-
-  useEffect(() => {
-    const optioins: IOptions = {
-      after: () => {
-        vditor.setValue("`Vditor` 最小代码示例 ssss");
-        setVditorInstance(vditor);
-      },
-      // cdn: "https://npm.onmicrosoft.cn/vditor@3.9.8",
-      cdn: "./lib",
-      height: "100vh",
-      upload: {
-        // TODO 在这里处理外部粘贴的图片
-        handler: (files) => {
-          vditor.insertValue("![](images.png)")
-          return null
-        },
-      },
-      input: (v) => {
-        console.log("input:", v);
-      },
-    }
-
-    vditor = new Vditor("vditor", optioins);
-  }, []);
-
-  return (
-    <div className="flex">
-      <DirectorySideBar />
-      <EditorContextMenu>
-        <div id="vditor" className="vditor overflow-y-auto flex-grow" />
-      </EditorContextMenu>
-    </div>
   )
 }

@@ -1,7 +1,6 @@
 import { ipcRenderer } from "electron";
-import { IFileMethods } from "../types";
+import { IFileMethods } from "../invokers";
 
-// -----------------------------------------------
 
 export const electronFileMethods: IFileMethods = {
   getFileInfo(fileId: string): Promise<any> {
@@ -16,6 +15,7 @@ export const electronFileMethods: IFileMethods = {
 
 }
 
+// -----------------------------------------------
 
 export const tauriFileMethods: IFileMethods = {
   getFileInfo(fileId: string): Promise<any> {

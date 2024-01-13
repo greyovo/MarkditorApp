@@ -1,4 +1,6 @@
-import { } from "./expose_api"
+import { exposeApi } from "./expose_api"
+
+exposeApi()
 
 function domReady(condition: DocumentReadyState[] = ['complete', 'interactive']) {
   return new Promise(resolve => {

@@ -1,11 +1,13 @@
-import "vditor/dist/index.css";
-import Editor from "./components/editor/Editor";
+// import "vditor/dist/index.css";
+import { Editor } from "./pages/Editor";
 import React from "react";
+import { Welcome } from "./pages/Welcome";
 
 const App = () => {
   return (
     <main className="bg-white">
-      <Editor />
+      <Welcome />
+      {/* <Editor /> */}
     </main>
   )
 };

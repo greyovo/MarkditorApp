@@ -1,14 +1,17 @@
-// import "vditor/dist/index.css";
-import { Editor } from "./pages/Editor";
-import React from "react";
 import { Welcome } from "./pages/Welcome";
+import { AsideMenuBar } from "./components/AsideMenuBar";
 
 const App = () => {
   return (
-    <main className="bg-white">
-      <Welcome />
-      {/* <Editor /> */}
-    </main>
+    <div className="flex flex-col" style={{ height: "100vh" }}>
+      <aside>
+        <AsideMenuBar />
+      </aside>
+      <main className="flex-1 bg-white">
+        <Welcome />
+        {/* <Editor /> */}
+      </main>
+    </div>
   )
 };
 

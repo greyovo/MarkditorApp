@@ -1,0 +1,58 @@
+{
+  "name": "markditor",
+  "version": "2.2.0",
+  "main": "dist-electron/main/index.js",
+  "description": "Electron Vite React boilerplate.",
+  "author": "greyovo <grey@foxmail.com>",
+  "license": "MIT",
+  "private": true,
+  "debug": {
+    "env": {
+      "VITE_DEV_SERVER_URL": "http://127.0.0.1:7777/"
+    }
+  },
+  "scripts": {
+    "dev": "vite --mode=electron",
+    "build": "tsc && vite build && electron-builder",
+    "preview": "vite preview",
+    "pree2e": "vite build --mode=test",
+    "e2e": "playwright test"
+  },
+  "dependencies": {
+    "@heroicons/react": "^2.1.1",
+    "@radix-ui/react-alert-dialog": "^1.0.5",
+    "@radix-ui/react-context-menu": "^2.1.5",
+    "@radix-ui/react-slot": "^1.0.2",
+    "@radix-ui/react-toggle": "^1.0.3",
+    "@radix-ui/react-toggle-group": "^1.0.4",
+    "@radix-ui/themes": "^2.0.3",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.1.0",
+    "electron-updater": "^6.1.1",
+    "lucide-react": "^0.309.0",
+    "tailwind-merge": "^2.2.0",
+    "tailwindcss-animate": "^1.0.7"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.37.1",
+    "@types/node": "^20.11.0",
+    "@types/react": "^18.2.20",
+    "@types/react-dom": "^18.2.7",
+    "@vitejs/plugin-react": "^4.0.4",
+    "autoprefixer": "^10.4.16",
+    "electron": "^18.0.0",
+    "electron-builder": "^24.6.3",
+    "postcss": "^8.4.31",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "tailwindcss": "^3.3.3",
+    "typescript": "^5.1.6",
+    "vditor": "^3.9.8",
+    "vite": "^4.4.9",
+    "vite-plugin-electron": "^0.15.5",
+    "vite-plugin-electron-renderer": "^0.14.5"
+  },
+  "engines": {
+    "node": "^14.18.0 || >=16.0.0"
+  }
+}

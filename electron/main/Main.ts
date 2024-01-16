@@ -1,5 +1,5 @@
 import { update } from './update'
-import { BrowserWindow, app, ipcMain, shell } from "electron";
+import { BrowserWindow, Menu, app, ipcMain, shell } from "electron";
 import EventEmitter from "events";
 import { ipcHandlers } from './handler';
 
@@ -60,6 +60,7 @@ export class Main {
 
   private onReady() {
     this.registerIpcHandlers()
+    Menu.setApplicationMenu(null)
     this.createWindow()
   }
 
@@ -87,5 +88,9 @@ export class Main {
     ipcHandlers.forEach(
       handler => ipcMain.handle(handler.name, handler.action)
     )
+  }
+
+  public getMainWindow() {
+    return this.win;
   }
 }

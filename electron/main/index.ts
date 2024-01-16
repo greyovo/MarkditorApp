@@ -42,4 +42,8 @@ if (!app.requestSingleInstanceLock()) {
   process.exit(0)
 }
 
-new Main(defaultWindowSettings)
+const main = new Main(defaultWindowSettings)
+
+ipcMain.handle('openDevTools', () => {
+  return main.getMainWindow()?.webContents.openDevTools()
+})

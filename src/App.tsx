@@ -1,15 +1,16 @@
 import { Welcome } from "./pages/Welcome";
 import { AsideMenuBar } from "./components/AsideMenuBar";
+import { Editor } from "./pages/Editor";
 
 const App = () => {
   return (
-    <div className="flex flex-col" style={{ height: "100vh" }}>
-      <aside>
+    <div className="flex" style={{ height: "100vh" }}>
+      <aside className="">
         <AsideMenuBar />
       </aside>
       <main className="flex-1 bg-white">
-        <Welcome />
-        {/* <Editor /> */}
+        {/* <Welcome /> */}
+        <Editor />
       </main>
     </div>
   )

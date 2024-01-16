@@ -29,13 +29,13 @@ function DirectorySideBarHeader() {
 function DirectoryEmptyView() {
   async function openFile() {
     // 打开文件
-    const path = await API.fileMethods.openFile()
+    const path = await API.openFile()
     console.log(path);
   }
 
   return (
     <div className="flex flex-col items-center justify-center h-full">
-      <p className="text-gray-400 m-3">😶 这里还没有文件</p>
+      <p className="text-gray-400 m-3 select-none">😶 没有文件</p>
       <Button onClick={openFile}>
         <FolderOpenIcon width="16" height="16" /> 打开...
       </Button>
@@ -46,9 +46,9 @@ function DirectoryEmptyView() {
 export default function DirectorySideBar() {
 
   return (
-    <div className="flex flex-col w-72 overflow-y-auto">
-      <DirectorySideBarHeader />
-      <DirectoryEmptyView></DirectoryEmptyView>
+    <div className="flex flex-col h-full overflow-y-auto">
+      {/* <DirectorySideBarHeader /> */}
+      <DirectoryEmptyView />
       {/* <DirectoryItem depth={0} type={"directory"} label="Apple" />
       <DirectoryItem depth={0} type={"directory"} open={true} label="MyDocuments" />
       <DirectoryItem depth={1} type={"file"} label="diary.md" />

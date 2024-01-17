@@ -1,6 +1,7 @@
 /// <reference types="vite/client" />
 /// <reference types="./src/vite-env.d.ts" />
 
+
 import { rmSync } from 'node:fs'
 import path from 'node:path'
 import { defineConfig } from 'vite'
@@ -10,6 +11,7 @@ import renderer from 'vite-plugin-electron-renderer'
 import pkg from './package.json'
 
 // https://vitejs.dev/config/
+/** @type {import('vite').UserConfig} */
 export default defineConfig(({ command }) => {
   rmSync('dist-electron', { recursive: true, force: true })
 

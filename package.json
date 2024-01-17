@@ -14,9 +14,10 @@
   "scripts": {
     "dev": "vite --mode=electron",
     "dev:tauri": "vite --mode=tauri",
-    "build": "tsc && vite build && electron-builder",
+    "build": "tsc && vite build --mode=electron && electron-builder",
+    "build:tauri": "tsc && vite build --mode=tauri && electron-builder",
     "preview": "vite preview",
-    "pree2e": "vite build --mode=test",
+    "pree2e": "vite build --mode=electron",
     "e2e": "playwright test"
   },
   "dependencies": {

@@ -60,7 +60,7 @@ export class Main {
 
   private onReady() {
     this.registerIpcHandlers()
-    Menu.setApplicationMenu(null)
+    // Menu.setApplicationMenu(null)
     this.createWindow()
   }
 

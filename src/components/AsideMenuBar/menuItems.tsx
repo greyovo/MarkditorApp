@@ -1,8 +1,9 @@
 import { API } from "@/ipc";
-import useNavigationStore from "@/store/navigation_state"
+import useNavigationStore from "@/store/navigation_store"
 import { ArrowUpOnSquareIcon, CodeBracketIcon, Cog6ToothIcon, DocumentPlusIcon, ListBulletIcon, MagnifyingGlassIcon, PlusCircleIcon } from "@heroicons/react/24/outline"
 import { Separator } from "@radix-ui/themes";
-import { SaveIcon, SidebarClose, SidebarIcon } from "lucide-react";
+import { SaveIcon, SidebarClose, SidebarIcon, SidebarOpen } from "lucide-react";
+import { useState } from "react";
 
 export interface AsideMenuBarItemProps {
   icon: React.ReactNode,
@@ -13,9 +14,18 @@ export interface AsideMenuBarItemProps {
   isSeparator?: boolean
 }
 
+function StatefulFolderViewIcon() {
+  const open = useNavigationStore().sidebarExpanded;
+
+  if (open) {
+    return <SidebarClose strokeWidth={1.5} width={18} height={18} />
+  } else {
+    return <SidebarOpen strokeWidth={1.5} width={18} height={18} />
+  }
+}
 
 const toggleFolderViewMenuItem: AsideMenuBarItemProps = {
-  icon: <SidebarIcon strokeWidth={1.5} width={18} height={18} />,
+  icon: <StatefulFolderViewIcon />,
   label: '侧边栏',
   onClick: () => {
     console.log("toggle!");
@@ -26,8 +36,20 @@ const toggleFolderViewMenuItem: AsideMenuBarItemProps = {
   isDisabled: false,
 }
 
+function StatefulSaveIcon() {
+  const [isSaving, setIsSaving] = useState(false);
+  return (
+    <SaveIcon
+      strokeWidth={1.5}
+      width={18}
+      height={18}
+      className={isSaving ? 'animate-spin' : ''}
+    />
+  );
+}
+
 const saveMenuItem: AsideMenuBarItemProps = {
-  icon: <SaveIcon strokeWidth={1.5} width={18} height={18} />,
+  icon: <StatefulSaveIcon />,
   label: '保存',
   onClick: () => {
   },

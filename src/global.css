@@ -59,9 +59,27 @@
   }
 }
 
-:root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+@font-face {
+  font-family: "MiSans";
+  font-style: normal;
+  font-weight: 400;
+  font-display: auto;
+  src: url("assets/MiSans-Regular.ttf");
+}
 
+/* @font-face {
+  font-family: "MiSans";
+  font-style: bold;
+  font-weight: 1000;
+  font-display: auto;
+  src: url("assets/MiSans-Bold.ttf");
+} */
+
+* {
+  font-family: MiSans;
+}
+
+:root {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

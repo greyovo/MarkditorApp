@@ -3,7 +3,8 @@ import Vditor from "vditor";
 import DirectorySidePanel from "@/components/DirectoryPanel";
 import { EditorContextMenu } from "./EditorContextMenu";
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable";
-import useNavigationStore from "@/store/navigation_state";
+import useNavigationStore from "@/store/navigation_store";
+import { getMarkdownExample } from "./getMarkdownExample";
 
 
 let vditor: Vditor;
@@ -12,7 +13,9 @@ export function Editor() {
   useEffect(() => {
     const optioins: IOptions = {
       after: () => {
-        vditor.setValue("Welcome to Markditor");
+        getMarkdownExample().then((v) => {
+          vditor.setValue(v)
+        })
       },
       cdn: "./lib",
       height: "100%",

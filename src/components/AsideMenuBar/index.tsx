@@ -33,7 +33,7 @@ export const AsideMenuBar = () => {
     <div className='flex flex-col h-full pt-1 pb-3 border-r'>
 
       {sidebarTopItems.map((e) => {
-        return <AsideMenuBarItem props={e} />
+        return <AsideMenuBarItem props={e} key={`AsideMenuBarItem${e.label}`} />
       })}
 
       {/* <AsideMenuBarItem props={items.toggleFolderViewMenuItem} />
@@ -43,7 +43,7 @@ export const AsideMenuBar = () => {
       <div className='flex-1'></div>
 
       {sidebarBottomItems.map((e) => {
-        return <AsideMenuBarItem props={e} />
+        return <AsideMenuBarItem props={e} key={`AsideMenuBarItem${e.label}`} />
       })}
     </div>
   )

@@ -21,16 +21,6 @@ process.env.VITE_PUBLIC = process.env.VITE_DEV_SERVER_URL
   ? join(process.env.DIST_ELECTRON, '../public')
   : process.env.DIST
 
-const defaultWindowSettings = {
-  title: "Markditor",
-  width: 1280,
-  height: 700,
-  icon: join(process.env.VITE_PUBLIC, 'favicon.ico'),
-  preload: join(__dirname, '../preload/index.js'),
-  url: process.env.VITE_DEV_SERVER_URL,
-  indexHtml: join(process.env.DIST, 'index.html')
-}
-
 // Disable GPU Acceleration for Windows 7
 if (release().startsWith('6.1')) app.disableHardwareAcceleration()
 
@@ -42,8 +32,14 @@ if (!app.requestSingleInstanceLock()) {
   process.exit(0)
 }
 
-const main = new Main(defaultWindowSettings)
+const defaultWindowSettings = {
+  title: "Markditor",
+  width: 1280,
+  height: 700,
+  icon: join(process.env.VITE_PUBLIC, 'favicon.ico'),
+  preload: join(__dirname, '../preload/index.js'),
+  url: process.env.VITE_DEV_SERVER_URL,
+  indexHtml: join(process.env.DIST, 'index.html')
+}
 
-ipcMain.handle('openDevTools', () => {
-  return main.getMainWindow()?.webContents.openDevTools()
-})
+export const mainApp = new Main(defaultWindowSettings)

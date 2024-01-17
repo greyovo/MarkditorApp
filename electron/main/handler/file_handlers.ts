@@ -1,20 +1,23 @@
 import { dialog } from "electron"
-import { IPCHanlder } from "./types"
+import fs from "fs"
+import { IFilesAPI } from "common/ipc"
 
-export enum FileMethodChannels{
-  // 打开文件
-  ShowOpenFileDialog = 'ShowOpenFileDialog'
-}
-
-
-const openFile = new IPCHanlder(
-  FileMethodChannels.ShowOpenFileDialog,
-  async (event, args): Promise<string | undefined> => {
+export const fileHandlers: IFilesAPI = {
+  openFile: async (): Promise<{ path: string, content: string } | undefined> => {
     const { canceled, filePaths } = await dialog.showOpenDialog({})
     if (!canceled) {
-      return filePaths[0]
+      const content = fs.readFileSync(filePaths[0], 'utf8');
+
+      return { path: filePaths[0], content }
+    }
+  },
+
+  saveFile: async (path: string, content: string): Promise<boolean> => {
+    try {
+      fs.writeFileSync(path, content)
+      return true
+    } catch (error) {
+      return false
     }
   }
-)
-
-export { openFile }
+}

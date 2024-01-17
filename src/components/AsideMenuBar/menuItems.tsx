@@ -1,4 +1,4 @@
-import { API } from "@/ipc";
+import { PlatformAPI } from "@/ipc";
 import useNavigationStore from "@/store/navigation_store"
 import { ArrowUpOnSquareIcon, CodeBracketIcon, Cog6ToothIcon, DocumentPlusIcon, ListBulletIcon, MagnifyingGlassIcon, PlusCircleIcon } from "@heroicons/react/24/outline"
 import { Separator } from "@radix-ui/themes";
@@ -82,7 +82,7 @@ const exportMenuItem: AsideMenuBarItemProps = {
 const openDevToolMenuItem: AsideMenuBarItemProps = {
   icon: <CodeBracketIcon width={20} height={20} />,
   label: '开发者工具',
-  onClick: () => API.openDevTools(),
+  onClick: () => PlatformAPI.openDevTools(),
   isDisabled: false,
 }
 

@@ -1,11 +1,7 @@
-export interface IElectronAPI {
-  openFile: () => Promise<string | undefined>,
-  openDevTools: () => Promise<string>,
-  getSystemInfo: () => Promise<string>,
-}
+import { IPlatformAPI } from "common/ipc";
 
 declare global {
   interface Window {
-    __ElectronAPI__: IElectronAPI
+    __ElectronAPI__: IPlatformAPI
   }
 }

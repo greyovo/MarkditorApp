@@ -1,9 +1,9 @@
 import { NotImplementError } from "@/utils/errors";
-import { IBaseAPI } from "./types";
+import { IPlatformAPI } from "common/ipc";
 
-export const tauriAPI: IBaseAPI = {
-  async openFile(): Promise<string | undefined> {
-    throw new Error("Method not implemented.");
+export const tauriAPI: IPlatformAPI = {
+  async openFile(): Promise<{ path: string, content: string } | undefined> {
+    throw new NotImplementError("Method not supported");
   },
 
   getSystemInfo(): Promise<any> {
@@ -13,4 +13,8 @@ export const tauriAPI: IBaseAPI = {
   openDevTools: function (): Promise<void> {
     throw new Error("Function not implemented.");
   },
+
+  saveFile: function (path: string, content: string): Promise<boolean> {
+    throw new Error("Function not implemented.");
+  }
 }

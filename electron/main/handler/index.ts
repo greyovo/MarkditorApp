@@ -1,8 +1,21 @@
-import { ipcMain } from "electron";
-import { IPCHanlder } from "./types";
-import { openFile } from "./file_handlers";
+import { systemHandlers } from "./system_handlers";
+import { fileHandlers } from "./file_handlers";
 
+type IPCHandlerAction = (...args: any[]) => Promise<any>
 
-export const ipcHandlers: IPCHanlder[] = [
-  openFile
-]
+export interface IPCHanlder {
+  name: string
+  action: IPCHandlerAction
+}
+
+const ipcHandlers: IPCHanlder[] = []
+
+Object.entries(fileHandlers).forEach(([key, fun]) => {
+  ipcHandlers.push({ name: fun.name, action: fun })
+})
+
+Object.entries(systemHandlers).forEach(([key, fun]) => {
+  ipcHandlers.push({ name: fun.name, action: fun })
+})
+
+export default ipcHandlers

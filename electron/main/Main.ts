@@ -1,9 +1,12 @@
 import { update } from './update'
 import { BrowserWindow, Menu, app, ipcMain, shell } from "electron";
 import EventEmitter from "events";
-import { ipcHandlers } from './handler';
+import ipcHandlers from './handler';
+import { join } from 'path';
 
 const appName = "Markditor";
+
+let mainWindow: BrowserWindow | null = null
 
 export class Main {
   private windowSettings: { [key: string]: any };
@@ -35,6 +38,7 @@ export class Main {
         contextIsolation: true,
       },
     })
+    mainWindow = this.win
 
     if (this.windowSettings.url) { // electron-vite-vue#298
       this.win.loadURL(this.windowSettings.url)
@@ -86,11 +90,16 @@ export class Main {
 
   private registerIpcHandlers() {
     ipcHandlers.forEach(
-      handler => ipcMain.handle(handler.name, handler.action)
+      handler => ipcMain.handle(handler.name, (ev, args) => handler.action(args))
     )
   }
 
   public getMainWindow() {
     return this.win;
   }
+}
+
+
+export const openDevTools = () => {
+  mainWindow?.webContents.openDevTools()
 }

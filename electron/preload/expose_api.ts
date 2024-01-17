@@ -1,15 +1,12 @@
 import { app, contextBridge, ipcRenderer } from 'electron'
-import { FileMethodChannels } from 'electron/main/handler/file_handlers'
-import { SystemMethodChannels } from 'electron/main/handler/system_handlers'
+import ipcHandlers from '../main/handler';
 
 export function exposeApi() {
-  contextBridge.exposeInMainWorld("__ElectronAPI__", {
-    // 打开系统文件选择对话框
-    openFile: (): Promise<string> => ipcRenderer.invoke("ShowOpenFileDialog"),
+  const bridge: any = {};
 
-    // 获取系统信息
-    getSystemInfo: (): Promise<string> => ipcRenderer.invoke("GetSystemInfo"),
-    
-    openDevTools: () => ipcRenderer.invoke("openDevTools"),
-  })
+  ipcHandlers.forEach((handler) => {
+    bridge[handler.name] = (...args: any) => ipcRenderer.invoke(handler.name, ...args);
+  });
+
+  contextBridge.exposeInMainWorld("__ElectronAPI__", bridge)
 }

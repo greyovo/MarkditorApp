@@ -5,6 +5,7 @@ import { EditorContextMenu } from "./EditorContextMenu";
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable";
 import useNavigationStore from "@/store/navigation_store";
 import { getMarkdownExample } from "./getMarkdownExample";
+import useDocumentStore from "@/store/document_store";
 
 
 let vditor: Vditor;
@@ -12,10 +13,15 @@ let vditor: Vditor;
 export function Editor() {
   useEffect(() => {
     const optioins: IOptions = {
+      cache: {
+        id: "editor",
+        enable: false
+      },
       after: () => {
-        getMarkdownExample().then((v) => {
-          vditor.setValue(v)
-        })
+        vditor.setValue("Hello 你好")
+        // getMarkdownExample().then((v) => {
+        //   vditor.setValue(v)
+        // })
       },
       cdn: "./lib",
       height: "100%",
@@ -30,6 +36,16 @@ export function Editor() {
     }
 
     vditor = new Vditor("vditor", optioins);
+
+    // 监听文件打开的改变
+    const unsubscribe = useDocumentStore.subscribe((state, prevState) => {
+      if (state.path != prevState.path) {
+        console.log("打开了文件：", state.path);
+        console.log(state.content);
+        vditor.setValue(state.content ?? "")
+      }
+    })
+    return unsubscribe
   }, []);
 
   const editorContainer = <div id="vditor" className="vditor overflow-y-auto flex-grow" />

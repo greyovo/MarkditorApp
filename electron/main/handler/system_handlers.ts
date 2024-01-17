@@ -1,17 +1,15 @@
-// import { getSystemVersion } from "node:process"
-import { IPCHanlder } from "./types"
+import { ISystemAPI } from "common/ipc"
+import { app } from "electron"
+import { openDevTools } from "../Main"
+// import { openDevTools } from "../Main"
 
-export enum SystemMethodChannels{
-  // 打开文件
-  GetSystemInfo = 'GetSystemInfo'
-}
+export const systemHandlers: ISystemAPI = {
 
-
-const getSystemInfo = new IPCHanlder(
-  SystemMethodChannels.GetSystemInfo,
-  async (event, args): Promise<string | undefined> => {
+  getSystemInfo: async (): Promise<string> => {
     return "Hello! getSystemInfo invoked!"
-  }
-)
+  },
 
-export { getSystemInfo }
+  openDevTools: async (): Promise<void> => {
+    openDevTools()
+  }
+}

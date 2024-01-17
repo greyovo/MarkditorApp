@@ -1,10 +1,9 @@
 
-// import { Cog6ToothIcon } from "@heroicons/react/16/outline";
 import { BookmarkIcon, Cog6ToothIcon, FolderOpenIcon } from "@heroicons/react/24/outline";
 import DirectoryItem from "./DirectoryItem";
 import { Button, ContextMenu, IconButton } from "@radix-ui/themes";
-import { API } from "@/ipc";
-// import { API } from "@/ipc";
+import { PlatformAPI } from "@/ipc";
+import useDocumentStore from "@/store/document_store";
 
 function DirectorySideBarHeader() {
 
@@ -29,8 +28,13 @@ function DirectorySideBarHeader() {
 function DirectoryEmptyView() {
   async function openFile() {
     // 打开文件
-    const path = await API.openFile()
-    console.log(path);
+    const result = (await PlatformAPI.openFile())
+    if (result !== undefined) {
+      const { path, content } = result!
+      useDocumentStore.setState((state) => ({ ...state, path, content }))
+    } else {
+      console.log("打开文件失败！");
+    }
   }
 
   return (

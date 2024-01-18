@@ -3,6 +3,7 @@ import { BrowserWindow, Menu, app, ipcMain, shell } from "electron";
 import EventEmitter from "events";
 import ipcHandlers from './handler';
 import { join } from 'path';
+import { Log } from './utils/log';
 
 const appName = "Markditor";
 
@@ -90,7 +91,10 @@ export class Main {
 
   private registerIpcHandlers() {
     ipcHandlers.forEach(
-      handler => ipcMain.handle(handler.name, (ev, args) => handler.action(args))
+      handler => ipcMain.handle(handler.name, async (ev, ...args) => {
+        Log("Handler called:", handler.name, "[args.length]", args.length)
+        return handler.action(...args)
+      })
     )
   }
 

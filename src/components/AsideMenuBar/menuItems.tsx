@@ -1,4 +1,5 @@
 import { PlatformAPI } from "@/ipc";
+import useDocumentStore from "@/store/document_store";
 import useNavigationStore from "@/store/navigation_store"
 import { ArrowUpOnSquareIcon, CodeBracketIcon, Cog6ToothIcon, DocumentPlusIcon, ListBulletIcon, MagnifyingGlassIcon, PlusCircleIcon } from "@heroicons/react/24/outline"
 import { Separator } from "@radix-ui/themes";
@@ -52,6 +53,8 @@ const saveMenuItem: AsideMenuBarItemProps = {
   icon: <StatefulSaveIcon />,
   label: '保存',
   onClick: () => {
+    console.log("Saving...");
+    useDocumentStore.getState().saveFile()
   },
   isDisabled: false,
 }

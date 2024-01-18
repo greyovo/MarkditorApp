@@ -4,9 +4,9 @@ import DirectorySidePanel from "@/components/DirectoryPanel";
 import { EditorContextMenu } from "./EditorContextMenu";
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable";
 import useNavigationStore from "@/store/navigation_store";
-import { getMarkdownExample } from "./getMarkdownExample";
 import useDocumentStore from "@/store/document_store";
 
+const _placeHolder = "# Welcome to Markditor \nHello, welcome to `Markditor`.\n# 欢迎使用 Markditor\n你好，欢迎使用 `Markditor`"
 
 let vditor: Vditor;
 
@@ -18,10 +18,8 @@ export function Editor() {
         enable: false
       },
       after: () => {
-        vditor.setValue("Hello 你好")
-        // getMarkdownExample().then((v) => {
-        //   vditor.setValue(v)
-        // })
+        vditor.setValue(_placeHolder)
+        useDocumentStore.getState().updateContent(_placeHolder)
       },
       cdn: "./lib",
       height: "100%",
@@ -32,21 +30,23 @@ export function Editor() {
           return null
         },
       },
-      input: (v) => { console.log("input:", v); },
+      input: (v) => {
+        console.log("input length:", v.length);
+        useDocumentStore.getState().updateContent(v)
+      },
     }
 
     vditor = new Vditor("vditor", optioins);
 
-    // 监听文件打开的改变
-    const unsubscribe = useDocumentStore.subscribe((state, prevState) => {
-      if (state.path != prevState.path) {
-        console.log("打开了文件：", state.path);
-        console.log(state.content);
-        vditor.setValue(state.content ?? "")
-      }
+    // 监听新文件打开
+    return useDocumentStore.subscribe((state, prevState) => {
+      if (state.path == prevState.path) return
+
+      vditor.setValue(state.content ?? "")
+      state.updateContent(state.content ?? "")
     })
-    return unsubscribe
   }, []);
+
 
   const editorContainer = <div id="vditor" className="vditor overflow-y-auto flex-grow" />
 

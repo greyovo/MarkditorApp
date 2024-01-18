@@ -32,3 +32,8 @@ export function toggleRangeDeleteline(vditor: Vditor, enabled: boolean) {
     vditor.insertValue(`<u>${selected}</u>`)
   }
 }
+
+export async function getMarkdownExample() {
+  const resp = await fetch("./example.md")
+  return resp.text()
+}

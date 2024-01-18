@@ -1,5 +1,6 @@
 import { PlatformAPI } from '@/ipc'
 import { getFileNameFromPath } from '@/utils/filesUtil'
+import { setWindowTitle } from '@/utils/windowUtils'
 import { create } from 'zustand'
 
 
@@ -28,16 +29,19 @@ const useDocumentStore = create<DocumentState>(
 
     updateContent: function (content: string) {
       set(state => ({ ...state, content, saved: false }))
+      setWindowTitle(this.fileName + "*")
     },
 
     setFile: function (path: string, content: string) {
+      const fileName = getFileNameFromPath(path)
       set(state => ({
         ...state,
         content,
         path,
-        fileName: getFileNameFromPath(path),
+        fileName,
         saved: false
       }))
+      setWindowTitle(fileName)
     },
 
     saveFile: async function () {
@@ -47,12 +51,14 @@ const useDocumentStore = create<DocumentState>(
         if (!path) return
       }
       await PlatformAPI.saveFile(this.path!, this.content!)
+      const fileName = getFileNameFromPath(path)
       set(state => ({
         ...state,
         path,
         saved: true,
-        fileName: getFileNameFromPath(path)
+        fileName,
       }))
+      setWindowTitle(fileName)
     },
 
     // markAsDirty: () => set((state) => ({ ...state, saved: false })),
@@ -64,8 +70,9 @@ const useDocumentStore = create<DocumentState>(
         fileName: undefined,
         saved: false,
       }))
+      setWindowTitle("")
     },
-  })
+  }),
 )
 
 const { getState, setState, subscribe } = useDocumentStore

@@ -21,6 +21,4 @@ export class TauriAPI implements IPlatformAPI {
   openDevTools(): Promise<void> {
     throw new Error("Function not implemented.");
   }
-
-
 }

@@ -104,6 +104,10 @@ export class Main {
 }
 
 
-export const openDevTools = () => {
+export function openDevTools() {
   mainWindow?.webContents.openDevTools()
+}
+
+export function setMainWindowName(name: string) {
+  mainWindow?.setTitle(name)
 }

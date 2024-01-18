@@ -1,8 +1,9 @@
 import { IPlatformAPI } from "common/ipc";
-import { openDevTools } from "../Main";
+import { openDevTools, setMainWindowName } from "../Main";
 import fs from "fs"
 import { dialog } from "electron";
 import { Log } from "../utils/log";
+import { mainApp } from "..";
 
 export const apiHandlers: IPlatformAPI = {
   async openFile(): Promise<{ path: string; content: string; } | undefined> {
@@ -39,5 +40,4 @@ export const apiHandlers: IPlatformAPI = {
   async openDevTools(): Promise<void> {
     openDevTools();
   },
-
 }

@@ -31,7 +31,7 @@ function DirectoryEmptyView() {
     const result = (await PlatformAPI.openFile())
     if (result !== undefined) {
       const { path, content } = result!
-      useDocumentStore.setState((state) => ({ ...state, path, content }))
+      useDocumentStore.getState().setFile(path, content)
     } else {
       console.log("打开文件失败！");
     }

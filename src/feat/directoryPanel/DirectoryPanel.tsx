@@ -1,12 +1,11 @@
 
 import { BookmarkIcon, Cog6ToothIcon, FolderOpenIcon } from "@heroicons/react/24/outline";
 import DirectoryItem from "./DirectoryItem";
-import { Button, ContextMenu, IconButton } from "@radix-ui/themes";
+import { Button, ContextMenu, Dialog, Flex, IconButton } from "@radix-ui/themes";
 import { PlatformAPI } from "@/ipc";
-import useDocumentStore from "@/store/document_store";
+import useDocumentStore from "@/store/documentStore";
 
 function DirectorySideBarHeader() {
-
   return (
     <div className="flex justify-between border-b select-none py-4 px-3">
       <div className="flex flex-col">
@@ -43,6 +42,25 @@ function DirectoryEmptyView() {
       <Button onClick={openFile}>
         <FolderOpenIcon width="16" height="16" /> 打开...
       </Button>
+    </div>
+  )
+}
+
+function DirectoryListView() {
+  async function selectFile(path: string) {
+    // 打开文件
+    const result = (await PlatformAPI.openFile())
+    if (result !== undefined) {
+      const { path, content } = result!
+      useDocumentStore.getState().setFile(path, content)
+    } else {
+      console.log("打开文件失败！");
+    }
+  }
+
+  return (
+    <div className="flex flex-col items-center justify-center h-full">
+      <p className="text-gray-400 m-3 select-none">😶 没有文件</p>
     </div>
   )
 }

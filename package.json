@@ -6,6 +6,7 @@
   "author": "greyovo <grey@foxmail.com>",
   "license": "MIT",
   "private": true,
+  "type": "module",
   "debug": {
     "env": {
       "VITE_DEV_SERVER_URL": "http://127.0.0.1:7777/"

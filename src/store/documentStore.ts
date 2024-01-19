@@ -12,7 +12,7 @@ interface DocumentState {
 
   updateContent: (text: string) => void,
   setFile: (path: string, content: string) => void,
-  // createFile: () => void,
+  createNewFile: () => void,
   // closeFile: () => void,
   saveFile: () => void,
   // markAsDirty: () => void,
@@ -27,9 +27,22 @@ const useDocumentStore = create<DocumentState>(
     fileName: undefined,
     saved: false,
 
+    createNewFile() {
+      const fileName = "Untitled.md"
+      set(state => ({
+        ...state,
+        content: undefined,
+        path: undefined,
+        fileName: fileName,
+        saved: false,
+      }))
+      setWindowTitle(fileName + "*")
+    },
+
     updateContent: function (content: string) {
+      console.log("updateContent!");
       set(state => ({ ...state, content, saved: false }))
-      setWindowTitle(this.fileName + "*")
+      setWindowTitle((this.fileName ?? "Untitled.md") + "*")
     },
 
     setFile: function (path: string, content: string) {
@@ -39,7 +52,7 @@ const useDocumentStore = create<DocumentState>(
         content,
         path,
         fileName,
-        saved: false
+        saved: true
       }))
       setWindowTitle(fileName)
     },

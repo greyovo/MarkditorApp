@@ -29,7 +29,7 @@
   "include": [
     "src",
     "electron",
-    "common"
+    "shared"
   ],
   "references": [
     {

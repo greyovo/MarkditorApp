@@ -10,4 +10,6 @@ export interface IPlatformAPI {
 
   // 打开开发者调试工具
   openDevTools(): Promise<void>;
+
+  listDirectories(path: string): Promise<(DirectoryEntity | FileEntity)[]>;
 } 

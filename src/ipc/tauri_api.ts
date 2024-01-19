@@ -1,5 +1,5 @@
 import { NotImplementError } from "@/utils/errors";
-import { IPlatformAPI } from "common/ipc";
+import { IPlatformAPI } from "shared/platformApi";
 
 export class TauriAPI implements IPlatformAPI {
   async openFile(): Promise<{ path: string, content: string } | undefined> {

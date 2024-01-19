@@ -1,9 +1,11 @@
-import { IPlatformAPI } from "common/ipc";
+import { IPlatformAPI } from "shared/platformApi";
 import { openDevTools, setMainWindowName } from "../Main";
 import fs from "fs"
 import { dialog } from "electron";
 import { Log } from "../utils/log";
 import { mainApp } from "..";
+import path from "path";
+import { getChildrenDirectories } from "../utils/directoryUtils";
 
 export const apiHandlers: IPlatformAPI = {
   async openFile(): Promise<{ path: string; content: string; } | undefined> {
@@ -40,4 +42,8 @@ export const apiHandlers: IPlatformAPI = {
   async openDevTools(): Promise<void> {
     openDevTools();
   },
+
+  async listDirectories(path: string): Promise<(DirectoryEntity | FileEntity)[]> {
+    return getChildrenDirectories(path)
+  }
 }

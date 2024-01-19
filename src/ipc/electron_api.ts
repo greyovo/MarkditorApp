@@ -1,4 +1,4 @@
-import { IPlatformAPI } from "common/ipc";
+import { IPlatformAPI } from "shared/platformApi";
 
 export class ElectronAPI implements IPlatformAPI {
 

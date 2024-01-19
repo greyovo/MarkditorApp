@@ -1,10 +1,10 @@
 import { ReactComponentElement, useEffect, useRef, useState } from "react";
 import Vditor from "vditor";
-import DirectorySidePanel from "@/components/DirectoryPanel";
+import DirectorySidePanel from "@/feat/directoryPanel/DirectoryPanel";
 import { EditorContextMenu } from "./EditorContextMenu";
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable";
-import useNavigationStore from "@/store/navigation_store";
-import useDocumentStore from "@/store/document_store";
+import useNavigationStore from "@/store/navigationStore";
+import useDocumentStore from "@/store/documentStore";
 
 const _placeHolder = "# Welcome to Markditor \nHello, welcome to `Markditor`.\n# 欢迎使用 Markditor\n你好，欢迎使用 `Markditor`"
 
@@ -40,10 +40,9 @@ export function Editor() {
 
     // 监听新文件打开
     return useDocumentStore.subscribe((state, prevState) => {
-      if (state.path == prevState.path) return
+      if (state.path == prevState.path && state.content !== undefined) return
 
       vditor.setValue(state.content ?? "")
-      state.updateContent(state.content ?? "")
     })
   }, []);
 

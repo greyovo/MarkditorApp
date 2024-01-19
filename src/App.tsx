@@ -1,13 +1,13 @@
-import { Welcome } from "./pages/Welcome";
-import { AsideMenuBar } from "./components/AsideMenuBar";
-import { Editor } from "./pages/Editor";
+import { Welcome } from "./feat/welcome/Welcome";
+import { AsideMenuBar } from "./feat/asideMenuBar/AsideMenuBar";
+import { Editor } from "./feat/editor/Editor";
 
 const App = () => {
   return (
     <div className="flex" style={{ height: "100vh" }}>
-      <aside className="">
+      <div>
         <AsideMenuBar />
-      </aside>
+      </div>
       <main className="flex-1 bg-white">
         {/* <Welcome /> */}
         <Editor />

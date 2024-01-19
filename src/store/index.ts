@@ -1,2 +1,2 @@
-export * from "./document_store"
-export * from "./navigation_store"
+export * from "./documentStore"
+export * from "./navigationStore"

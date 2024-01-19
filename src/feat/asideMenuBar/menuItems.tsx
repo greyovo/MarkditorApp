@@ -1,10 +1,9 @@
 import { PlatformAPI } from "@/ipc";
-import useDocumentStore from "@/store/document_store";
-import useNavigationStore from "@/store/navigation_store"
-import { ArrowUpOnSquareIcon, CheckCircleIcon, CodeBracketIcon, Cog6ToothIcon, DocumentPlusIcon, ListBulletIcon, MagnifyingGlassIcon, PlusCircleIcon } from "@heroicons/react/24/outline"
-import { Button, Separator, Tooltip } from "@radix-ui/themes";
+import useDocumentStore from "@/store/documentStore";
+import useNavigationStore from "@/store/navigationStore"
+import { ArrowUpOnSquareIcon, CodeBracketIcon, Cog6ToothIcon, DocumentPlusIcon, ListBulletIcon, MagnifyingGlassIcon, PlusCircleIcon } from "@heroicons/react/24/outline"
+import { AlertDialog, Button, Dialog, Flex, Separator, Tooltip } from "@radix-ui/themes";
 import { SaveIcon, SidebarClose, SidebarIcon, SidebarOpen } from "lucide-react";
-import { useState } from "react";
 
 export interface AsideMenuBarItemProps {
   icon: React.ReactNode,
@@ -26,7 +25,7 @@ function AsideMenuBarItem({ props }: { props: AsideMenuBarItemProps }) {
   }
   return (
     <Tooltip side='right' content={props.label} delayDuration={0} >
-      <Button variant='ghost' highContrast className='px-2 py-2 m-1 rounded'
+      <Button variant="ghost" className='px-2 py-2 m-1 rounded '
         onClick={() => props.onClick?.()}>
         {props.icon}
       </Button>
@@ -77,20 +76,70 @@ function SaveMenuItem() {
     },
     isDisabled: saved,
   }
-
   return <AsideMenuBarItem props={props} />
+
+
 }
 
 function NewFileMenuItem() {
+  const saved = useDocumentStore((state) => (state.saved));
+  console.log("已经保存", saved);
+
+  async function saveFile() {
+    useDocumentStore.getState().saveFile()
+  }
+
+  function createNewFile() {
+    useDocumentStore.getState().createNewFile()
+  }
+
   const props: AsideMenuBarItemProps = {
     icon: <PlusCircleIcon width={20} height={20} />,
     label: '新建文件',
     onClick: () => {
-
+      if (saved) {
+        createNewFile()
+      }
     },
     isDisabled: false,
   }
-  return <AsideMenuBarItem props={props} />
+
+  if (saved) {
+    return <AsideMenuBarItem props={props} />
+  }
+
+  return (
+    <Dialog.Root>
+      <Dialog.Trigger>
+        <div onClick={props.onClick}>
+          <AsideMenuBarItem props={props} />
+        </div>
+      </Dialog.Trigger>
+
+      <Dialog.Content style={{ maxWidth: 450 }}>
+        <Dialog.Title>文件未保存</Dialog.Title>
+        <Dialog.Description size="2" mb="4">
+          在新建文件前保存当前文件的修改吗？
+        </Dialog.Description>
+
+        <Flex gap="3" mt="4" justify="end">
+          <Dialog.Close>
+            <Button variant="soft" color="gray">
+              点错了
+            </Button>
+          </Dialog.Close>
+          <Dialog.Close>
+            <Button variant="soft" color="red" onClick={createNewFile}>
+              不保存
+            </Button>
+          </Dialog.Close>
+          <Dialog.Close>
+            <Button onClick={saveFile}>保存</Button>
+          </Dialog.Close>
+        </Flex>
+      </Dialog.Content>
+    </Dialog.Root>
+  )
 }
 
 function SearchMenuItem() {
@@ -139,7 +188,7 @@ function SettingsMenuItem() {
 export const sidebarTopItems = [
   <ToggleFolderViewMenuItem key={"ToggleFolderViewMenuItem"} />,
   <AsideMenuBarSeparator key={"AsideMenuBarSeparator"} />,
-  <SaveMenuItem key={"SaveMenuItem"}/>,
+  <SaveMenuItem key={"SaveMenuItem"} />,
   <NewFileMenuItem key={"NewFileMenuItem"} />,
   <SearchMenuItem key={"SearchMenuItem"} />,
   <ExportMenuItem key={"ExportMenuItem"} />

@@ -1,4 +1,4 @@
-import { toggleRangeBold, toggleRangeItalic, toggleRangeDeleteline } from "./EditorActions";
+import { toggleRangeBold, toggleRangeItalic, toggleRangeDeleteline } from "./actions"
 import * as Toggle from '@radix-ui/react-toggle';
 import { Bold, Code, Italic, ItalicIcon, Link, StrikethroughIcon, Underline } from "lucide-react";
 import { FolderIcon } from "@heroicons/react/24/outline";

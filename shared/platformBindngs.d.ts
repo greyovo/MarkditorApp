@@ -1,6 +1,12 @@
+import path from "path";
+
 export interface IPlatformAPI {
   // 打开选择文件对话框
-  openFile(): Promise<{ path: string, content: string } | undefined>;
+  selectFile(): Promise<FileEntity | undefined>;
+
+  selectDirectory(): Promise<DirectoryEntity | undefined>;
+
+  readFile(path: string): Promise<string | undefined>;
 
   saveFile(path: string, content: string): Promise<boolean>;
 

@@ -1,6 +1,6 @@
 import { ReactComponentElement, useEffect, useRef, useState } from "react";
 import Vditor from "vditor";
-import DirectorySidePanel from "@/feat/directoryPanel/DirectoryPanel";
+import { DirectoryPanel } from "@/feat/directoryPanel/DirectoryPanel";
 import { EditorContextMenu } from "./EditorContextMenu";
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable";
 import useNavigationStore from "@/store/navigationStore";
@@ -61,7 +61,7 @@ export function Editor() {
             <ResizablePanel id="DirectorySidePanel" order={1}
               defaultSize={panelSize} minSize={15} maxSize={40}
               onResize={onResize}>
-              <DirectorySidePanel />
+              <DirectoryPanel />
             </ResizablePanel>
             <ResizableHandle id="handle" />
           </>

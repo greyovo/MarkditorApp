@@ -4,8 +4,9 @@ import DirectoryItem from "./DirectoryItem";
 import { Button, ContextMenu, Dialog, Flex, IconButton } from "@radix-ui/themes";
 import { PlatformAPI } from "@/ipc";
 import useDocumentStore from "@/store/documentStore";
+import useDirectoryStore from "@/store/directoryStore";
 
-function DirectorySideBarHeader() {
+function DirectoryPanelHeader() {
   return (
     <div className="flex justify-between border-b select-none py-4 px-3">
       <div className="flex flex-col">
@@ -25,12 +26,12 @@ function DirectorySideBarHeader() {
 }
 
 function DirectoryEmptyView() {
-  async function openFile() {
+  async function selectRootDir() {
     // 打开文件
-    const result = (await PlatformAPI.openFile())
+    const result = (await PlatformAPI.selectDirectory())
+    console.log(result);
     if (result !== undefined) {
-      const { path, content } = result!
-      useDocumentStore.getState().setFile(path, content)
+      useDirectoryStore.setState((state) => ({ ...state, root: result }))
     } else {
       console.log("打开文件失败！");
     }
@@ -39,7 +40,7 @@ function DirectoryEmptyView() {
   return (
     <div className="flex flex-col items-center justify-center h-full">
       <p className="text-gray-400 m-3 select-none">😶 没有文件</p>
-      <Button onClick={openFile}>
+      <Button onClick={selectRootDir}>
         <FolderOpenIcon width="16" height="16" /> 打开...
       </Button>
     </div>
@@ -47,35 +48,32 @@ function DirectoryEmptyView() {
 }
 
 function DirectoryListView() {
-  async function selectFile(path: string) {
-    // 打开文件
-    const result = (await PlatformAPI.openFile())
-    if (result !== undefined) {
-      const { path, content } = result!
-      useDocumentStore.getState().setFile(path, content)
-    } else {
-      console.log("打开文件失败！");
-    }
-  }
+  const root = useDirectoryStore((state) => state.root)
+
+  // const children = useDirectoryStore((state) => state.root?.children ?? [])
+
+  const children = root?.children ?? []
+  const curDocPath = useDocumentStore((state) => state.path ?? "")
 
   return (
-    <div className="flex flex-col items-center justify-center h-full">
-      <p className="text-gray-400 m-3 select-none">😶 没有文件</p>
+    <div className="flex flex-col">
+      {children.map((e) => {
+        return <DirectoryItem
+          open={curDocPath === e.path}
+          key={e.path} type={e.type} depth={0} label={e.name} path={e.path} />
+      })}
     </div>
   )
 }
 
-export default function DirectorySideBar() {
+export function DirectoryPanel() {
+
+  const root = useDirectoryStore((state) => state.root)
 
   return (
     <div className="flex flex-col h-full overflow-y-auto">
-      {/* <DirectorySideBarHeader /> */}
-      <DirectoryEmptyView />
-      {/* <DirectoryItem depth={0} type={"directory"} label="Apple" />
-      <DirectoryItem depth={0} type={"directory"} open={true} label="MyDocuments" />
-      <DirectoryItem depth={1} type={"file"} label="diary.md" />
-      <DirectoryItem depth={1} type={"file"} label="notes.md" />
-      <DirectoryItem depth={0} type={"file"} label="config.ini" /> */}
+      {root !== undefined && <DirectoryPanelHeader />}
+      {root !== undefined ? <DirectoryListView /> : <DirectoryEmptyView />}
     </div>
   )
 }

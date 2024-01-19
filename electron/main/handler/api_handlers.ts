@@ -1,19 +1,41 @@
-import { IPlatformAPI } from "shared/platformApi";
+import { IPlatformAPI } from "shared/platformBindngs";
 import { openDevTools, setMainWindowName } from "../Main";
 import fs from "fs"
 import { dialog } from "electron";
-import { Log } from "../utils/log";
-import { mainApp } from "..";
-import path from "path";
-import { getChildrenDirectories } from "../utils/directoryUtils";
+import { getChildrenDirectories, getFileNameFromPath } from "../utils/directoryUtils";
 
 export const apiHandlers: IPlatformAPI = {
-  async openFile(): Promise<{ path: string; content: string; } | undefined> {
+  async selectFile(): Promise<DirectoryEntity | undefined> {
     const { canceled, filePaths } = await dialog.showOpenDialog({});
     if (!canceled) {
-      const content = fs.readFileSync(filePaths[0], 'utf8');
+      const item = fs.statSync(filePaths[0]);
 
-      return { path: filePaths[0], content };
+      return {
+        type: "file",
+        name: getFileNameFromPath(filePaths[0]),
+        path: filePaths[0],
+        size: item.size,
+        createDate: item.birthtimeMs,
+        lastModifiedDate: item.mtimeMs,
+      };
+    }
+  },
+
+  selectDirectory: async function (): Promise<DirectoryEntity | undefined> {
+    const { canceled, filePaths } = await dialog.showOpenDialog({ properties: ["openDirectory"] });
+    const path = filePaths[0]
+    if (!canceled) {
+      const item = fs.statSync(path);
+      const children = await getChildrenDirectories(path)
+
+      return {
+        type: "dir",
+        name: getFileNameFromPath(path),
+        path,
+        createDate: item.birthtimeMs,
+        lastModifiedDate: item.mtimeMs,
+        children,
+      };
     }
   },
 
@@ -26,13 +48,14 @@ export const apiHandlers: IPlatformAPI = {
   },
 
   async saveFile(path: string, content: string): Promise<boolean> {
-    try {
-      Log("saveFile", path, "content.length:", content.length);
-      fs.writeFileSync(path, content);
-      return true;
-    } catch (error) {
-      return false;
-    }
+    return new Promise((resolve, reject) => {
+      try {
+        fs.writeFileSync(path, content);
+        resolve(true);
+      } catch (error) {
+        reject(false);
+      }
+    });
   },
 
   async getSystemInfo(): Promise<string> {
@@ -43,7 +66,20 @@ export const apiHandlers: IPlatformAPI = {
     openDevTools();
   },
 
-  async listDirectories(path: string): Promise<(DirectoryEntity | FileEntity)[]> {
-    return getChildrenDirectories(path)
-  }
+  async listDirectories(path: string): Promise<(DirectoryEntity)[]> {
+    return getChildrenDirectories(path);
+  },
+
+  async readFile(path: string): Promise<string | undefined> {
+    return new Promise<string>((resolve, reject) => {
+      try {
+        const res = fs.readFileSync(path, 'utf8');
+        resolve(res);
+      } catch (error) {
+        reject("cannot read file from: " + path);
+      }
+    });
+  },
+
+
 }

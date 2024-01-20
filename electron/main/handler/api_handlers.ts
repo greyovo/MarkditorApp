@@ -1,4 +1,4 @@
-import { IPlatformAPI } from "shared/platformBindngs";
+import { IPlatformAPI } from "shared/platformApi";
 import { openDevTools, setMainWindowName } from "../Main";
 import fs from "fs"
 import { dialog } from "electron";

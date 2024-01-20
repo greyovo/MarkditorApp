@@ -1,4 +1,4 @@
-import { IPlatformAPI } from "shared/platformBindngs";
+import { IPlatformAPI } from "shared/platformApi";
 
 declare global {
   interface Window {

@@ -1,10 +1,11 @@
 import path from "path";
 
 export interface IPlatformAPI {
-  // 打开选择文件对话框
-  selectFile(): Promise<FileEntity | undefined>;
-
   selectDirectory(): Promise<DirectoryEntity | undefined>;
+
+  listDirectories(path: string): Promise<(DirectoryEntity | FileEntity)[]>;
+
+  selectFile(): Promise<FileEntity | undefined>;
 
   readFile(path: string): Promise<string | undefined>;
 
@@ -16,6 +17,4 @@ export interface IPlatformAPI {
 
   // 打开开发者调试工具
   openDevTools(): Promise<void>;
-
-  listDirectories(path: string): Promise<(DirectoryEntity | FileEntity)[]>;
 } 

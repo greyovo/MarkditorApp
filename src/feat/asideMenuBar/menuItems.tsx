@@ -1,9 +1,11 @@
+import { DialogContext } from "@/components/dialog/DialogContext";
 import { PlatformAPI } from "@/ipc";
 import useDocumentStore from "@/store/documentStore";
 import useNavigationStore from "@/store/navigationStore"
 import { ArrowUpOnSquareIcon, CodeBracketIcon, Cog6ToothIcon, DocumentPlusIcon, ListBulletIcon, MagnifyingGlassIcon, PlusCircleIcon } from "@heroicons/react/24/outline"
 import { AlertDialog, Button, Dialog, Flex, Separator, Tooltip } from "@radix-ui/themes";
 import { SaveIcon, SidebarClose, SidebarIcon, SidebarOpen } from "lucide-react";
+import { useContext } from "react";
 
 export interface AsideMenuBarItemProps {
   icon: React.ReactNode,
@@ -66,13 +68,14 @@ function ToggleFolderViewMenuItem() {
 
 function SaveMenuItem() {
   const saved = useDocumentStore((state) => state.saved);
+  const saveFile = useDocumentStore((state) => state.saveFile);
   const icon = <SaveIcon strokeWidth={1.5} width={18} height={18} />
   const props: AsideMenuBarItemProps = {
     icon: icon,
     label: '保存',
     onClick: () => {
-      console.log("Saving...");
-      useDocumentStore.getState().saveFile()
+      console.log("Saving...")
+      saveFile()
     },
     isDisabled: saved,
   }
@@ -175,10 +178,25 @@ function OpenDevToolMenuItem() {
 }
 
 function SettingsMenuItem() {
+  const { openDialog } = useContext(DialogContext);
+
   const settingsMenuItem: AsideMenuBarItemProps = {
     icon: <Cog6ToothIcon width={20} height={20} />,
     label: '设置',
-    onClick: () => { },
+    onClick: () => {
+      openDialog(
+        'Confirmation',
+        'Are you sure you want to proceed?',
+        () => {
+          // Confirm callback
+          console.log('Confirmed');
+        },
+        () => {
+          // Cancel callback
+          console.log('Cancelled');
+        }
+      );
+    },
     isDisabled: false,
   }
   return <AsideMenuBarItem props={settingsMenuItem} />

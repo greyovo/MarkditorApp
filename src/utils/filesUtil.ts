@@ -5,3 +5,8 @@ export function getFileNameFromPath(path: string): string {
   }
   return pathParts[pathParts.length - 1];
 }
+
+export function isMarkdownFile(fileName: string) {
+  fileName = fileName.trim().toLowerCase();
+  return fileName.endsWith(".md") || fileName.endsWith(".markdown");
+}

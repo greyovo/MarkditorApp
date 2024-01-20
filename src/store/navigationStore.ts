@@ -20,6 +20,4 @@ const useNavigationStore = create<NavigationState>(
   })
 )
 
-const { getState, setState, subscribe } = useNavigationStore
-
 export default useNavigationStore

@@ -21,7 +21,7 @@ interface DocumentState {
 
 
 const useDocumentStore = create<DocumentState>(
-  (set) => ({
+  (set, get) => ({
     content: undefined,
     path: undefined,
     fileName: undefined,
@@ -42,7 +42,7 @@ const useDocumentStore = create<DocumentState>(
     updateContent: function (content: string) {
       console.log("updateContent!");
       set(state => ({ ...state, content, saved: false }))
-      setWindowTitle((this.fileName ?? "Untitled.md") + "*")
+      setWindowTitle((get().fileName ?? "Untitled.md") + "*")
     },
 
     setFile: function (path: string, content: string) {
@@ -58,12 +58,12 @@ const useDocumentStore = create<DocumentState>(
     },
 
     saveFile: async function () {
-      let path = this.path
-      if (!path) {
+      let path = get().path
+      if (path === undefined) {
         path = await PlatformAPI.showSaveDialog()
         if (!path) return
       }
-      await PlatformAPI.saveFile(this.path!, this.content!)
+      await PlatformAPI.saveFile(path!, get().content!)
       const fileName = getFileNameFromPath(path)
       set(state => ({
         ...state,
@@ -87,7 +87,5 @@ const useDocumentStore = create<DocumentState>(
     },
   }),
 )
-
-const { getState, setState, subscribe } = useDocumentStore
 
 export default useDocumentStore

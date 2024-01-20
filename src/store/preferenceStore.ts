@@ -1,11 +1,11 @@
 import { create } from 'zustand'
 
-interface PreferenceStore {
+interface PreferenceState {
   themeMode: "light" | "dark" | "system", // Default to "system"
   autoSaveTimeout: number, // Default to 8000 ms
 }
 
-const useNavigationStore = create<PreferenceStore>(
+const usePreferenceStore = create<PreferenceState>(
   (set) => ({
     themeMode: "system",
     autoSaveTimeout: 8000,
@@ -18,6 +18,4 @@ const useNavigationStore = create<PreferenceStore>(
   })
 )
 
-const { getState, setState, subscribe } = useNavigationStore
-
-export default useNavigationStore
+export default usePreferenceStore

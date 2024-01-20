@@ -1,7 +1,7 @@
 import { NotImplementError } from "@/utils/errors"
 import { ElectronAPI } from "./electron_api";
 import { TauriAPI } from "./tauri_api";
-import { IPlatformAPI } from "shared/platformBindngs";
+import { IPlatformAPI } from "shared/platformApi";
 
 const backend = import.meta.env.VITE_BACKEND ?? "unknown"
 console.log("Running with backend:", backend);

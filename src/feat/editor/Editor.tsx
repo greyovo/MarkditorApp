@@ -15,11 +15,10 @@ export function Editor() {
     const optioins: IOptions = {
       cache: {
         id: "editor",
-        enable: false
+        enable: true
       },
       after: () => {
-        vditor.setValue(_placeHolder)
-        useDocumentStore.getState().updateContent(_placeHolder)
+        
       },
       cdn: "./lib",
       height: "100%",

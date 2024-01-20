@@ -1,4 +1,4 @@
-import { IPlatformAPI } from "shared/platformBindngs";
+import { IPlatformAPI } from "shared/platformApi";
 
 export class ElectronAPI implements IPlatformAPI {
   async selectDirectory(): Promise<DirectoryEntity | undefined> {

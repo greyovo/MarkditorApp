@@ -5,11 +5,16 @@ import '@radix-ui/themes/styles.css';
 import './global.css'
 import { Theme, ThemePanel } from '@radix-ui/themes'
 import "vditor/dist/index.css"
+import { DialogProvider } from './components/dialog/DialogContext';
+import { Dialog } from './components/dialog/Dialog';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <Theme>
-      <App />
+      <DialogProvider>
+        <App />
+        <Dialog />
+      </DialogProvider>
       {/* <ThemePanel /> */}
     </Theme>
   </React.StrictMode>

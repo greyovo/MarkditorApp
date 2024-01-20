@@ -1,5 +1,5 @@
 import { NotImplementError } from "@/utils/errors";
-import { IPlatformAPI } from "shared/platformBindngs";
+import { IPlatformAPI } from "shared/platformApi";
 
 export class TauriAPI implements IPlatformAPI {
   selectFile(): Promise<FileEntity | undefined> {

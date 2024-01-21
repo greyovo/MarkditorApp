@@ -5,6 +5,7 @@ import { EditorContextMenu } from "./EditorContextMenu";
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable";
 import useNavigationStore from "@/store/navigationStore";
 import useDocumentStore from "@/store/documentStore";
+import { BottomInfoBar } from "./bottomInfoBar/BottomInfoBar";
 
 const _placeHolder = "# Welcome to Markditor \nHello, welcome to `Markditor`.\n# 欢迎使用 Markditor\n你好，欢迎使用 `Markditor`"
 
@@ -64,10 +65,11 @@ export function Editor() {
             <ResizableHandle id="handle" />
           </>
         )}
-        <ResizablePanel id="mainEditor" order={2}>
+        <ResizablePanel className="flex flex-col" id="mainEditor" order={2}>
           <EditorContextMenu vditor={vditor}>
             {editorContainer}
           </EditorContextMenu>
+          <BottomInfoBar />
         </ResizablePanel>
       </ResizablePanelGroup>
     </div>

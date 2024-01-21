@@ -6,18 +6,18 @@ import { isMarkdownFile } from "@/utils/filesUtil"
 interface DirectoryState {
   currentDoc?: DocumentEntity,
   root?: DirectoryEntity,
-  openedDirPath: string[],
 }
 
 const useDirectoryStore = create<DirectoryState>(
-  (set, get) => ({
+  () => ({
     currentDoc: undefined,
     root: undefined,
-    openedDirPath: []
   })
 )
 
 const { setState, getState, subscribe } = useDirectoryStore
+
+// -----------------------------------------
 
 function findTargetDirRecursive
   (children: DirectoryEntity[], targetPath: string): DirectoryEntity | undefined {
@@ -63,7 +63,7 @@ export async function openDirectory(path: string) {
     }
     console.log(path, "children:", dirChildren);
 
-    setState((s) => ({ ...s, root: newRoot, openedDirPath: [...s.openedDirPath, path] }))
+    setState((s) => ({ ...s, root: newRoot }))
   } catch (e) {
     console.error('Error fetching directory', e);
   }

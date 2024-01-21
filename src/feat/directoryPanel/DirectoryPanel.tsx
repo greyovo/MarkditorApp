@@ -1,31 +1,10 @@
 
-import { BookmarkIcon, Cog6ToothIcon, FolderOpenIcon, MagnifyingGlassIcon } from "@heroicons/react/24/outline";
-import DirectoryItem, { extractChildrenNode } from "./DirectoryItem";
-import { Button, ContextMenu, Dialog, Flex, IconButton, TextField } from "@radix-ui/themes";
+import { FolderOpenIcon } from "@heroicons/react/24/outline";
+import { extractChildrenNode } from "./DirectoryItem";
+import { Button, } from "@radix-ui/themes";
 import { PlatformAPI } from "@/ipc";
-import useDocumentStore from "@/store/documentStore";
 import useDirectoryStore, { setRootDirectory } from "@/store/directoryStore";
-import { SearchBar } from "./SearchBar";
-import { ReactNode, useState } from "react";
-
-function DirectoryPanelHeader() {
-  return (
-    <div className="flex justify-between select-none py-3 px-3">
-      <SearchBar />
-    </div>
-    // <div className="flex justify-between border-b select-none py-4 px-3">
-    //   <div className="flex flex-col">
-    //     <h1 className="text-xl font-bold">Markditor</h1>
-    //     <p className="text-xs opacity-70">{"powered by "}
-    //       <a className="text-blue-800" target="_blank" href="https://github.com/Vanessa219/vditor">Vditor</a>
-    //     </p>
-    //   </div>
-    //   <IconButton className="self-center" size="2" variant="soft">
-    //     <Cog6ToothIcon width="22" height="22" />
-    //   </IconButton>
-    // </div>
-  )
-}
+import { DirectoryPanelHeader } from "./DirectoryPanelHeader";
 
 function DirectoryEmptyView() {
   async function selectRootDir() {
@@ -49,21 +28,13 @@ function DirectoryEmptyView() {
 }
 
 
-function DirectoryListView() {
-  // const root = useDirectoryStore((state) => state.root)
-  // if (root === undefined)
-  //   return <div></div>
+function DirectoryTreeView() {
   const children = useDirectoryStore((state) => state.root?.children ?? [])
   const childrenNode = extractChildrenNode(children, 0)
 
   return (
     <div className="flex flex-col">
       {childrenNode}
-      {/* {children.map((e) => {
-        return <DirectoryItem
-          open={curDocPath === e.path}
-          key={e.path} type={e.type} depth={0} label={e.name} path={e.path} />
-      })} */}
     </div>
   )
 }
@@ -76,7 +47,7 @@ export function DirectoryPanel() {
     <div className="flex flex-col h-full">
       {root !== undefined && <DirectoryPanelHeader />}
       <div className="h-full overflow-y-auto">
-        {root !== undefined ? <DirectoryListView /> : <DirectoryEmptyView />}
+        {root !== undefined ? <DirectoryTreeView /> : <DirectoryEmptyView />}
       </div>
     </div>
   )

@@ -16,13 +16,12 @@ export function SearchBar() {
     <div className="flex w-full">
       <TextField.Root className="w-full">
         <TextField.Slot>
-          <MagnifyingGlassIcon height="16" width="16" />
+          <MagnifyingGlassIcon height="14" />
         </TextField.Slot>
         <TextField.Input
           onInput={(e) => setQuery(e.currentTarget.value)}
           placeholder="搜索文件..." value={query} />
       </TextField.Root>
-
 
       <Button ml="2" disabled={!(query.trim().length > 0)} onClick={() => setQuery("")}>搜索</Button>
     </div>

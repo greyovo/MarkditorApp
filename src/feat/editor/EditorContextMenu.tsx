@@ -6,7 +6,7 @@ import { ContextMenu, Flex } from "@radix-ui/themes";
 import Vditor from "vditor";
 
 function EditorContextToolbar({ vditor }: { vditor: Vditor }) {
-  const selected = vditor.getSelection()
+  const selected = vditor?.getSelection() ?? ""
 
   let isBold = false
   let isItalic = false
@@ -51,7 +51,7 @@ function EditorContextToolbar({ vditor }: { vditor: Vditor }) {
 
 export function EditorContextMenu(
   { children, vditor }:
-  { children: React.ReactNode, vditor: Vditor }
+    { children: React.ReactNode, vditor: Vditor }
 ) {
   return (
     <ContextMenu.Root>
@@ -60,7 +60,7 @@ export function EditorContextMenu(
       </ContextMenu.Trigger>
       <ContextMenu.Content>
 
-        <EditorContextToolbar vditor={vditor}/>
+        <EditorContextToolbar vditor={vditor} />
         <ContextMenu.Item shortcut="⌘ D">Duplicate</ContextMenu.Item>
         <ContextMenu.Separator />
         <ContextMenu.Item shortcut="⌘ N">Archive</ContextMenu.Item>

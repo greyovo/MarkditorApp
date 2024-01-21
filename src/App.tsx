@@ -1,4 +1,3 @@
-import { Welcome } from "./feat/welcome/Welcome";
 import { AsideMenuBar } from "./feat/asideMenuBar/AsideMenuBar";
 import { Editor } from "./feat/editor/Editor";
 

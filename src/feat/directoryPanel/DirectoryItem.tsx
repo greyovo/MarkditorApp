@@ -2,7 +2,8 @@ import { ListItem } from "@/components/ListItem"
 import { PlatformAPI } from "@/ipc"
 import useDirectoryStore, { openDirectory, openFile } from "@/store/directoryStore"
 import useDocumentStore from "@/store/documentStore"
-import { DocumentIcon, FolderIcon, FolderOpenIcon } from "@heroicons/react/24/outline"
+import { FolderIcon, FolderOpenIcon } from "@heroicons/react/24/solid"
+import { DocumentTextIcon } from "@heroicons/react/24/outline"
 import { ChevronDown, ChevronRight, icons } from "lucide-react"
 import { useState } from "react"
 
@@ -37,7 +38,7 @@ function DirItem(props: DirectoryItemProps) {
 
   const folderIconStyle = "w-4 text-blue-800"
   const folderIcon = dirOpened
-    ? <FolderOpenIcon className={folderIconStyle} /> : <FolderIcon className={folderIconStyle} />
+    ? <FolderIcon title="" className={folderIconStyle} /> : <FolderIcon className={folderIconStyle} />
   const arrow = dirOpened
     ? <ChevronDown className={folderIconStyle} /> : <ChevronRight className={folderIconStyle} />
 
@@ -72,7 +73,7 @@ function FileItem(props: DirectoryItemProps) {
   const curDocPath = useDocumentStore((state) => state.path ?? "")
   const fileOpened = curDocPath === data.path
   const fileIconStyle = fileOpened ? "w-4 text-white" : "w-4 text-blue-800"
-  const fileIcon = <DocumentIcon className={fileIconStyle} />
+  const fileIcon = <DocumentTextIcon className={fileIconStyle} />
 
   const normalStyle = fileOpened ? "bg-primary text-white" : "hover:bg-blue-50 active:bg-blue-100"
 

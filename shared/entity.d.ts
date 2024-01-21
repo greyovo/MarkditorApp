@@ -18,7 +18,7 @@ interface DirectoryEntity {
   type: "file" | "dir"
   name: string
   path: string
-  children?: DirectoryEntity[]
+  children: DirectoryEntity[]
   size?: number,
   createDate?: number // unix timestamp
   lastModifiedDate?: number // unix timestamp

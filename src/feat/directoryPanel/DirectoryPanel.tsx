@@ -1,11 +1,12 @@
 
 import { BookmarkIcon, Cog6ToothIcon, FolderOpenIcon, MagnifyingGlassIcon } from "@heroicons/react/24/outline";
-import DirectoryItem from "./DirectoryItem";
+import DirectoryItem, { extractChildrenNode } from "./DirectoryItem";
 import { Button, ContextMenu, Dialog, Flex, IconButton, TextField } from "@radix-ui/themes";
 import { PlatformAPI } from "@/ipc";
 import useDocumentStore from "@/store/documentStore";
-import useDirectoryStore from "@/store/directoryStore";
+import useDirectoryStore, { setRootDirectory } from "@/store/directoryStore";
 import { SearchBar } from "./SearchBar";
+import { ReactNode, useState } from "react";
 
 function DirectoryPanelHeader() {
   return (
@@ -27,13 +28,11 @@ function DirectoryPanelHeader() {
 }
 
 function DirectoryEmptyView() {
-  const setRootDir = useDirectoryStore((state) => state.setRootDirectory)
-
   async function selectRootDir() {
     const result = (await PlatformAPI.selectDirectory())
     console.log(result);
     if (result !== undefined) {
-      setRootDir(result)
+      setRootDirectory(result)
     } else {
       console.log("打开文件失败！");
     }
@@ -49,21 +48,22 @@ function DirectoryEmptyView() {
   )
 }
 
+
 function DirectoryListView() {
-  const root = useDirectoryStore((state) => state.root)
-
+  // const root = useDirectoryStore((state) => state.root)
+  // if (root === undefined)
+  //   return <div></div>
   const children = useDirectoryStore((state) => state.root?.children ?? [])
-
-  // const children = root?.children ?? []
-  const curDocPath = useDocumentStore((state) => state.path ?? "")
+  const childrenNode = extractChildrenNode(children, 0)
 
   return (
     <div className="flex flex-col">
-      {children.map((e) => {
+      {childrenNode}
+      {/* {children.map((e) => {
         return <DirectoryItem
           open={curDocPath === e.path}
           key={e.path} type={e.type} depth={0} label={e.name} path={e.path} />
-      })}
+      })} */}
     </div>
   )
 }

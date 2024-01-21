@@ -14,11 +14,10 @@ export function Editor() {
   useEffect(() => {
     const optioins: IOptions = {
       cache: {
-        id: "editor",
-        enable: true
+        enable: false,
       },
       after: () => {
-        
+
       },
       cdn: "./lib",
       height: "100%",

@@ -206,8 +206,8 @@ function SettingsMenuItem() {
 export const sidebarTopItems = [
   <ToggleFolderViewMenuItem key={"ToggleFolderViewMenuItem"} />,
   <AsideMenuBarSeparator key={"AsideMenuBarSeparator"} />,
-  // <SaveMenuItem key={"SaveMenuItem"} />,
-  // <NewFileMenuItem key={"NewFileMenuItem"} />,
+  <SaveMenuItem key={"SaveMenuItem"} />,
+  <NewFileMenuItem key={"NewFileMenuItem"} />,
   // <SearchMenuItem key={"SearchMenuItem"} />,
   <ExportMenuItem key={"ExportMenuItem"} />
 ]

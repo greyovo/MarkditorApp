@@ -13,12 +13,12 @@ export const Dialog = () => {
   const { title, content, onConfirm, onCancel } = dialog;
 
   const handleConfirm = () => {
-    onConfirm();
+    onConfirm?.();
     closeDialog();
   };
 
   const handleCancel = () => {
-    onCancel();
+    onCancel?.();
     closeDialog();
   };
 
@@ -31,19 +31,13 @@ export const Dialog = () => {
         <RadixDialog.Description size="2" mb="4">
           {content}
         </RadixDialog.Description>
-
-        <Flex direction="column" gap="3">
-          <div>hello!</div>
-          <div>world!</div>
-        </Flex>
-
         <Flex gap="3" mt="4" justify="end">
           <RadixDialog.Close>
             <Button variant="soft" color="gray" onClick={handleCancel}>
-              Cancel
+              取消
             </Button>
           </RadixDialog.Close>
-          <Button onClick={handleConfirm}>Save</Button>
+          <Button onClick={handleConfirm}>好的</Button>
         </Flex>
       </RadixDialog.Content>
     </RadixDialog.Root>

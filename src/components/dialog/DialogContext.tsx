@@ -4,15 +4,15 @@ import { useState, createContext, ReactNode } from 'react';
 export type DialogContextType = {
   dialog: DialogData | null;
   open: boolean;
-  openDialog: (title: string, content: string, onConfirm: () => void, onCancel: () => void) => void;
+  openDialog: (title: string, content: string, onConfirm?: () => void, onCancel?: () => void) => void;
   closeDialog: () => void;
 };
 
 type DialogData = {
   title: string;
   content: string;
-  onConfirm: () => void;
-  onCancel: () => void;
+  onConfirm?: () => void;
+  onCancel?: () => void;
 };
 
 export const DialogContext = createContext<DialogContextType>({
@@ -30,7 +30,7 @@ export function DialogProvider({ children }: DialogProviderProps) {
   const [dialog, setDialog] = useState<DialogData | null>(null);
   const [open, setOpen] = useState<boolean>(false);
 
-  const openDialog = (title: string, content: string, onConfirm: () => void, onCancel: () => void) => {
+  const openDialog = (title: string, content: string, onConfirm?: () => void, onCancel?: () => void) => {
     setDialog({ title, content, onConfirm, onCancel });
     setOpen(true);
   };

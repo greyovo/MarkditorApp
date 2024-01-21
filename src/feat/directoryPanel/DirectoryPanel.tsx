@@ -3,24 +3,16 @@ import { FolderOpenIcon } from "@heroicons/react/24/outline";
 import { extractChildrenNode } from "./DirectoryItem";
 import { Button, } from "@radix-ui/themes";
 import { PlatformAPI } from "@/ipc";
-import useDirectoryStore, { setRootDirectory } from "@/store/directoryStore";
+import useDirectoryStore, { selectRootDir } from "@/store/directoryStore";
 import { DirectoryPanelHeader } from "./DirectoryPanelHeader";
 
 function DirectoryEmptyView() {
-  async function selectRootDir() {
-    const result = (await PlatformAPI.selectDirectory())
-    console.log(result);
-    if (result !== undefined) {
-      setRootDirectory(result)
-    } else {
-      console.log("打开文件失败！");
-    }
-  }
+
 
   return (
     <div className="flex flex-col items-center justify-center h-full">
       <p className="text-gray-400 m-3 select-none">😶 没有文件</p>
-      <Button onClick={selectRootDir}>
+      <Button onClick={() => selectRootDir()}>
         <FolderOpenIcon width="16" height="16" /> 打开...
       </Button>
     </div>

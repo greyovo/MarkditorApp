@@ -39,9 +39,15 @@ export function Editor() {
 
     // 监听新文件打开
     return useDocumentStore.subscribe((state, prevState) => {
-      if (state.path == prevState.path && state.content !== undefined) return
+      if (state.path == prevState.path && state.content !== undefined) {
+        return
+      }
 
       vditor.setValue(state.content ?? "")
+      setTimeout(() => {
+        vditor.clearStack()
+        vditor.clearCache()
+      }, 50);
     })
   }, []);
 

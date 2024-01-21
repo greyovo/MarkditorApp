@@ -1,9 +1,11 @@
+import { Toaster } from "sonner";
 import { AsideMenuBar } from "./feat/asideMenuBar/AsideMenuBar";
 import { Editor } from "./feat/editor/Editor";
 
 const App = () => {
   return (
     <div className="flex" style={{ height: "100vh" }}>
+      <Toaster position="bottom-left"/>
       <div>
         <AsideMenuBar />
       </div>

@@ -1,3 +1,4 @@
+import { refreshRootDir, selectRootDir } from "@/store/directoryStore";
 import { DropdownMenu, Button } from "@radix-ui/themes";
 
 export function HeaderDropdownMenus({ children }: { children: React.ReactNode }) {
@@ -7,7 +8,7 @@ export function HeaderDropdownMenus({ children }: { children: React.ReactNode })
         {children}
       </DropdownMenu.Trigger>
       <DropdownMenu.Content>
-        <DropdownMenu.Item shortcut="⌘ E">打开文件夹...</DropdownMenu.Item>
+        <DropdownMenu.Item onClick={selectRootDir}>打开文件夹...</DropdownMenu.Item>
         {/* <DropdownMenu.Separator /> */}
         <DropdownMenu.Sub>
           <DropdownMenu.SubTrigger>最近打开</DropdownMenu.SubTrigger>
@@ -21,8 +22,8 @@ export function HeaderDropdownMenus({ children }: { children: React.ReactNode })
         </DropdownMenu.Sub>
 
         <DropdownMenu.Separator />
-        <DropdownMenu.Item shortcut="⌘ N">刷新</DropdownMenu.Item>
-        <DropdownMenu.Item shortcut="⌘ N">搜索</DropdownMenu.Item>
+        <DropdownMenu.Item onClick={refreshRootDir}>刷新</DropdownMenu.Item>
+        <DropdownMenu.Item>搜索</DropdownMenu.Item>
         {/* <DropdownMenu.Item>Share</DropdownMenu.Item> */}
         {/* <DropdownMenu.Item>Add to favorites</DropdownMenu.Item> */}
         {/* <DropdownMenu.Separator /> */}

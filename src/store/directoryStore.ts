@@ -36,8 +36,22 @@ function findTargetDirRecursive
   return undefined
 }
 
-export function setRootDirectory(root: DirectoryEntity) {
-  setState((state) => ({ ...state, root, children: root.children }))
+export async function selectRootDir() {
+  const root = (await PlatformAPI.selectDirectory())
+  if (root !== undefined) {
+    setState((state) => ({ ...state, root, children: root.children }))
+    console.log(root);
+  } else {
+    console.log("打开文件失败！");
+  }
+}
+
+export async function refreshRootDir() {
+  if (getState().root === undefined)
+    return
+  // refresh children dir
+  const children = (await PlatformAPI.listDirectories(getState().root!.path))
+  setState((state) => ({ ...state, children: children }))
 }
 
 export async function openDirectory(path: string) {

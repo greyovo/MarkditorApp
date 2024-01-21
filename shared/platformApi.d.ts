@@ -3,7 +3,7 @@ import path from "path";
 export interface IPlatformAPI {
   selectDirectory(): Promise<DirectoryEntity | undefined>;
 
-  listDirectories(path: string): Promise<(DirectoryEntity | FileEntity)[]>;
+  listDirectories(path: string): Promise<DirectoryEntity[]>;
 
   selectFile(): Promise<FileEntity | undefined>;
 

@@ -8,6 +8,7 @@ import { ChevronDown, ChevronRight, icons } from "lucide-react"
 import { useContext, useState } from "react"
 import { DialogContext } from "@/components/dialog/DialogContext"
 import { isMarkdownFile } from "@/utils/filesUtil"
+import { toast } from "sonner"
 
 interface DirectoryItemProps {
   entity: DirectoryEntity,
@@ -83,7 +84,7 @@ function FileItem(props: DirectoryItemProps) {
 
   async function handleClick() {
     if (!isMarkdownFile(data.path)) {
-      openDialog("无法打开", "暂不支持打开非 Markdown 格式的文件，请选择其他文件")
+      toast("暂不支持打开非 Markdown 文件",{})
     }
     openFile(data.path)
   }

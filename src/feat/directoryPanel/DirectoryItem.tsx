@@ -1,3 +1,4 @@
+import { ListItem } from "@/components/ListItem"
 import { PlatformAPI } from "@/ipc"
 import useDirectoryStore, { openDirectory, openFile } from "@/store/directoryStore"
 import useDocumentStore from "@/store/documentStore"
@@ -10,7 +11,6 @@ interface DirectoryItemProps {
   open?: boolean,
   depth: number
 }
-
 
 export function extractChildrenNode
   (dirs: DirectoryEntity[], depth: number) {
@@ -26,51 +26,83 @@ export function extractChildrenNode
   return children
 }
 
-export default function DirectoryItem(props: DirectoryItemProps) {
+
+function DirItem(props: DirectoryItemProps) {
   const data = props.entity
 
-  const curDocPath = useDocumentStore((state) => state.path ?? "")
   const [dirOpened, setDirOpened] = useState(false)
-  const fileOpened = curDocPath === data.path
-
-  async function handleClick() {
-    if (data.type === "dir") {
-      if (dirOpened) {
-        setDirOpened(false)
-        return
-      }
-      openDirectory(data.path)
-      setDirOpened(true)
-    } else {
-      openFile(data.path)
-    }
-  }
-
   const childrenNode = dirOpened ? extractChildrenNode(data.children, props.depth + 1) : []
 
-  const opened = dirOpened || fileOpened
-  const iconStyle = opened ? "w-4 text-white" : "w-4 text-blue-800"
-  const fileStyle = opened ? "bg-primary text-white" : "hover:bg-blue-50 active:bg-blue-100"
-  const fileIcon = <DocumentIcon className={iconStyle} />
+  const normalStyle = "hover:bg-blue-50 active:bg-blue-100 focus:bg-blue-100"
 
-  const folderIcon = opened
-    ? <FolderOpenIcon className={iconStyle} /> : <FolderIcon className={iconStyle} />
-  const arrow = opened
-    ? <ChevronDown className={iconStyle} /> : <ChevronRight className={iconStyle} />
+  const folderIconStyle = "w-4 text-blue-800"
+  const folderIcon = dirOpened
+    ? <FolderOpenIcon className={folderIconStyle} /> : <FolderIcon className={folderIconStyle} />
+  const arrow = dirOpened
+    ? <ChevronDown className={folderIconStyle} /> : <ChevronRight className={folderIconStyle} />
+
+  async function handleClick() {
+    if (dirOpened) {
+      setDirOpened(false)
+      return
+    }
+    openDirectory(data.path)
+    setDirOpened(true)
+  }
 
   return (
     <>
-      <a onClick={handleClick}
-        className={`flex rounded-lg px-3 py-2 mx-1 hover:underline ${fileStyle}`}>
-        <div style={{ width: 20 * props.depth }}></div>
-        {data.type === "file" ? fileIcon : folderIcon}
-        <div className="ml-2 select-none">
-          {data.name}
-        </div>
-        <div className="flex-1"></div>
-        {data.type === "dir" && arrow}
-      </a>
+      <ListItem
+        className={normalStyle}
+        key={data.path}
+        text={data.name}
+        leadingSpace={20 * props.depth}
+        leading={folderIcon}
+        onClick={handleClick}
+        trailing={arrow}
+      />
       {childrenNode}
     </>
   )
 }
+
+function FileItem(props: DirectoryItemProps) {
+  const data = props.entity
+
+  const curDocPath = useDocumentStore((state) => state.path ?? "")
+  const fileOpened = curDocPath === data.path
+  const fileIconStyle = fileOpened ? "w-4 text-white" : "w-4 text-blue-800"
+  const fileIcon = <DocumentIcon className={fileIconStyle} />
+
+  const normalStyle = fileOpened ? "bg-primary text-white" : "hover:bg-blue-50 active:bg-blue-100"
+
+  async function handleClick() {
+    openFile(data.path)
+  }
+
+  return (
+    <ListItem
+      className={normalStyle}
+      key={data.path}
+      text={data.name}
+      leadingSpace={20 * props.depth}
+      leading={fileIcon}
+      onClick={handleClick}
+      trailing={<span />}
+    />
+  )
+}
+
+export default function DirectoryItem(props: DirectoryItemProps) {
+
+
+
+  /// 是文件夹（目录）
+  if (props.entity.type === "dir") {
+    return <DirItem entity={props.entity} depth={props.depth} open={props.open} />
+  } else {
+    return <FileItem entity={props.entity} depth={props.depth} open={props.open} />
+
+  }
+}
+

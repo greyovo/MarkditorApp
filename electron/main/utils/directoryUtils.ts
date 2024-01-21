@@ -9,24 +9,19 @@ export async function getChildrenDirectories(path: string): Promise<DirectoryEnt
       const dir: DirectoryEntity[] = []
 
       childrenName.map((child: string) => {
-        const item: fs.Stats = fs.statSync(`${path}/${child}`)
-        if (item.isDirectory()) {
-          dir.push({
-            type: 'dir',
-            name: child,
-            path: join(path, child),
-            createDate: item.birthtimeMs,
-            lastModifiedDate: item.mtimeMs
-          })
+        const stat: fs.Stats = fs.statSync(`${path}/${child}`)
+        const item: DirectoryEntity = {
+          type: stat.isDirectory() ? 'dir' : 'file',
+          name: child,
+          path: join(path, child),
+          children: [],
+          createDate: stat.birthtimeMs,
+          lastModifiedDate: stat.mtimeMs
+        }
+        if (stat.isDirectory()) {
+          dir.push(item)
         } else {
-          files.push({
-            type: "file",
-            name: child,
-            path: join(path, child),
-            createDate: item.birthtimeMs,
-            lastModifiedDate: item.mtimeMs,
-            size: item.size
-          })
+          files.push(item)
         }
       })
       const result = [...dir, ...files]

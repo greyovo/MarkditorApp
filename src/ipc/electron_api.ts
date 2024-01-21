@@ -5,7 +5,7 @@ export class ElectronAPI implements IPlatformAPI {
     return await window.__ElectronAPI__.selectDirectory();
   }
 
-  async selectFile(): Promise<FileEntity | undefined> {
+  async selectFile(): Promise<DirectoryEntity | undefined> {
     // const filePath = await ipcRenderer.invoke(FileMethodChannels.ShowOpenFileDialog)
     return await window.__ElectronAPI__.selectFile();
   }
@@ -14,7 +14,7 @@ export class ElectronAPI implements IPlatformAPI {
     return await window.__ElectronAPI__.readFile(path);
   }
 
-  async listDirectories(path: string): Promise<(DirectoryEntity | FileEntity)[]> {
+  async listDirectories(path: string): Promise<DirectoryEntity[]> {
     return await window.__ElectronAPI__.listDirectories(path);
   }
 

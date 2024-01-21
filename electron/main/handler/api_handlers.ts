@@ -15,6 +15,7 @@ export const apiHandlers: IPlatformAPI = {
         name: getFileNameFromPath(filePaths[0]),
         path: filePaths[0],
         size: item.size,
+        children: [],
         createDate: item.birthtimeMs,
         lastModifiedDate: item.mtimeMs,
       };

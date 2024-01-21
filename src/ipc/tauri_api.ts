@@ -2,7 +2,7 @@ import { NotImplementError } from "@/utils/errors";
 import { IPlatformAPI } from "shared/platformApi";
 
 export class TauriAPI implements IPlatformAPI {
-  selectFile(): Promise<FileEntity | undefined> {
+  selectFile(): Promise<DirectoryEntity | undefined> {
     throw new Error("Method not implemented.");
   }
   selectDirectory(): Promise<DirectoryEntity | undefined> {
@@ -23,7 +23,7 @@ export class TauriAPI implements IPlatformAPI {
   openDevTools(): Promise<void> {
     throw new Error("Method not implemented.");
   }
-  listDirectories(path: string): Promise<(FileEntity | DirectoryEntity)[]> {
+  listDirectories(path: string): Promise<DirectoryEntity[]> {
     throw new Error("Method not implemented.");
   }
 

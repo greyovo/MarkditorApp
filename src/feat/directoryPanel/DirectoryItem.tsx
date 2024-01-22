@@ -4,7 +4,7 @@ import useDirectoryStore, { openDirectory, openFile } from "@/store/directorySto
 import useDocumentStore from "@/store/documentStore"
 import { FolderIcon, FolderOpenIcon } from "@heroicons/react/24/solid"
 import { DocumentTextIcon } from "@heroicons/react/24/outline"
-import { ChevronDown, ChevronRight, icons } from "lucide-react"
+import { ChevronDown, ChevronRight } from "lucide-react"
 import { useContext, useState } from "react"
 import { DialogContext } from "@/components/dialog/DialogContext"
 import { isMarkdownFile } from "@/utils/filesUtil"
@@ -80,11 +80,9 @@ function FileItem(props: DirectoryItemProps) {
 
   const normalStyle = fileOpened ? "bg-primary text-white" : "hover:bg-blue-50 active:bg-blue-100"
 
-  const { openDialog } = useContext(DialogContext);
-
   async function handleClick() {
     if (!isMarkdownFile(data.path)) {
-      toast("暂不支持打开非 Markdown 文件",{})
+      toast.info("暂不支持打开非 Markdown 文件")
     }
     openFile(data.path)
   }
@@ -103,15 +101,10 @@ function FileItem(props: DirectoryItemProps) {
 }
 
 export default function DirectoryItem(props: DirectoryItemProps) {
-
-
-
-  /// 是文件夹（目录）
   if (props.entity.type === "dir") {
     return <DirItem entity={props.entity} depth={props.depth} open={props.open} />
   } else {
     return <FileItem entity={props.entity} depth={props.depth} open={props.open} />
-
   }
 }
 

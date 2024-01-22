@@ -6,6 +6,7 @@ import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/componen
 import useNavigationStore from "@/store/navigationStore";
 import useDocumentStore from "@/store/documentStore";
 import { BottomInfoBar } from "./bottomInfoBar/BottomInfoBar";
+import { Constants } from "@/utils/constants";
 
 const _placeHolder = "# Welcome to Markditor \nHello, welcome to `Markditor`.\n# 欢迎使用 Markditor\n你好，欢迎使用 `Markditor`"
 
@@ -33,6 +34,11 @@ export function Editor() {
         console.log("input length:", v.length);
         useDocumentStore.getState().updateContent(v)
       },
+      preview: {
+        hljs: {
+          langs: Constants.CODE_LANGUAGES
+        }
+      }
     }
 
     vditor = new Vditor("vditor", optioins);

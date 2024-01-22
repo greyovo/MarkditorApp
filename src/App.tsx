@@ -5,7 +5,7 @@ import { Editor } from "./feat/editor/Editor";
 const App = () => {
   return (
     <div className="flex" style={{ height: "100vh" }}>
-      <Toaster position="bottom-left"/>
+      <Toaster position="bottom-right" richColors closeButton/>
       <div>
         <AsideMenuBar />
       </div>

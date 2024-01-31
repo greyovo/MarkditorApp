@@ -1,4 +1,4 @@
-import { refreshRootDir, selectRootDir } from "@/store/directoryStore";
+import { refreshRootDir, selectRootDir } from "@/store/directory";
 import { DropdownMenu, Button } from "@radix-ui/themes";
 
 export function HeaderDropdownMenus({ children }: { children: React.ReactNode }) {

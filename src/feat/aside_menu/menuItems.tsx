@@ -1,7 +1,7 @@
 import { DialogContext } from "@/components/dialog/DialogContext";
 import { PlatformAPI } from "@/ipc";
-import useDocumentStore from "@/store/documentStore";
-import useNavigationStore from "@/store/navigationStore"
+import useDocumentStore, { createNewFile, saveFile } from "@/store/document";
+import useNavigationStore, { toggleSidebarExpanded } from "@/store/navigation"
 import { ArrowUpOnSquareIcon, CodeBracketIcon, Cog6ToothIcon, DocumentPlusIcon, ListBulletIcon, MagnifyingGlassIcon, PlusCircleIcon } from "@heroicons/react/24/outline"
 import { AlertDialog, Button, Dialog, Flex, Separator, Tooltip } from "@radix-ui/themes";
 import { SaveIcon, SidebarClose, SidebarIcon, SidebarOpen } from "lucide-react";
@@ -55,9 +55,7 @@ function ToggleFolderViewMenuItem() {
     label: '侧边栏',
     onClick: () => {
       console.log("toggle!");
-      useNavigationStore.setState({
-        sidebarExpanded: !useNavigationStore.getState().sidebarExpanded,
-      })
+      toggleSidebarExpanded()
     },
     isDisabled: false,
   }
@@ -68,7 +66,6 @@ function ToggleFolderViewMenuItem() {
 
 function SaveMenuItem() {
   const saved = useDocumentStore((state) => state.saved);
-  const saveFile = useDocumentStore((state) => state.saveFile);
   const icon = <SaveIcon strokeWidth={1.5} width={18} height={18} />
   const props: AsideMenuBarItemProps = {
     icon: icon,
@@ -87,14 +84,6 @@ function SaveMenuItem() {
 function NewFileMenuItem() {
   const saved = useDocumentStore((state) => (state.saved));
   console.log("已经保存", saved);
-
-  async function saveFile() {
-    useDocumentStore.getState().saveFile()
-  }
-
-  function createNewFile() {
-    useDocumentStore.getState().createNewFile()
-  }
 
   const props: AsideMenuBarItemProps = {
     icon: <PlusCircleIcon width={20} height={20} />,

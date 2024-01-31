@@ -3,7 +3,7 @@ import { FolderOpenIcon } from "@heroicons/react/24/outline";
 import { extractChildrenNode } from "./DirectoryItem";
 import { Button, } from "@radix-ui/themes";
 import { PlatformAPI } from "@/ipc";
-import useDirectoryStore, { selectRootDir } from "@/store/directoryStore";
+import useDirectoryStore, { selectRootDir } from "@/store/directory";
 import { DirectoryPanelHeader } from "./DirectoryPanelHeader";
 
 function DirectoryEmptyView() {

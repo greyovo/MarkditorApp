@@ -1,4 +1,4 @@
-import useDirectoryStore from "@/store/directoryStore";
+import useDirectoryStore from "@/store/directory";
 import { Tooltip, IconButton } from "@radix-ui/themes";
 import { PlusIcon, MoreVertical } from "lucide-react";
 import { HeaderDropdownMenus } from "./MoreDropdownMenus";

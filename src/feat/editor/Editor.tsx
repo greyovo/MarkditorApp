@@ -1,11 +1,11 @@
 import { ReactComponentElement, useEffect, useRef, useState } from "react";
 import Vditor from "vditor";
-import { DirectoryPanel } from "@/feat/directoryPanel/DirectoryPanel";
+import { DirectoryPanel } from "@/feat/directory_panel/DirectoryPanel";
 import { EditorContextMenu } from "./EditorContextMenu";
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable";
-import useNavigationStore from "@/store/navigationStore";
-import useDocumentStore from "@/store/documentStore";
-import { BottomInfoBar } from "./bottomInfoBar/BottomInfoBar";
+import useNavigationStore from "@/store/navigation";
+import useDocumentStore, { updateContent } from "@/store/document";
+import { BottomInfoBar } from "./BottomInfoBar";
 import { Constants } from "@/utils/constants";
 
 const _placeHolder = "# Welcome to Markditor \nHello, welcome to `Markditor`.\n# 欢迎使用 Markditor\n你好，欢迎使用 `Markditor`"
@@ -32,7 +32,7 @@ export function Editor() {
       },
       input: (v) => {
         console.log("input length:", v.length);
-        useDocumentStore.getState().updateContent(v)
+        updateContent(v)
       },
       preview: {
         hljs: {
@@ -60,30 +60,12 @@ export function Editor() {
 
   const editorContainer = <div id="vditor" className="vditor overflow-y-auto flex-grow" />
 
-  const showSidePanel = useNavigationStore((state) => state.sidebarExpanded);
-  const [panelSize, setPanelSize] = useState(20)
-  const onResize = (size: number) => setPanelSize(size)
-
   return (
-    <div className="flex h-full">
-      <ResizablePanelGroup direction="horizontal">
-        {showSidePanel && (
-          <>
-            <ResizablePanel id="DirectorySidePanel" order={1}
-              defaultSize={panelSize} minSize={15} maxSize={40}
-              onResize={onResize}>
-              <DirectoryPanel />
-            </ResizablePanel>
-            <ResizableHandle id="handle" />
-          </>
-        )}
-        <ResizablePanel className="flex flex-col" id="mainEditor" order={2}>
-          <EditorContextMenu vditor={vditor}>
-            {editorContainer}
-          </EditorContextMenu>
-          <BottomInfoBar />
-        </ResizablePanel>
-      </ResizablePanelGroup>
+    <div className="flex flex-col h-full">
+      <EditorContextMenu vditor={vditor}>
+        {editorContainer}
+      </EditorContextMenu>
+      <BottomInfoBar />
     </div>
   )
 }

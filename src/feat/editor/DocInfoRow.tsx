@@ -1,11 +1,11 @@
-import useDocumentStore from "@/store/documentStore"
+import useDocumentStore from "@/store/document"
 import { FolderOpenIcon } from "@heroicons/react/24/outline"
 import { Button, Flex, IconButton, Popover } from "@radix-ui/themes"
 import { CheckCircle2, FolderOpen, LoaderIcon } from "lucide-react"
 
 function DocInfoPopover({ children }: { children: React.ReactNode }) {
-  const fileName = useDocumentStore((state) => state.fileName)
-  const path = useDocumentStore((state) => state.path)
+  const fileName = useDocumentStore((state) => state.fileName ?? "<无标题>")
+  const path = useDocumentStore((state) => state.path ?? "<未保存>")
   const content = useDocumentStore((state) => state.content ?? "")
 
   let lineCount = 0
@@ -24,12 +24,12 @@ function DocInfoPopover({ children }: { children: React.ReactNode }) {
           <div className="line-clamp-1 font-bold">{fileName}</div>
           <Flex justify="between" align="center" gap="5">
             <div className="line-clamp-1">{path}</div>
-            <IconButton size="1" variant="soft"> <FolderOpen size={14}/></IconButton>
+            <IconButton size="1" variant="soft"> <FolderOpen size={14} /></IconButton>
           </Flex>
 
           <Flex justify="between">
             <div>统计</div>
-            <div>{lineCount} 行 / {content.length} 字符</div>
+            <div>{lineCount} 行 / {content.trim().length} 字符</div>
           </Flex>
         </Flex>
       </Popover.Content>
@@ -50,7 +50,7 @@ export function DocInfoRow() {
             {saved ? <CheckCircle2 strokeWidth={1.5} size={16} /> : <LoaderIcon strokeWidth={1.5} size={16} />}
             <div>{saved ? "已保存" : "未保存"}</div>
           </Flex>
-          <div className="mr-1">{content.length} 字符</div>
+          <div className="mr-1">{content.trim().length} 字符</div>
         </Flex>
       </Button>
     </DocInfoPopover>

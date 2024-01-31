@@ -1,6 +1,6 @@
 import { PlatformAPI } from "@/ipc"
 import { create } from "zustand"
-import useDocumentStore from "./documentStore"
+import useDocumentStore, { setFile } from "./document"
 import { isMarkdownFile } from "@/utils/filesUtil"
 
 interface DirectoryState {
@@ -92,7 +92,7 @@ export async function openFile(path: string) {
     console.error("Error when reading file via IPC:", path);
     return
   }
-  useDocumentStore.getState().setFile(path, content)
+  setFile(path, content)
 }
 
 

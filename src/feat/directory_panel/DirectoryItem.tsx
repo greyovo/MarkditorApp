@@ -7,7 +7,7 @@ import { DocumentTextIcon } from "@heroicons/react/24/outline"
 import { ChevronDown, ChevronRight } from "lucide-react"
 import { useContext, useState } from "react"
 import { DialogContext } from "@/components/dialog/DialogContext"
-import { isMarkdownFile } from "@/utils/filesUtil"
+import { isMarkdownFile } from "@/utils/path"
 import { toast } from "sonner"
 
 interface DirectoryItemProps {

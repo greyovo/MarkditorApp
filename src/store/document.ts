@@ -1,7 +1,8 @@
 import { PlatformAPI } from '@/ipc'
-import { getFileNameFromPath } from '@/utils/filesUtil'
-import { setWindowTitle } from '@/utils/windowUtils'
+import { getFileNameFromPath, getParentDirectory } from '@/utils/path'
+import { setWindowTitle } from '@/utils/window'
 import { create } from 'zustand'
+import { setRootDir } from './directory'
 
 
 interface DocumentState {
@@ -9,16 +10,7 @@ interface DocumentState {
   path?: string,
   saved: boolean,
   fileName?: string,
-
-  // updateContent: (text: string) => void,
-  // setFile: (path: string, content: string) => void,
-  // createNewFile: () => void,
-  // // closeFile: () => void,
-  // saveFile: () => void,
-  // // markAsDirty: () => void,
-  // closeFile: () => void,
 }
-
 
 const useDocumentStore = create<DocumentState>(
   () => ({
@@ -78,6 +70,7 @@ export async function saveFile() {
     fileName,
   }))
   setWindowTitle(fileName)
+  setRootDir(getParentDirectory(path))
 }
 
 // markAsDirty: () => set((state) => ({ ...state, saved: false })),

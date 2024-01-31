@@ -1,7 +1,7 @@
 import { PlatformAPI } from "@/ipc"
 import { create } from "zustand"
 import useDocumentStore, { setFile } from "./document"
-import { isMarkdownFile } from "@/utils/filesUtil"
+import { getParentDirectory, isMarkdownFile } from "@/utils/path"
 
 interface DirectoryState {
   currentDoc?: DocumentEntity,
@@ -36,6 +36,12 @@ function findTargetDirRecursive
   return undefined
 }
 
+export async function setRootDir(root: DirectoryEntity) {
+  const children = (await PlatformAPI.listDirectories(root.path))
+  root.children = children
+  setState((state) => ({ ...state, root }))
+}
+
 export async function selectRootDir() {
   const root = (await PlatformAPI.selectDirectory())
   if (root !== undefined) {
@@ -51,7 +57,10 @@ export async function refreshRootDir() {
     return
   // refresh children dir
   const children = (await PlatformAPI.listDirectories(getState().root!.path))
-  setState((state) => ({ ...state, children: children }))
+  const newRoot = {
+    ...getState().root!, children,
+  }
+  setState((state) => ({ ...state, root: newRoot }))
 }
 
 export async function openDirectory(path: string) {

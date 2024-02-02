@@ -1,7 +1,7 @@
 import { Button, Flex, IconButton, Tooltip } from "@radix-ui/themes";
 import { Code2Icon, CodeIcon, ListIcon, Redo2Icon, Undo2Icon } from "lucide-react";
 import { DocInfoRow } from "./DocInfoRow";
-import { redo, toggleOutline, undo } from "./actions";
+import { redo, toggleOutline, undo } from "@/store/editor";
 
 type BottomInfoBarButtonProps = {
   tooltip: string;

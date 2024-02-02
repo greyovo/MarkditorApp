@@ -1,13 +1,14 @@
-import { toggleRangeBold, toggleRangeItalic, toggleRangeStrikeline, toggleRangeUnderline, toggleToolbar } from "./actions"
+import useEditorStore, { toggleRangeBold, toggleRangeItalic, toggleRangeStrikeline, toggleRangeUnderline, toggleToolbar } from "@/store/editor"
 import * as Toggle from '@radix-ui/react-toggle';
 import { Bold, Code, Italic, ItalicIcon, Link, StrikethroughIcon, Underline } from "lucide-react";
 import { FolderIcon } from "@heroicons/react/24/outline";
 import { ContextMenu, Flex } from "@radix-ui/themes";
 import Vditor from "vditor";
-import { getVditor } from "./Editor";
+import { useEffect, useState } from "react";
+import { getEditorSelection, getVditor } from "@/store/editor";
 
-function EditorContextToolbar({ vditor = getVditor() }: { vditor?: Vditor }) {
-  const selected = vditor?.getSelection() ?? ""
+function EditorContextToolbar() {
+  const selected = getEditorSelection() ?? ""
 
   let isBold = false
   let isItalic = false
@@ -34,13 +35,13 @@ function EditorContextToolbar({ vditor = getVditor() }: { vditor?: Vditor }) {
 
   return (
     <Flex gap={"1"}>
-      <ContextMenu.Item onClick={() => toggleRangeBold(isBold)} className={isBold ? selectedClass : ""}>
+      <ContextMenu.Item onClick={() => toggleRangeBold(!isBold)} className={isBold ? selectedClass : ""}>
         <Bold className="h-4 w-4 " />
       </ContextMenu.Item>
-      <ContextMenu.Item onClick={() => toggleRangeItalic(isItalic)} className={isItalic ? selectedClass : ""}>
+      <ContextMenu.Item onClick={() => toggleRangeItalic(!isItalic)} className={isItalic ? selectedClass : ""}>
         <Italic className="h-4 w-4" />
       </ContextMenu.Item>
-      <ContextMenu.Item onClick={() => toggleRangeStrikeline(isStrikethrough)} className={isStrikethrough ? selectedClass : ""}>
+      <ContextMenu.Item onClick={() => toggleRangeStrikeline(!isStrikethrough)} className={isStrikethrough ? selectedClass : ""}>
         <StrikethroughIcon className="h-4 w-4" />
       </ContextMenu.Item>
       <ContextMenu.Item className={isCode ? selectedClass : ""}>
@@ -51,17 +52,22 @@ function EditorContextToolbar({ vditor = getVditor() }: { vditor?: Vditor }) {
 }
 
 export function EditorContextMenu(
-  { children, vditor = getVditor() }:
+  { children }:
     { children: React.ReactNode, vditor?: Vditor }
 ) {
+
+  // const [toolbarVisible, setToolbarVisible] = useState(getVditor()?.getToolbarVisible() ?? false)
+
+  const toolbarVisible = useEditorStore(s => s.toolbarVisible)
+
   return (
-    <ContextMenu.Root>
+    <ContextMenu.Root >
       <ContextMenu.Trigger>
         {children}
       </ContextMenu.Trigger>
       <ContextMenu.Content>
 
-        <EditorContextToolbar vditor={vditor} />
+        <EditorContextToolbar />
         <ContextMenu.Separator />
         <ContextMenu.Item shortcut="⌘ D">Duplicate</ContextMenu.Item>
         <ContextMenu.Item shortcut="⌘ N">Archive</ContextMenu.Item>
@@ -77,7 +83,7 @@ export function EditorContextMenu(
         </ContextMenu.Sub>
 
         <ContextMenu.Separator />
-        <ContextMenu.Item onClick={toggleToolbar}>显示工具栏</ContextMenu.Item>
+        <ContextMenu.Item onClick={toggleToolbar}>{toolbarVisible ? "隐藏工具栏" : "显示工具栏"}</ContextMenu.Item>
         <ContextMenu.Item>Add to favorites</ContextMenu.Item>
       </ContextMenu.Content>
     </ContextMenu.Root>

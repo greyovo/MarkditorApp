@@ -7,24 +7,19 @@ import useNavigationStore from "@/store/navigation";
 import useDocumentStore, { updateContent } from "@/store/document";
 import { BottomInfoBar } from "./BottomInfoBar";
 import { Constants } from "@/utils/constants";
+import useEditorStore, { setVditor } from "@/store/editor";
 
 const _placeHolder = "# Welcome to Markditor \nHello, welcome to `Markditor`.\n# 欢迎使用 Markditor\n你好，欢迎使用 `Markditor`"
 
-let vditor: Vditor;
-
-export function getVditor(): Vditor | undefined {
-  return vditor
-}
-
 export function Editor() {
   useEffect(() => {
+    let vditor: Vditor
     // vidtor options
     const optioins: IOptions = {
-      cache: {
-        enable: false,
-      },
       undoDelay: 100,
-      after: () => { },
+      after: () => {
+        setVditor(vditor)
+      },
       cdn: "./lib",
       height: "100%",
       borderless: true,
@@ -52,21 +47,24 @@ export function Editor() {
     vditor = new Vditor("vditor", optioins);
 
     // 监听新文件打开
-    return useDocumentStore.subscribe((state, prevState) => {
+    const unsubscribe = useDocumentStore.subscribe((state, prevState) => {
       if (state.path == prevState.path && state.content !== undefined) {
         return
       }
-
       vditor.setValue(state.content ?? "")
       setTimeout(() => {
         vditor.clearStack()
         vditor.clearCache()
       }, 50);
     })
+
+    return () => {
+      setVditor(undefined)
+      unsubscribe()
+    };
   }, []);
 
-
-  const editorContainer = <div id="vditor" className="vditor overflow-y-auto flex-grow" />
+  const editorContainer = <div id="vditor" className="overflow-y-auto flex-grow" />
 
   return (
     <div className="flex flex-col h-full">

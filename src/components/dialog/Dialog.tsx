@@ -1,7 +1,11 @@
 // Dialog.tsx
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { DialogContext } from './DialogContext';
 import { Button, Dialog as RadixDialog, Flex } from '@radix-ui/themes';
+
+export function useDialog() {
+  return useContext(DialogContext);
+}
 
 export const Dialog = () => {
   const { dialog, closeDialog, open } = useContext(DialogContext);
@@ -41,13 +45,5 @@ export const Dialog = () => {
         </Flex>
       </RadixDialog.Content>
     </RadixDialog.Root>
-    // <div className=" bg-blend-overlay">
-    //   <div className="dialog">
-    //     <h2>{title}</h2>
-    //     <p>{content}</p>
-    //     <button onClick={handleConfirm}>Confirm</button>
-    //     <button onClick={handleCancel}>Cancel</button>
-    //   </div>
-    // </div>
   );
 };

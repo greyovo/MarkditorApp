@@ -3,16 +3,16 @@ import { ReactNode } from "react"
 export interface ListItemProps {
   leading: ReactNode,
   leadingSpace?: number, // 用于调整 leading 元素与左侧的间距
-  text: string,
+  children: ReactNode,
   trailing: ReactNode,
   onClick: () => void,
   className?: string
 }
 
-export function ListItem({ leading, leadingSpace, text, trailing, onClick, className }: ListItemProps) {
+export function ListItem({ leading, leadingSpace, children, trailing, onClick, className }: ListItemProps) {
   return (
     <button onClick={onClick}
-      className={`flex px-3 py-2 hover:underline ${(className ?? "")}`}>
+      className={`flex px-3 py-2 hover:underline ${(className ?? "")} w-full`}>
       <span className="flex-shrink-0 self-center h-full" style={{ paddingLeft: leadingSpace ?? 0 }}>
         {leading}
       </span>
@@ -21,7 +21,7 @@ export function ListItem({ leading, leadingSpace, text, trailing, onClick, class
       {fileIcon} */}
 
       <div className="ml-2 select-none text-ellipsis text-left text-nowrap line-clamp-1">
-        {text}
+        {children}
       </div>
 
       <div className="flex-1"></div>

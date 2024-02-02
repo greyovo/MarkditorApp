@@ -25,7 +25,7 @@ const { setState, getState, subscribe } = useDocumentStore
 
 // -----------------------------------------
 
-export function createNewFile() {
+export function createNewDoc() {
   const fileName = "Untitled.md"
   setState(state => ({
     ...state,

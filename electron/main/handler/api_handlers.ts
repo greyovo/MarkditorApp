@@ -24,10 +24,10 @@ export const apiHandlers: IPlatformAPI = {
 
   selectDirectory: async function (): Promise<DirectoryEntity | undefined> {
     const { canceled, filePaths } = await dialog.showOpenDialog({ properties: ["openDirectory"] });
-    const path = filePaths[0]
+    const path = filePaths[0];
     if (!canceled) {
       const item = fs.statSync(path);
-      const children = await getChildrenDirectories(path)
+      const children = await getChildrenDirectories(path);
 
       return {
         type: "dir",
@@ -71,6 +71,11 @@ export const apiHandlers: IPlatformAPI = {
     return getChildrenDirectories(path);
   },
 
+
+  ///////////////////////////////////
+  // File Operation
+  ///////////////////////////////////
+
   async readFile(path: string): Promise<string | undefined> {
     return new Promise<string>((resolve, reject) => {
       try {
@@ -82,5 +87,67 @@ export const apiHandlers: IPlatformAPI = {
     });
   },
 
+  createFile: function (path: string): Promise<boolean> {
+    return new Promise((resolve, reject) => {
+      try {
+        fs.writeFileSync(path, "");
+        resolve(true);
+      } catch (error) {
+        reject(false);
+      }
+    });
+  },
 
+  renameFile: function (oldPath: string, newPath: string): Promise<boolean> {
+    return this.renameDir(oldPath, newPath)
+  },
+
+  deleteFile: function (path: string): Promise<boolean> {
+    return new Promise((resolve, reject) => {
+      try {
+        fs.rmSync(path);
+        resolve(true);
+      } catch (error) {
+        reject(false);
+      }
+    });
+  },
+
+  ///////////////////////////////////
+  // Directory Operation
+  ///////////////////////////////////
+
+  createDir: async function (path: string): Promise<boolean> {
+    return new Promise((resolve, reject) => {
+      try {
+        fs.mkdirSync(path);
+        resolve(true);
+      } catch (error) {
+        reject(false);
+      }
+    });
+  },
+
+  deleteDir: async function (path: string): Promise<boolean> {
+    return new Promise((resolve, reject) => {
+      try {
+        fs.rmdirSync(path, { recursive: true });
+        resolve(true);
+      } catch (error) {
+        reject(false);
+      }
+    });
+  },
+
+  renameDir: function (oldPath: string, newPath: string): Promise<boolean> {
+    return new Promise((resolve, reject) => {
+      try {
+        fs.renameSync(oldPath, newPath);
+        resolve(true);
+      }
+      catch (error) {
+        reject(false);
+      }
+    })
+  }
 }

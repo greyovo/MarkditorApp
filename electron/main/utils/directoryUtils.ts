@@ -25,9 +25,9 @@ export async function getChildrenDirectories(path: string): Promise<DirectoryEnt
         }
       })
       const result = [...dir, ...files]
-      resolve(result); // 成功时解析 Promise
+      resolve(result);
     } catch (error) {
-      reject(error); // 失败时拒绝 Promise
+      reject(error);
     }
   });
 }

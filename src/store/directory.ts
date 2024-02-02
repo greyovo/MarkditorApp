@@ -104,6 +104,28 @@ export async function openFile(path: string) {
   setFile(path, content)
 }
 
+export async function renameFile(entity: DirectoryEntity, newName: string) {
+  const parent = getParentDirectory(entity.path)
+  await PlatformAPI.renameFile(entity.path, parent + "/" + newName)
+  refreshRootDir()
+}
+
+export async function renameDirectory(entity: DirectoryEntity, newName: string) {
+  const parent = getParentDirectory(entity.path)
+  await PlatformAPI.renameFile(entity.path, parent + "/" + newName)
+  refreshRootDir()
+}
+
+export async function deleteDirectory(entity: DirectoryEntity) {
+  await PlatformAPI.deleteDir(entity.path)
+  refreshRootDir()
+}
+
+export async function deleteFile(entity: DirectoryEntity) {
+  await PlatformAPI.deleteFile(entity.path)
+  refreshRootDir()
+}
+
 
 
 export default useDirectoryStore

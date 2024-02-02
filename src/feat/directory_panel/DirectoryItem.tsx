@@ -5,15 +5,19 @@ import useDocumentStore from "@/store/document"
 import { FolderIcon, FolderOpenIcon } from "@heroicons/react/24/solid"
 import { DocumentTextIcon } from "@heroicons/react/24/outline"
 import { ChevronDown, ChevronRight } from "lucide-react"
-import { useContext, useState } from "react"
+import { useContext, useEffect, useLayoutEffect, useRef, useState } from "react"
 import { DialogContext } from "@/components/dialog/DialogContext"
 import { isMarkdownFile } from "@/utils/path"
 import { toast } from "sonner"
+import { DirectoryContextMenu } from "./DirectoryContextMenu"
+import { TextField } from "@radix-ui/themes"
 
 interface DirectoryItemProps {
   entity: DirectoryEntity,
   open?: boolean,
-  depth: number
+  depth: number,
+  editable?: boolean,
+  onBlur?: () => void,
 }
 
 export function extractChildrenNode
@@ -33,13 +37,11 @@ export function extractChildrenNode
 
 function DirItem(props: DirectoryItemProps) {
   const data = props.entity
-
   const [dirOpened, setDirOpened] = useState(false)
   const childrenNode = dirOpened ? extractChildrenNode(data.children, props.depth + 1) : []
-
   const normalStyle = "hover:bg-blue-50 active:bg-blue-100 focus:bg-blue-100"
-
   const folderIconStyle = "w-4 text-blue-800"
+
   const folderIcon = dirOpened
     ? <FolderIcon title="" className={folderIconStyle} /> : <FolderIcon className={folderIconStyle} />
   const arrow = dirOpened
@@ -54,17 +56,25 @@ function DirItem(props: DirectoryItemProps) {
     setDirOpened(true)
   }
 
+  const inputRefs = useRef<HTMLInputElement>(null)
+  function focusInput() {
+    inputRefs.current?.focus()
+  }
+  const content = props.editable ?
+    <input ref={inputRefs} className="text-black" defaultValue={data.name} onBlur={props.onBlur} autoFocus /> :
+    data.name
+
   return (
     <>
       <ListItem
         className={normalStyle}
         key={data.path}
-        text={data.name}
         leadingSpace={20 * props.depth}
         leading={folderIcon}
-        onClick={handleClick}
+        onClick={props.editable ? focusInput : handleClick}
         trailing={arrow}
-      />
+      >{content}
+      </ListItem>
       {childrenNode}
     </>
   )
@@ -72,7 +82,6 @@ function DirItem(props: DirectoryItemProps) {
 
 function FileItem(props: DirectoryItemProps) {
   const data = props.entity
-
   const curDocPath = useDocumentStore((state) => state.path ?? "")
   const fileOpened = curDocPath === data.path
   const fileIconStyle = fileOpened ? "w-4 text-white" : "w-4 text-blue-800"
@@ -87,24 +96,51 @@ function FileItem(props: DirectoryItemProps) {
     openFile(data.path)
   }
 
+  const inputRefs = useRef<HTMLInputElement>(null)
+  const inputEl =
+    <input id="myinput" ref={inputRefs}
+      className="text-black"
+      defaultValue={data.name}
+      onBlur={() => { props.onBlur?.() }}
+    />
+
+  const content = props.editable ? inputEl : data.name
+  // const content = inputEl
+
+  useEffect(() => {
+    setTimeout(() => {
+      inputRefs.current?.focus()
+      inputRefs.current?.select()
+    }, 200);
+  }, [props.editable])
+
   return (
     <ListItem
       className={normalStyle}
       key={data.path}
-      text={data.name}
       leadingSpace={20 * props.depth}
       leading={fileIcon}
-      onClick={handleClick}
+      onClick={props.editable ? () => { } : handleClick}
       trailing={<span />}
-    />
+    >
+      {content}
+    </ListItem>
   )
 }
 
 export default function DirectoryItem(props: DirectoryItemProps) {
+  const [enableRename, setEnableRename] = useState(false)
+  let child
   if (props.entity.type === "dir") {
-    return <DirItem entity={props.entity} depth={props.depth} open={props.open} />
+    child = <DirItem entity={props.entity} depth={props.depth} open={props.open} editable={enableRename} onBlur={() => { setEnableRename(false) }} />
   } else {
-    return <FileItem entity={props.entity} depth={props.depth} open={props.open} />
+    child = <FileItem entity={props.entity} depth={props.depth} open={props.open} editable={enableRename} onBlur={() => { setEnableRename(false) }} />
   }
+
+  return (
+    <DirectoryContextMenu entity={props.entity} onRename={() => setEnableRename(true)}>
+      <div>{child}</div>
+    </DirectoryContextMenu>
+  )
 }
 

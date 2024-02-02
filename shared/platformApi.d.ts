@@ -1,20 +1,32 @@
 import path from "path";
 
 export interface IPlatformAPI {
-  selectDirectory(): Promise<DirectoryEntity | undefined>;
+  async selectDirectory(): Promise<DirectoryEntity | undefined>;
 
-  listDirectories(path: string): Promise<DirectoryEntity[]>;
+  async listDirectories(path: string): Promise<DirectoryEntity[]>;
 
-  selectFile(): Promise<FileEntity | undefined>;
+  async selectFile(): Promise<DirectoryEntity | undefined>;
 
-  readFile(path: string): Promise<string | undefined>;
+  async readFile(path: string): Promise<string | undefined>;
 
-  saveFile(path: string, content: string): Promise<boolean>;
+  async saveFile(path: string, content: string): Promise<boolean>;
 
-  showSaveDialog(): Promise<string | undefined>;
+  async createDir(path: string): Promise<boolean>;
+
+  async createFile(path: string): Promise<boolean>;
+
+  async renameDir(oldPath: string, newPath: string): Promise<boolean>;
+  
+  async renameFile(oldPath: string, newPath: string): Promise<boolean>;
+
+  async deleteDir(path: string): Promise<boolean>;
+
+  async deleteFile(path: string): Promise<boolean>;
+
+  async showSaveDialog(): Promise<string | undefined>;
   // 获取系统信息
-  getSystemInfo(): Promise<string>;
+  async getSystemInfo(): Promise<string>;
 
   // 打开开发者调试工具
-  openDevTools(): Promise<void>;
+  async openDevTools(): Promise<void>;
 } 

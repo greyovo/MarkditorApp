@@ -20,7 +20,6 @@ function DirectoryEmptyView() {
 
 function DirectoryTreeView() {
   const children = useDirectoryStore((state) => state.root?.children ?? [])
-  console.log(children);
   
   const childrenNode = extractChildrenNode(children, 0)
 

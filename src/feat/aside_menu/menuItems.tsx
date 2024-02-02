@@ -1,6 +1,6 @@
 import { DialogContext } from "@/components/dialog/DialogContext";
 import { PlatformAPI } from "@/ipc";
-import useDocumentStore, { createNewFile, saveFile } from "@/store/document";
+import useDocumentStore, { createNewDoc, saveFile } from "@/store/document";
 import useNavigationStore, { toggleSidebarExpanded } from "@/store/navigation"
 import { ArrowUpOnSquareIcon, CodeBracketIcon, Cog6ToothIcon, DocumentPlusIcon, ListBulletIcon, MagnifyingGlassIcon, PlusCircleIcon } from "@heroicons/react/24/outline"
 import { AlertDialog, Button, Dialog, Flex, Separator, Tooltip } from "@radix-ui/themes";
@@ -90,7 +90,7 @@ function NewFileMenuItem() {
     label: '新建文件',
     onClick: () => {
       if (saved) {
-        createNewFile()
+        createNewDoc()
       }
     },
     isDisabled: false,
@@ -121,7 +121,7 @@ function NewFileMenuItem() {
             </Button>
           </Dialog.Close>
           <Dialog.Close>
-            <Button variant="soft" color="red" onClick={createNewFile}>
+            <Button variant="soft" color="red" onClick={createNewDoc}>
               不保存
             </Button>
           </Dialog.Close>
@@ -173,18 +173,7 @@ function SettingsMenuItem() {
     icon: <Cog6ToothIcon width={20} height={20} />,
     label: '设置',
     onClick: () => {
-      openDialog(
-        'Confirmation',
-        'Are you sure you want to proceed?',
-        () => {
-          // Confirm callback
-          console.log('Confirmed');
-        },
-        () => {
-          // Cancel callback
-          console.log('Cancelled');
-        }
-      );
+      
     },
     isDisabled: false,
   }

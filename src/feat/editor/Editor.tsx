@@ -12,17 +12,25 @@ const _placeHolder = "# Welcome to Markditor \nHello, welcome to `Markditor`.\n#
 
 let vditor: Vditor;
 
+export function getVditor(): Vditor | undefined {
+  return vditor
+}
+
 export function Editor() {
   useEffect(() => {
+    // vidtor options
     const optioins: IOptions = {
       cache: {
         enable: false,
       },
-      after: () => {
-
-      },
+      undoDelay: 100,
+      after: () => { },
       cdn: "./lib",
       height: "100%",
+      borderless: true,
+      toolbarConfig: {
+        enable: false
+      },
       upload: {
         // TODO 在这里处理外部粘贴的图片
         handler: (files) => {
@@ -62,7 +70,7 @@ export function Editor() {
 
   return (
     <div className="flex flex-col h-full">
-      <EditorContextMenu vditor={vditor}>
+      <EditorContextMenu>
         {editorContainer}
       </EditorContextMenu>
       <BottomInfoBar />

@@ -1,6 +1,7 @@
 import { Button, Flex, IconButton, Tooltip } from "@radix-ui/themes";
 import { Code2Icon, CodeIcon, ListIcon, Redo2Icon, Undo2Icon } from "lucide-react";
 import { DocInfoRow } from "./DocInfoRow";
+import { redo, toggleOutline, undo } from "./actions";
 
 type BottomInfoBarButtonProps = {
   tooltip: string;
@@ -24,9 +25,9 @@ function BottomInfoBarButton(props: BottomInfoBarButtonProps) {
 export function BottomInfoBar() {
   const iconSize = 17
   return (
-    <div className="flex justify-between items-center">
+    <div className="flex justify-between items-center border-t">
       <Flex gap="1" grow={"1"}>
-        <BottomInfoBarButton tooltip={"大纲"} onClick={() => { }}>
+        <BottomInfoBarButton tooltip={"大纲"} onClick={() => { toggleOutline() }}>
           <ListIcon width={iconSize} />
         </BottomInfoBarButton>
 
@@ -34,11 +35,11 @@ export function BottomInfoBar() {
           <Code2Icon width={iconSize} />
         </BottomInfoBarButton>
 
-        <BottomInfoBarButton tooltip={"撤销"} onClick={() => { }}>
+        <BottomInfoBarButton tooltip={"撤销"} onClick={() => { undo() }}>
           <Undo2Icon width={iconSize} />
         </BottomInfoBarButton>
 
-        <BottomInfoBarButton tooltip={"重做"} onClick={() => { }}>
+        <BottomInfoBarButton tooltip={"重做"} onClick={() => { redo() }}>
           <Redo2Icon width={iconSize} />
         </BottomInfoBarButton>
 

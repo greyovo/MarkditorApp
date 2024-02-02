@@ -35,7 +35,7 @@ export function DirectoryPanel() {
   const root = useDirectoryStore((state) => state.root)
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-full bg-slate-50">
       {root !== undefined && <DirectoryPanelHeader />}
       <div className="h-full overflow-y-auto">
         {root !== undefined ? <DirectoryTreeView /> : <DirectoryEmptyView />}

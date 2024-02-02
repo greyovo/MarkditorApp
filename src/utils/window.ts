@@ -5,3 +5,4 @@ export function setWindowTitle(title: string) {
   else
     document.title = title + " - Markditor"
 }
+

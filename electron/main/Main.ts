@@ -38,6 +38,7 @@ export class Main {
         // nodeIntegration: false,
         contextIsolation: true,
       },
+      titleBarStyle: 'hidden'
     })
     mainWindow = this.win
 
@@ -65,7 +66,7 @@ export class Main {
 
   private onReady() {
     this.registerIpcHandlers()
-    // Menu.setApplicationMenu(null)
+    Menu.setApplicationMenu(null)
     this.createWindow()
   }
 

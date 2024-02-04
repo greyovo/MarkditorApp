@@ -20,6 +20,9 @@ export function Editor() {
       after: () => {
         setVditor(vditor)
       },
+      // cache: {
+      //   enable: false
+      // },
       cdn: "./lib",
       height: "100%",
       borderless: true,

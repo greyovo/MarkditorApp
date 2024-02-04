@@ -5,6 +5,7 @@ import { useState } from "react";
 import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from "./components/ui/resizable";
 import { DirectoryPanel } from "./feat/directory_panel/DirectoryPanel";
 import useNavigationStore from "./store/navigation";
+import { WindowTitleBar } from "./components/title_bar/TitleBar";
 
 
 const App = () => {
@@ -13,25 +14,30 @@ const App = () => {
   const onResize = (size: number) => setPanelSize(size)
 
   return (
-    <div className="flex" style={{ height: "100vh" }}>
-      <Toaster position="bottom-right" richColors closeButton />
-      {/* 侧边菜单栏 */}
-      <AsideMenuBar />
-      <ResizablePanelGroup direction="horizontal">
-        {showSidePanel && (
-          <>
-            <ResizablePanel id="DirectorySidePanel" order={1}
-              defaultSize={panelSize} minSize={15} maxSize={40}
-              onResize={onResize}>
-              <DirectoryPanel /> {/* 侧边文件夹栏 */}
-            </ResizablePanel>
-            <ResizableHandle id="handle" />
-          </>
-        )}
-        <ResizablePanel id="mainEditor" order={2}>
-          <Editor /> {/* 编辑器 */}
-        </ResizablePanel>
-      </ResizablePanelGroup>
+    <div className="overflow-clip">
+      <div style={{ height: "33px" }}>
+        <WindowTitleBar />
+      </div>
+      <div className="flex" style={{ height: "calc(100vh - 33px)" }} >
+        <Toaster position="bottom-right" richColors closeButton />
+        {/* 侧边菜单栏 */}
+        {/* <AsideMenuBar /> */}
+        <ResizablePanelGroup direction="horizontal">
+          {showSidePanel && (
+            <>
+              <ResizablePanel id="DirectorySidePanel" order={1}
+                defaultSize={panelSize} minSize={15} maxSize={40}
+                onResize={onResize}>
+                <DirectoryPanel /> {/* 侧边文件夹栏 */}
+              </ResizablePanel>
+              <ResizableHandle id="handle" />
+            </>
+          )}
+          <ResizablePanel id="mainEditor" order={2}>
+            <Editor /> {/* 编辑器 */}
+          </ResizablePanel>
+        </ResizablePanelGroup>
+      </div>
     </div>
   )
 };

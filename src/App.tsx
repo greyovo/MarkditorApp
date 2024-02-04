@@ -7,18 +7,18 @@ import { DirectoryPanel } from "./feat/directory_panel/DirectoryPanel";
 import useNavigationStore from "./store/navigation";
 import { WindowTitleBar } from "./components/title_bar/TitleBar";
 
-
 const App = () => {
   const showSidePanel = useNavigationStore((state) => state.sidebarExpanded);
   const [panelSize, setPanelSize] = useState(20)
   const onResize = (size: number) => setPanelSize(size)
+  const titleBarHeight = "33px";
 
   return (
     <div className="overflow-clip">
-      <div style={{ height: "33px" }}>
+      <div style={{ height: titleBarHeight }}>
         <WindowTitleBar />
       </div>
-      <div className="flex" style={{ height: "calc(100vh - 33px)" }} >
+      <div className="flex" style={{ height: `calc(100vh - ${titleBarHeight})` }} >
         <Toaster position="bottom-right" richColors closeButton />
         {/* 侧边菜单栏 */}
         {/* <AsideMenuBar /> */}

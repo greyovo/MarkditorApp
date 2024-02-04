@@ -1,6 +1,21 @@
 import { IPlatformAPI } from "shared/platformApi";
 
 export class ElectronAPI implements IPlatformAPI {
+  public win = {
+    close: function (): void {
+      
+    },
+    minimize: function (): void {
+      window.__ElectronAPI__.win.minimize();
+    },
+    toggleMaximize: function (): void {
+      throw new Error("Function not implemented.");
+    },
+    onSizeChanged: function (callback: (width: number, height: number) => void): void {
+      throw new Error("Function not implemented.");
+    }
+  };
+
   async createDir(path: string): Promise<boolean> {
     return await window.__ElectronAPI__.createDir(path);
   }

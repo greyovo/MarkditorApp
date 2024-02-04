@@ -1,11 +1,14 @@
 import { Button, Flex, IconButton, Tooltip } from "@radix-ui/themes"
 import styles from "./TitleBar.module.css"
 import useDocumentStore from "@/store/document"
-import { Minus, MinusIcon, Square, X } from "lucide-react"
+import { Maximize, Minimize, Minus, MinusIcon, Square, X } from "lucide-react"
 import { ReactNode } from "react"
 import { titleBarMenuItems } from "./menu_items"
+import { Square2StackIcon } from "@heroicons/react/24/outline"
+import { PlatformAPI } from "@/ipc"
 
 function minimizeWindow() {
+  PlatformAPI.win.minimize()
 }
 
 function maximizeWindow() {
@@ -19,9 +22,12 @@ type ButtonIconProps = { children: ReactNode, onClick: () => void, isDanger?: bo
 const ButtonIcon = ({ children, onClick, isDanger = false }: ButtonIconProps) => {
   const cls = isDanger
     ? "hover:bg-red-600 active:bg-red-700 hover:text-primary-foreground active:text-primary-foreground"
-    : "hover:bg-gray-100 active:bg-gray-300"
+    : "hover:bg-gray-200 active:bg-gray-300"
   return (
-    <div className={"px-3 py-2 w-12 h-8 text-center flex items-center justify-center " + cls} onClick={onClick}>
+    <div className={
+      "px-1 py-1 w-11 h-8 text-center flex items-center justify-center transition ease-in-out duration-200 "
+      + cls
+    } onClick={onClick}>
       {children}
     </div>
   )
@@ -30,7 +36,7 @@ const ButtonIcon = ({ children, onClick, isDanger = false }: ButtonIconProps) =>
 export function WindowTitleBar() {
   const title = useDocumentStore((state) => state.fileName ?? "Untitled.md")
   const saved = useDocumentStore((state) => state.saved)
-  const iconSize = 18
+  const iconSize = 17
 
   return (
     <div className={styles.draggable + " flex border-b select-none"}>
@@ -45,7 +51,8 @@ export function WindowTitleBar() {
           <Minus size={iconSize + 1} />
         </ButtonIcon>
         <ButtonIcon onClick={maximizeWindow}>
-          <Square size={iconSize - 3} />
+          {/* <Square size={iconSize - 1} /> */}
+          <Square2StackIcon className="rotate-90" strokeWidth={1.8} width={iconSize} />
         </ButtonIcon>
         <ButtonIcon isDanger onClick={closeWindow}>
           <X size={iconSize} />

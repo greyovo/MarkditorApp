@@ -38,7 +38,12 @@ export class Main {
         // nodeIntegration: false,
         contextIsolation: true,
       },
-      titleBarStyle: 'hidden'
+      titleBarStyle: "hidden",
+      // titleBarOverlay: {
+      //   color: '#FFFFFF', // TODO 适配深色模式？
+      //   // symbolColor: '#FFFFFF',
+      //   height: 32
+      // }
     })
     mainWindow = this.win
 
@@ -111,4 +116,9 @@ export function openDevTools() {
 
 export function setMainWindowName(name: string) {
   mainWindow?.setTitle(name)
+}
+
+
+export function minimizeWindow() {
+  mainWindow?.minimize()
 }

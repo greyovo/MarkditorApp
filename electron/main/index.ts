@@ -2,7 +2,7 @@ import { app, BrowserWindow, shell, ipcMain, Menu } from 'electron'
 import { release } from 'node:os'
 import { join } from 'node:path'
 import { update } from './update'
-import { Main } from './Main'
+import { Main } from './main_window'
 
 // The built directory structure
 //

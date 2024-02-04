@@ -12,10 +12,18 @@ const ipcHandlers: IPCHanlder[] = []
 
 // const apiHandlers = new APIHandlers()
 
-Object.entries(apiHandlers).forEach(([key, fun]) => {
-  const item = { name: fun.name, action: fun }
-  Log("Regisier handler:", item);
-  ipcHandlers.push(item)
+Object.entries(apiHandlers).forEach(([key, val]) => {
+  if (typeof val !== "function") {
+    Object.entries(val).forEach(([subkey, fun]) => {
+      const item: IPCHanlder = { name: [key, subkey].join("."), action: fun as IPCHandlerAction }
+      Log("Regisier handler:", item);
+      ipcHandlers.push(item)
+    })
+  } else {
+    const item = { name: key, action: val }
+    Log("Regisier handler:", item);
+    ipcHandlers.push(item)
+  }
 })
 
 // Object.keys(apiHandlers).forEach(element => {

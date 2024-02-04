@@ -1,8 +1,9 @@
 import { IPlatformAPI } from "shared/platformApi";
-import { openDevTools, setMainWindowName } from "../Main";
+import { minimizeWindow, openDevTools, setMainWindowName } from "../main_window";
 import fs from "fs"
 import { dialog } from "electron";
 import { getChildrenDirectories, getFileNameFromPath } from "../utils/directoryUtils";
+import { mainApp } from "..";
 
 export const apiHandlers: IPlatformAPI = {
   async selectFile(): Promise<DirectoryEntity | undefined> {
@@ -75,7 +76,6 @@ export const apiHandlers: IPlatformAPI = {
   ///////////////////////////////////
   // File Operation
   ///////////////////////////////////
-
   async readFile(path: string): Promise<string | undefined> {
     return new Promise<string>((resolve, reject) => {
       try {
@@ -99,7 +99,7 @@ export const apiHandlers: IPlatformAPI = {
   },
 
   renameFile: function (oldPath: string, newPath: string): Promise<boolean> {
-    return this.renameDir(oldPath, newPath)
+    return this.renameDir(oldPath, newPath);
   },
 
   deleteFile: function (path: string): Promise<boolean> {
@@ -116,7 +116,6 @@ export const apiHandlers: IPlatformAPI = {
   ///////////////////////////////////
   // Directory Operation
   ///////////////////////////////////
-
   createDir: async function (path: string): Promise<boolean> {
     return new Promise((resolve, reject) => {
       try {
@@ -148,6 +147,20 @@ export const apiHandlers: IPlatformAPI = {
       catch (error) {
         reject(false);
       }
-    })
+    });
+  },
+  win: {
+    close: function (): void {
+      
+    },
+    minimize: function (): void {
+      minimizeWindow()
+    },
+    toggleMaximize: function (): void {
+
+    },
+    onSizeChanged: function (callback: (width: number, height: number) => void): void {
+
+    }
   }
 }

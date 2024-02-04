@@ -1,6 +1,14 @@
 import path from "path";
 
 export interface IPlatformAPI {
+  win: {
+    // TODO
+    close(): void,
+    minimize(): void,
+    toggleMaximize(): void,
+    onSizeChanged(callback: (width: number, height: number) => void): void,
+  }
+
   async selectDirectory(): Promise<DirectoryEntity | undefined>;
 
   async listDirectories(path: string): Promise<DirectoryEntity[]>;
@@ -16,7 +24,7 @@ export interface IPlatformAPI {
   async createFile(path: string): Promise<boolean>;
 
   async renameDir(oldPath: string, newPath: string): Promise<boolean>;
-  
+
   async renameFile(oldPath: string, newPath: string): Promise<boolean>;
 
   async deleteDir(path: string): Promise<boolean>;

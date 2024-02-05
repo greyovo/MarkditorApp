@@ -56,13 +56,25 @@ function DirItem(props: DirectoryItemProps) {
     setDirOpened(true)
   }
 
+  //-------------------------------------------------------
+  // TODO 封装一个可编辑的列表项，避免重复代码（DirItem、FileItem）
   const inputRefs = useRef<HTMLInputElement>(null)
-  function focusInput() {
-    inputRefs.current?.focus()
-  }
-  const content = props.editable ?
-    <input ref={inputRefs} className="text-black" defaultValue={data.name} onBlur={props.onBlur} autoFocus /> :
-    data.name
+  const inputEl =
+    <input id="myinput" ref={inputRefs}
+      className="text-black"
+      defaultValue={data.name}
+      onBlur={() => { props.onBlur?.() }}
+    />
+
+  const content = props.editable ? inputEl : data.name
+
+  useEffect(() => {
+    setTimeout(() => {
+      inputRefs.current?.focus()
+      inputRefs.current?.select()
+    }, 200);
+  }, [props.editable])
+  // ------------------------------------------------------
 
   return (
     <>
@@ -71,7 +83,7 @@ function DirItem(props: DirectoryItemProps) {
         key={data.path}
         leadingSpace={20 * props.depth}
         leading={folderIcon}
-        onClick={props.editable ? focusInput : handleClick}
+        onClick={props.editable ? () => { } : handleClick}
         trailing={arrow}
       >{content}
       </ListItem>
@@ -91,7 +103,7 @@ function FileItem(props: DirectoryItemProps) {
 
   async function handleClick() {
     if (!isMarkdownFile(data.path)) {
-      toast.info("暂不支持打开非 Markdown 文件")
+      toast.warning("暂不支持打开非 Markdown 文件")
     }
     openFile(data.path)
   }
@@ -105,7 +117,6 @@ function FileItem(props: DirectoryItemProps) {
     />
 
   const content = props.editable ? inputEl : data.name
-  // const content = inputEl
 
   useEffect(() => {
     setTimeout(() => {

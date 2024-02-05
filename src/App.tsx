@@ -1,5 +1,4 @@
 import { Toaster } from "sonner";
-import { AsideMenuBar } from "./feat/aside_menu/AsideMenuBar";
 import { Editor } from "./feat/editor/Editor";
 import { useState } from "react";
 import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from "./components/ui/resizable";
@@ -26,7 +25,7 @@ const App = () => {
           {showSidePanel && (
             <>
               <ResizablePanel id="DirectorySidePanel" order={1}
-                defaultSize={panelSize} minSize={15} maxSize={40}
+                defaultSize={panelSize} minSize={15} maxSize={45}
                 onResize={onResize}>
                 <DirectoryPanel /> {/* 侧边文件夹栏 */}
               </ResizablePanel>

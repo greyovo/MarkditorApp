@@ -4,9 +4,10 @@ export interface IPlatformAPI {
   win: {
     // TODO
     close(): void,
+    
     minimize(): void,
+
     toggleMaximize(): void,
-    onSizeChanged(callback: (width: number, height: number) => void): void,
   }
 
   async selectDirectory(): Promise<DirectoryEntity | undefined>;

@@ -12,9 +12,9 @@ const isTauri = backend === "tauri"
 let PlatformAPI: IPlatformAPI
 
 if (isElectron) {
-  PlatformAPI = new ElectronAPI()
+  PlatformAPI = ElectronAPI
 } else if (isTauri) {
-  PlatformAPI = new TauriAPI()
+  PlatformAPI = TauriAPI
 } else {
   throw new NotImplementError(`Unsupported backend: ${backend}. 
 Please set the right backend via environment variable.`)

@@ -67,6 +67,13 @@ export class Main {
     })
     // Apply electron-updater
     // update(this.win)
+    this.win.on('maximize', () => {
+      this.win?.webContents.send('maximize-change', true)
+    })
+
+    this.win.on('unmaximize', () => {
+      this.win?.webContents.send('maximize-change', false)
+    })
   }
 
   private onReady() {
@@ -121,4 +128,21 @@ export function setMainWindowName(name: string) {
 
 export function minimizeWindow() {
   mainWindow?.minimize()
+}
+
+export function toggleMaximizeWindow() {
+  if (mainWindow?.isMaximized()) {
+    mainWindow?.unmaximize()
+  } else {
+    mainWindow?.maximize()
+  }
+}
+
+export function closeWindow() {
+  mainWindow?.close()
+  app.quit()
+}
+
+export function notifyMainWindow(channel: string, ...args: any[]): void {
+  mainWindow?.webContents.send(channel, ...args)
 }

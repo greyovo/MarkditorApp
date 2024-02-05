@@ -1,9 +1,8 @@
 import { IPlatformAPI } from "shared/platformApi";
-import { minimizeWindow, openDevTools, setMainWindowName } from "../main_window";
+import { closeWindow, minimizeWindow, openDevTools, setMainWindowName, toggleMaximizeWindow } from "../main_window";
 import fs from "fs"
 import { dialog } from "electron";
 import { getChildrenDirectories, getFileNameFromPath } from "../utils/directoryUtils";
-import { mainApp } from "..";
 
 export const apiHandlers: IPlatformAPI = {
   async selectFile(): Promise<DirectoryEntity | undefined> {
@@ -149,18 +148,19 @@ export const apiHandlers: IPlatformAPI = {
       }
     });
   },
+
   win: {
     close: function (): void {
-      
+      closeWindow()
     },
+
     minimize: function (): void {
       minimizeWindow()
     },
+
     toggleMaximize: function (): void {
-
+      toggleMaximizeWindow()
     },
-    onSizeChanged: function (callback: (width: number, height: number) => void): void {
 
-    }
   }
 }

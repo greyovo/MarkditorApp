@@ -2,7 +2,7 @@ import { Button, Flex, IconButton, Tooltip } from "@radix-ui/themes"
 import styles from "./TitleBar.module.css"
 import useDocumentStore from "@/store/document"
 import { Maximize, Minimize, Minus, MinusIcon, Square, X } from "lucide-react"
-import { ReactNode } from "react"
+import { ReactNode, useState } from "react"
 import { titleBarMenuItems } from "./menu_items"
 import { Square2StackIcon } from "@heroicons/react/24/outline"
 import { PlatformAPI } from "@/ipc"
@@ -12,9 +12,11 @@ function minimizeWindow() {
 }
 
 function maximizeWindow() {
+  PlatformAPI.win.toggleMaximize()
 }
 
 function closeWindow() {
+  PlatformAPI.win.close()
 }
 
 type ButtonIconProps = { children: ReactNode, onClick: () => void, isDanger?: boolean }
@@ -37,6 +39,12 @@ export function WindowTitleBar() {
   const title = useDocumentStore((state) => state.fileName ?? "Untitled.md")
   const saved = useDocumentStore((state) => state.saved)
   const iconSize = 17
+  const [maximized, setMaximized] = useState(false)
+
+  // @ts-ignore
+  window.__ElectronAPI__.onMaximizedChanged((v) => {
+    setMaximized(v)
+  })
 
   return (
     <div className={styles.draggable + " flex border-b select-none"}>
@@ -51,8 +59,9 @@ export function WindowTitleBar() {
           <Minus size={iconSize + 1} />
         </ButtonIcon>
         <ButtonIcon onClick={maximizeWindow}>
-          {/* <Square size={iconSize - 1} /> */}
-          <Square2StackIcon className="rotate-90" strokeWidth={1.8} width={iconSize} />
+          {maximized
+            ? <Square2StackIcon className="rotate-90" strokeWidth={1.8} width={iconSize} />
+            : <Square size={iconSize - 1} />}
         </ButtonIcon>
         <ButtonIcon isDanger onClick={closeWindow}>
           <X size={iconSize} />

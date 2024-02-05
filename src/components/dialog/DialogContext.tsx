@@ -1,23 +1,23 @@
 // DialogContext.tsx
 import { useState, createContext, ReactNode } from 'react';
 
-type DialogType = 'confirm' | 'info';
-
 type DialogOptions = {
   title: string;
   content: string;
+  danger?: boolean,
   showCancelButton?: boolean;
   onConfirm?: () => void;
   confirmText?: string;
   onDeny?: () => void;
   denyText?: string;
+
+  showCancel?: boolean,
   onCancel?: () => void;
   cancelText?: string;
 };
 
 type DialogContextType = {
   options: DialogOptions | null;
-  type: DialogType;
   isOpen: boolean;
   openDialog: (options: DialogOptions) => void | null;
   closeDialog: () => void;
@@ -25,7 +25,6 @@ type DialogContextType = {
 
 const initialContext: DialogContextType = {
   options: null,
-  type: "info",
   isOpen: false,
   openDialog: (options: DialogOptions) => { },
   closeDialog: () => { },

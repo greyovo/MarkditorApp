@@ -11,6 +11,9 @@ export function DirectoryContextMenu({ children, entity, onRename }: { children:
     openDialog({
       title: `删除: ${entity.name}`,
       content: "确定？",
+      danger: true,
+      confirmText: "删除",
+      denyText: "取消",
       onConfirm: () => {
         if (entity.type === 'file') {
           deleteFile(entity)

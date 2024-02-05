@@ -50,12 +50,15 @@ export function WindowTitleBar() {
   }
 
   function closeWindow() {
-    if (!saved) {
+    const content = useDocumentStore.getState().content ?? ""
+
+    if (!saved && content.trim().length > 0) {
       openDialog({
         title: "保存更改？",
         content: "要在关闭前保存修改后的内容吗？",
         confirmText: "保存",
         denyText: "不保存",
+        showCancel: true,
         onConfirm: async () => {
           await saveFile()
           PlatformAPI.win.close()

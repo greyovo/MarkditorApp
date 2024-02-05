@@ -42,9 +42,10 @@ export function exposeApi() {
     }
   });
 
-  bridge.onMaximizedChanged = (callback: (maximized: boolean) => void) => {
+  bridge.onMaximizedChanged = (callback: (maximized: boolean) => void): () => void => {
     ipcRenderer.on('maximize-change', (_event, value) => callback(value))
+    return () => ipcRenderer.removeListener('maximize-change', (_event, value) => callback(value))
   },
 
-    contextBridge.exposeInMainWorld("__ElectronAPI__", bridge)
+  contextBridge.exposeInMainWorld("__ElectronAPI__", bridge)
 }

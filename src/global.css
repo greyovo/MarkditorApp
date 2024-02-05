@@ -8,6 +8,23 @@
 @tailwind components;
 @tailwind utilities;
 
+body::-webkit-scrollbar {
+  width: 10px;
+}
+
+body::-webkit-scrollbar {
+  width: 10px;
+}
+
+body::-webkit-scrollbar-thumb {
+  background: #ccc; 
+  border-radius: 5px;
+}
+
+body::-webkit-scrollbar-thumb:hover {
+  background: #f40;
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -99,3 +116,5 @@
     list-style: decimal;
   }
 }
+
+

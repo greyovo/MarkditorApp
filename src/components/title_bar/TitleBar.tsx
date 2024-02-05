@@ -2,7 +2,7 @@ import { Button, Flex, IconButton, Tooltip } from "@radix-ui/themes"
 import styles from "./TitleBar.module.css"
 import useDocumentStore from "@/store/document"
 import { Maximize, Minimize, Minus, MinusIcon, Square, X } from "lucide-react"
-import { ReactNode, useState } from "react"
+import { ReactNode, useEffect, useState } from "react"
 import { titleBarMenuItems } from "./menu_items"
 import { Square2StackIcon } from "@heroicons/react/24/outline"
 import { PlatformAPI } from "@/ipc"
@@ -41,10 +41,15 @@ export function WindowTitleBar() {
   const iconSize = 17
   const [maximized, setMaximized] = useState(false)
 
-  // @ts-ignore
-  window.__ElectronAPI__.onMaximizedChanged((v) => {
-    setMaximized(v)
-  })
+  useEffect(() => {
+    // @ts-ignore
+    const removeListener = window.__ElectronAPI__.onMaximizedChanged((v) => {
+      setMaximized(v)
+    })
+
+    return removeListener
+  }, [])
+
 
   return (
     <div className={styles.draggable + " flex border-b select-none"}>

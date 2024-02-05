@@ -20,7 +20,7 @@ function DirectoryEmptyView() {
 
 function DirectoryTreeView() {
   const children = useDirectoryStore((state) => state.root?.children ?? [])
-  
+
   const childrenNode = extractChildrenNode(children, 0)
 
   return (
@@ -31,7 +31,6 @@ function DirectoryTreeView() {
 }
 
 export function DirectoryPanel() {
-
   const root = useDirectoryStore((state) => state.root)
 
   return (

@@ -1,4 +1,4 @@
-import { ReactComponentElement, useEffect, useRef, useState } from "react";
+import { ReactComponentElement, createElement, useEffect, useRef, useState } from "react";
 import Vditor from "vditor";
 import { DirectoryPanel } from "@/feat/directory_panel/DirectoryPanel";
 import { EditorContextMenu } from "./EditorContextMenu";
@@ -19,18 +19,33 @@ export function Editor() {
     const optioins: IOptions = {
       undoDelay: 100,
       after: () => {
+        // TODO 显示上次关闭时未保存的内容？
+        // 是则updateContent，否则设置空串
         vditor.setValue("")
+        // updateContent(vditor.getValue())
         setVditor(vditor)
       },
       placeholder: _placeHolder,
-      // cache: {
-      //   enable: false
-      // },
       cdn: "./lib",
       height: "100%",
       borderless: true,
       toolbarConfig: {
         enable: false
+      },
+      hooks: {
+        ir: {
+          after(html) {
+            // 对img转换显示路径
+            const el = document.createElement("div")
+            el.innerHTML = html
+            const imgs = el.getElementsByTagName("img")
+            const baseDir = useDocumentStore.getState().baseDir ?? ""
+            for (const img of imgs) {
+              img.src = img.src.replace(img.baseURI, baseDir + "/")
+            }
+            return el.innerHTML
+          },
+        }
       },
       upload: {
         // TODO 在这里处理外部粘贴的图片

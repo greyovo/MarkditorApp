@@ -8,6 +8,7 @@ import { setRootDir } from './directory'
 interface DocumentState {
   content?: string,
   path?: string,
+  baseDir?: string,
   saved: boolean,
   fileName?: string,
 }
@@ -16,6 +17,7 @@ const useDocumentStore = create<DocumentState>(
   () => ({
     content: undefined,
     path: undefined,
+    baseDir: undefined,
     fileName: undefined,
     saved: false,
   }),
@@ -31,6 +33,7 @@ export function createNewDoc() {
     ...state,
     content: undefined,
     path: undefined,
+    baseDir: undefined,
     fileName: fileName,
     saved: false,
   }))
@@ -45,9 +48,11 @@ export function updateContent(content: string) {
 
 export function setFile(path: string, content: string) {
   const fileName = getFileNameFromPath(path)
+  const baseDir = getParentDirectory(path).path
   setState(state => ({
     ...state,
     content,
+    baseDir,
     path,
     fileName,
     saved: true
@@ -55,22 +60,29 @@ export function setFile(path: string, content: string) {
   setWindowTitle(fileName)
 }
 
-export async function saveFile() {
+export async function saveFile(): Promise<boolean> {
   let path = getState().path
   if (path === undefined) {
     path = await PlatformAPI.showSaveDialog()
-    if (!path) return
+    if (!path) return false
   }
-  await PlatformAPI.saveFile(path!, getState().content!)
-  const fileName = getFileNameFromPath(path)
-  setState(state => ({
-    ...state,
-    path,
-    saved: true,
-    fileName,
-  }))
-  setWindowTitle(fileName)
-  setRootDir(getParentDirectory(path))
+  const success = await PlatformAPI.saveFile(path!, getState().content!)
+  if (success) {
+    const fileName = getFileNameFromPath(path)
+    const baseDir = getParentDirectory(path).path
+    setState(state => ({
+      ...state,
+      path,
+      baseDir,
+      saved: true,
+      fileName,
+    }))
+    setWindowTitle(fileName)
+    setRootDir(getParentDirectory(path))
+    return true
+  } else {
+    return false
+  }
 }
 
 // markAsDirty: () => set((state) => ({ ...state, saved: false })),
@@ -79,6 +91,7 @@ function closeFile() {
   setState(state => ({
     content: undefined,
     path: undefined,
+    baseDir: undefined,
     fileName: undefined,
     saved: false,
   }))

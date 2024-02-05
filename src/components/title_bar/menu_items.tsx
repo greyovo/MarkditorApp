@@ -6,6 +6,7 @@ import { SidebarClose, SidebarOpen, SaveIcon, PlusCircleIcon, Search, Code2Icon,
 import { useContext } from "react";
 import { DialogContext } from "../dialog/DialogContext";
 import { TitleMenuItem, TitleMenuItemProps } from "./TitleMenuItem";
+import { toast } from "sonner";
 
 const iconSize = 16
 
@@ -38,15 +39,18 @@ function SaveMenuItem() {
   const props: TitleMenuItemProps = {
     icon: icon,
     label: '保存',
-    onClick: () => {
+    onClick: async () => {
       console.log("Saving...")
-      saveFile()
+      const res = await saveFile()
+      if (res) {
+        toast.success("保存成功")
+      } else {
+        toast.error("保存失败")
+      }
     },
     isDisabled: saved,
   }
   return <TitleMenuItem props={props} />
-
-
 }
 
 function NewFileMenuItem() {
@@ -141,7 +145,7 @@ function SettingsMenuItem() {
     icon: <Settings size={iconSize} />,
     label: '设置',
     onClick: () => {
-      
+
     },
     isDisabled: false,
   }
@@ -149,10 +153,10 @@ function SettingsMenuItem() {
 }
 
 export const titleBarMenuItems = [
-  <ToggleFolderViewMenuItem key={ "ToggleFolderViewMenuItem"} />,
-  <SaveMenuItem key={ "SaveMenuItem"} />,
-  <NewFileMenuItem key={ "NewFileMenuItem"} />,
+  <ToggleFolderViewMenuItem key={"ToggleFolderViewMenuItem"} />,
+  <SaveMenuItem key={"SaveMenuItem"} />,
+  <NewFileMenuItem key={"NewFileMenuItem"} />,
   <OpenDevToolMenuItem key={"OpenDevToolMenuItem"} />,
   // <SearchMenuItem key={"SearchMenuItem"} />,
-  <ExportMenuItem key={ "ExportMenuItem"} />
+  <ExportMenuItem key={"ExportMenuItem"} />
 ]

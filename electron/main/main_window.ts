@@ -32,6 +32,7 @@ export class Main {
       backgroundColor: '#fff', // https://www.electronjs.org/docs/latest/faq#the-font-looks-blurry-what-is-this-and-what-can-i-do
       webPreferences: {
         preload: settings.preload,
+        webSecurity: false,
         // Warning: Enable nodeIntegration and disable contextIsolation is not secure in production
         // Consider using contextBridge.exposeInMainWorld
         // Read more on https://www.electronjs.org/docs/latest/tutorial/context-isolation

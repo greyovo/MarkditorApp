@@ -9,7 +9,8 @@ import { BottomInfoBar } from "./BottomInfoBar";
 import { Constants } from "@/utils/constants";
 import useEditorStore, { setVditor } from "@/store/editor";
 
-const _placeHolder = "# Welcome to Markditor \nHello, welcome to `Markditor`.\n# 欢迎使用 Markditor\n你好，欢迎使用 `Markditor`"
+// const _placeHolder = "# Welcome to Markditor \nHello, welcome to `Markditor`.\n# 欢迎使用 Markditor\n你好，欢迎使用 `Markditor`"
+const _placeHolder = "在此开始记录..."
 
 export function Editor() {
   useEffect(() => {
@@ -18,8 +19,10 @@ export function Editor() {
     const optioins: IOptions = {
       undoDelay: 100,
       after: () => {
+        vditor.setValue("")
         setVditor(vditor)
       },
+      placeholder: _placeHolder,
       // cache: {
       //   enable: false
       // },
@@ -67,7 +70,11 @@ export function Editor() {
     };
   }, []);
 
-  const editorContainer = <div id="vditor" className="overflow-y-auto flex-grow" />
+  const editorContainer =
+    <div
+      id="vditor" style={{ fontFamily: "MiSans" }}
+      className="overflow-y-auto flex-grow"
+    />
 
   return (
     <div className="flex flex-col h-full">

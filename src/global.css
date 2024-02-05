@@ -12,17 +12,13 @@ body::-webkit-scrollbar {
   width: 10px;
 }
 
-body::-webkit-scrollbar {
+body::-webkit-scrollbar {
   width: 10px;
 }
 
 body::-webkit-scrollbar-thumb {
   background: #ccc; 
   border-radius: 5px;
-}
-
-body::-webkit-scrollbar-thumb:hover {
-  background: #f40;
 }
 
 @layer base {
@@ -89,17 +85,14 @@ body::-webkit-scrollbar-thumb:hover {
   src: url("assets/MiSans-Regular.ttf");
 }
 
-/* @font-face {
-  font-family: "MiSans";
-  font-style: bold;
-  font-weight: 1000;
-  font-display: auto;
-  src: url("assets/MiSans-Bold.ttf");
-} */
-
 * {
   font-family: MiSans;
-  /* background-color: var(--accent-9); */
+  :before{
+    font-family: MiSans;
+  }
+  :after{
+    font-family: MiSans;
+  }
 }
 
 :root {

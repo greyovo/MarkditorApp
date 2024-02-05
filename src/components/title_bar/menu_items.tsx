@@ -152,6 +152,7 @@ export const titleBarMenuItems = [
   <ToggleFolderViewMenuItem key={ "ToggleFolderViewMenuItem"} />,
   <SaveMenuItem key={ "SaveMenuItem"} />,
   <NewFileMenuItem key={ "NewFileMenuItem"} />,
+  <OpenDevToolMenuItem key={"OpenDevToolMenuItem"} />,
   // <SearchMenuItem key={"SearchMenuItem"} />,
   <ExportMenuItem key={ "ExportMenuItem"} />
 ]

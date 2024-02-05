@@ -70,11 +70,7 @@ export function Editor() {
     };
   }, []);
 
-  const editorContainer =
-    <div
-      id="vditor" style={{ fontFamily: "MiSans" }}
-      className="overflow-y-auto flex-grow"
-    />
+  const editorContainer = <div id="vditor" className="overflow-y-auto flex-grow" />
 
   return (
     <div className="flex flex-col h-full">

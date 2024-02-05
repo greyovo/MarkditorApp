@@ -1,23 +1,14 @@
 import { Button, Flex, IconButton, Tooltip } from "@radix-ui/themes"
 import styles from "./TitleBar.module.css"
-import useDocumentStore from "@/store/document"
+import useDocumentStore, { saveFile } from "@/store/document"
 import { Maximize, Minimize, Minus, MinusIcon, Square, X } from "lucide-react"
 import { ReactNode, useEffect, useState } from "react"
 import { titleBarMenuItems } from "./menu_items"
 import { Square2StackIcon } from "@heroicons/react/24/outline"
 import { PlatformAPI } from "@/ipc"
+import { useDialog } from "../dialog/Dialog"
 
-function minimizeWindow() {
-  PlatformAPI.win.minimize()
-}
 
-function maximizeWindow() {
-  PlatformAPI.win.toggleMaximize()
-}
-
-function closeWindow() {
-  PlatformAPI.win.close()
-}
 
 type ButtonIconProps = { children: ReactNode, onClick: () => void, isDanger?: boolean }
 
@@ -38,6 +29,7 @@ const ButtonIcon = ({ children, onClick, isDanger = false }: ButtonIconProps) =>
 export function WindowTitleBar() {
   const title = useDocumentStore((state) => state.fileName ?? "Untitled.md")
   const saved = useDocumentStore((state) => state.saved)
+  const { openDialog } = useDialog()
   const iconSize = 17
   const [maximized, setMaximized] = useState(false)
 
@@ -46,9 +38,36 @@ export function WindowTitleBar() {
     const removeListener = window.__ElectronAPI__.onMaximizedChanged((v) => {
       setMaximized(v)
     })
-
     return removeListener
   }, [])
+
+  function minimizeWindow() {
+    PlatformAPI.win.minimize()
+  }
+
+  function maximizeWindow() {
+    PlatformAPI.win.toggleMaximize()
+  }
+
+  function closeWindow() {
+    if (!saved) {
+      openDialog({
+        title: "保存更改？",
+        content: "要在关闭前保存修改后的内容吗？",
+        confirmText: "保存",
+        denyText: "不保存",
+        onConfirm: async () => {
+          await saveFile()
+          PlatformAPI.win.close()
+        },
+        onDeny: () => {
+          PlatformAPI.win.close()
+        }
+      })
+    } else {
+      PlatformAPI.win.close()
+    }
+  }
 
 
   return (

@@ -1,43 +1,54 @@
 // DialogContext.tsx
 import { useState, createContext, ReactNode } from 'react';
 
+type DialogType = 'confirm' | 'info';
+
 type DialogOptions = {
   title: string;
   content: string;
+  showCancelButton?: boolean;
   onConfirm?: () => void;
+  confirmText?: string;
+  onDeny?: () => void;
+  denyText?: string;
   onCancel?: () => void;
+  cancelText?: string;
 };
 
 type DialogContextType = {
-  dialog: DialogOptions | null;
-  open: boolean;
+  options: DialogOptions | null;
+  type: DialogType;
+  isOpen: boolean;
   openDialog: (options: DialogOptions) => void | null;
   closeDialog: () => void;
 };
 
-export const DialogContext = createContext<DialogContextType>({
-  dialog: null,
-  open: false,
+const initialContext: DialogContextType = {
+  options: null,
+  type: "info",
+  isOpen: false,
   openDialog: (options: DialogOptions) => { },
   closeDialog: () => { },
-});
+}
+
+export const DialogContext = createContext(initialContext);
 
 export function DialogProvider({ children }: { children: ReactNode }) {
-  const [dialog, setDialog] = useState<DialogOptions | null>(null);
-  const [open, setOpen] = useState<boolean>(false);
+  const [options, setOptions] = useState<DialogOptions | null>(null);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const openDialog = (options: DialogOptions) => {
-    setDialog(options);
-    setOpen(true);
+    setOptions(options);
+    setIsOpen(true);
   };
 
   const closeDialog = () => {
-    setDialog(null);
-    setOpen(false);
+    setOptions(null);
+    setIsOpen(false);
   };
 
   return (
-    <DialogContext.Provider value={{ dialog, open, openDialog, closeDialog, }}>
+    <DialogContext.Provider value={{ ...initialContext, options, isOpen, openDialog, closeDialog }}>
       {children}
     </DialogContext.Provider>
   );

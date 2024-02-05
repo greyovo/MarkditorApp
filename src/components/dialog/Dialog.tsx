@@ -4,44 +4,63 @@ import { DialogContext } from './DialogContext';
 import { Button, Dialog as RadixDialog, Flex } from '@radix-ui/themes';
 
 export function useDialog() {
-  return useContext(DialogContext);
+  const context = useContext(DialogContext);
+  context.type = 'confirm';
+  return context
 }
 
-export const Dialog = () => {
-  const { dialog, closeDialog, open } = useContext(DialogContext);
+export function useInfoDialog() {
+  const context = useContext(DialogContext);
+  context.type = 'info';
+  return context
+}
 
-  if (!dialog) {
+// --------------------------------------------------
+
+export const Dialog = () => {
+  const { options, closeDialog, isOpen, type } = useContext(DialogContext);
+  // console.log(type);
+
+  if (!options) {
     return null;
   }
 
-  const { title, content, onConfirm, onCancel } = dialog;
-
   const handleConfirm = () => {
-    onConfirm?.();
+    options.onConfirm?.();
+    closeDialog();
+  };
+
+  const handleDeny = () => {
+    options.onDeny?.();
     closeDialog();
   };
 
   const handleCancel = () => {
-    onCancel?.();
     closeDialog();
   };
 
   return (
-    <RadixDialog.Root open={open} onOpenChange={(open) => {
-      if(!open) closeDialog()
-    }}>
+    <RadixDialog.Root open={isOpen}
+      onOpenChange={(open) => { if (!open) closeDialog() }}>
       <RadixDialog.Content style={{ maxWidth: 450 }}>
-        <RadixDialog.Title>{title}</RadixDialog.Title>
+        <RadixDialog.Title>{options.title}</RadixDialog.Title>
         <RadixDialog.Description size="2" mb="4">
-          {content}
+          {options.content}
         </RadixDialog.Description>
-        <Flex gap="3" mt="4" justify="end">
-          <RadixDialog.Close>
+
+        <Flex gap="3" mt="4" justify={type === "confirm" ? "between" : "end"}>
+          {type === "confirm" && <RadixDialog.Close>
             <Button variant="soft" color="gray" onClick={handleCancel}>
-              取消
+              {options.cancelText ?? "取消"}
             </Button>
-          </RadixDialog.Close>
-          <Button onClick={handleConfirm}>好的</Button>
+          </RadixDialog.Close>}
+
+          <Flex gap="3">
+            <Button variant="soft" color="gray" onClick={handleDeny}>
+              {options.denyText ?? "不是"}
+            </Button>
+            <Button onClick={handleConfirm}>{options.confirmText ?? "好的"}</Button>
+          </Flex>
         </Flex>
       </RadixDialog.Content>
     </RadixDialog.Root>

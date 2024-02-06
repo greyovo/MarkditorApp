@@ -12,11 +12,13 @@
     }
   },
   "scripts": {
-    "dev": "vite --mode=electron",
-    "dev:tauri": "vite --mode=tauri",
-    "build": "tsc && vite build --mode=tauri",
+    "dev": "echo Please specify the backend with :electron or :tauri. E.g., 'dev:electron', 'dev:tauri'.",
+    "dev:electron": "vite --mode=electron",
+    "dev:before_tauri": "vite --mode=tauri --config vite.config.tauri.ts",
+    "dev:tauri": "cargo tauri dev",
     "build:electron": "tsc && vite build --mode=electron && electron-builder",
-    "build:tauri": "tsc && vite build --mode=tauri",
+    "build:before_tauri": "tsc && vite build --mode=tauri",
+    "build:tauri": "cargo tauri build",
     "preview": "vite preview",
     "pree2e": "vite build --mode=electron",
     "e2e": "playwright test"

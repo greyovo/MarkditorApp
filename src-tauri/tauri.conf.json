@@ -1,9 +1,9 @@
 {
   "build": {
-    "beforeBuildCommand": "npm run build",
-    "beforeDevCommand": "npm run dev",
+    "beforeBuildCommand": "npm run build:before_tauri",
+    "beforeDevCommand": "npm run dev:before_tauri",
     "devPath": "http://localhost:5173",
-    "distDir": "../build"
+    "distDir": "../dist"
   },
   "package": {
     "productName": "Markditor",
@@ -28,7 +28,7 @@
         "icons/icon.icns",
         "icons/icon.ico"
       ],
-      "identifier": "com.tauri.dev",
+      "identifier": "me.grey.markditor",
       "longDescription": "",
       "macOS": {
         "entitlements": null,
@@ -55,6 +55,7 @@
     "windows": [
       {
         "fullscreen": false,
+        "decorations": false,
         "height": 600,
         "resizable": true,
         "title": "Markditor",

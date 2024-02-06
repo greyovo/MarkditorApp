@@ -20,7 +20,7 @@ export function ListItem({ leading, leadingSpace, children, trailing, onClick, c
       {/* <div style={{ width: 20 * props.depth }}></div>
       {fileIcon} */}
 
-      <div className="ml-2 select-none text-ellipsis text-left text-nowrap line-clamp-1">
+      <div className="ml-2 select-none text-ellipsis text-left text-nowrap line-clamp-1 break-all">
         {children}
       </div>
 

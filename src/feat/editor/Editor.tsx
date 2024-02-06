@@ -1,13 +1,11 @@
 import { ReactComponentElement, createElement, useEffect, useRef, useState } from "react";
 import Vditor from "vditor";
-import { DirectoryPanel } from "@/feat/directory_panel/DirectoryPanel";
 import { EditorContextMenu } from "./EditorContextMenu";
-import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable";
-import useNavigationStore from "@/store/navigation";
 import useDocumentStore, { updateContent } from "@/store/document";
 import { BottomInfoBar } from "./BottomInfoBar";
 import { Constants } from "@/utils/constants";
-import useEditorStore, { setVditor } from "@/store/editor";
+import useEditorStore, { getVditor, setVditor } from "@/store/editor";
+import { convertImagePath } from "@/utils/path";
 
 // const _placeHolder = "# Welcome to Markditor \nHello, welcome to `Markditor`.\n# 欢迎使用 Markditor\n你好，欢迎使用 `Markditor`"
 const _placeHolder = "在此开始记录..."
@@ -21,7 +19,8 @@ export function Editor() {
       after: () => {
         // TODO 显示上次关闭时未保存的内容？
         // 是则updateContent，否则设置空串
-        vditor.setValue("")
+        const content = useDocumentStore.getState().content
+        vditor.setValue(content ?? "")
         // updateContent(vditor.getValue())
         setVditor(vditor)
       },
@@ -32,19 +31,17 @@ export function Editor() {
       toolbarConfig: {
         enable: false
       },
+      cache: {
+        enable: false
+      },
       hooks: {
         ir: {
-          after(html) {
-            // 对img转换显示路径
-            const el = document.createElement("div")
-            el.innerHTML = html
-            const imgs = el.getElementsByTagName("img")
-            const baseDir = useDocumentStore.getState().baseDir ?? ""
-            for (const img of imgs) {
-              img.src = img.src.replace(img.baseURI, baseDir + "/")
-            }
-            return el.innerHTML
-          },
+          after: (html) =>
+            convertImagePath(html, useDocumentStore.getState().baseDir ?? "")
+        },
+        sv: {
+          after: (html) =>
+            convertImagePath(html, useDocumentStore.getState().baseDir ?? "")
         }
       },
       upload: {
@@ -69,13 +66,15 @@ export function Editor() {
 
     // 监听新文件打开
     const unsubscribe = useDocumentStore.subscribe((state, prevState) => {
-      if (state.path == prevState.path && state.content !== undefined) {
+      if (state.path === prevState.path && state.content !== undefined) {
         return
       }
-      vditor.setValue(state.content ?? "")
+      const instance = getVditor()
+      console.log("new file opened:", state.path);
+      instance?.setValue(state.content ?? "")
       setTimeout(() => {
-        vditor.clearStack()
-        vditor.clearCache()
+        instance?.clearStack()
+        instance?.clearCache()
       }, 50);
     })
 

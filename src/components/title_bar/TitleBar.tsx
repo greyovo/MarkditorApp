@@ -34,11 +34,11 @@ export function WindowTitleBar() {
   const [maximized, setMaximized] = useState(false)
 
   useEffect(() => {
-    // @ts-ignore
-    const removeListener = window.__ElectronAPI__.onMaximizedChanged((v) => {
-      setMaximized(v)
-    })
-    return removeListener
+    // FIXME 监听窗口最大化/还原事件
+    // const removeListener = window.__ElectronAPI__.onMaximizedChanged((v) => {
+    //   setMaximized(v)
+    // })
+    // return removeListener
   }, [])
 
   function minimizeWindow() {
@@ -79,7 +79,7 @@ export function WindowTitleBar() {
         {titleBarMenuItems}
       </Flex>
 
-      <div className="flex-1 mx-3 my-1 text-center">{title}{!saved && "*"}</div>
+      <div className="flex-1 mx-3 my-1 text-center text-ellipsis line-clamp-1">{title}{!saved && "*"}</div>
 
       <Flex className={styles.undraggable} gap="1">
         <ButtonIcon onClick={minimizeWindow}>

@@ -1,3 +1,5 @@
+import useDocumentStore from "@/store/document";
+
 export function getFileNameFromPath(path: string): string {
   let pathParts = path.split('\\');
   if (pathParts.length === 0) {
@@ -12,7 +14,7 @@ export function getParentDirectory(path: string): DirectoryEntity {
     pathParts = path.split("/")
   }
   pathParts.pop();
-  
+
   return {
     type: "dir",
     name: pathParts[pathParts.length - 1],
@@ -28,4 +30,15 @@ export function getFileNameWithoutExtension(fileName: string): string {
 export function isMarkdownFile(fileName: string) {
   fileName = fileName.trim().toLowerCase();
   return fileName.endsWith(".md") || fileName.endsWith(".markdown");
+}
+
+// 对img转换显示路径
+export function convertImagePath(html: string, baseDir: string): string {
+  const el = document.createElement("div")
+  el.innerHTML = html
+  const imgs = el.getElementsByTagName("img")
+  for (const img of imgs) {
+    img.src = img.src.replace(img.baseURI, baseDir + "/")
+  }
+  return el.innerHTML
 }

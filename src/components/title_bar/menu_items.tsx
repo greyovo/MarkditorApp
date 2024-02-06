@@ -2,7 +2,7 @@ import { PlatformAPI } from "@/ipc";
 import useDocumentStore, { saveFile, createNewDoc } from "@/store/document";
 import useNavigationStore, { toggleSidebarExpanded } from "@/store/navigation";
 import { Dialog, Flex, Button } from "@radix-ui/themes";
-import { SidebarClose, SidebarOpen, SaveIcon, PlusCircleIcon, Search, Code2Icon, Share, Settings } from "lucide-react";
+import { SidebarClose, SidebarOpen, SaveIcon, PlusCircleIcon, Search, Code2Icon, Share, Settings, Hammer, Inspect, Terminal, TerminalSquare } from "lucide-react";
 import { useContext } from "react";
 import { DialogContext } from "../dialog/DialogContext";
 import { TitleMenuItem, TitleMenuItemProps } from "./TitleMenuItem";
@@ -130,7 +130,7 @@ function ExportMenuItem() {
 
 function OpenDevToolMenuItem() {
   const openDevToolMenuItem: TitleMenuItemProps = {
-    icon: <Code2Icon size={iconSize} />,
+    icon: <TerminalSquare size={iconSize} />,
     label: '开发者工具',
     onClick: () => PlatformAPI.openDevTools(),
     isDisabled: false,

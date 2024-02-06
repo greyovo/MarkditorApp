@@ -74,12 +74,12 @@ export function WindowTitleBar() {
 
 
   return (
-    <div className={styles.draggable + " flex border-b select-none"}>
+    <div data-tauri-drag-region className={styles.draggable + " flex border-b select-none"}>
       <Flex className={styles.undraggable} align={"center"} gap="1">
         {titleBarMenuItems}
       </Flex>
 
-      <div className="flex-1 mx-3 my-1 text-center text-ellipsis line-clamp-1">{title}{!saved && "*"}</div>
+      <div data-tauri-drag-region className="flex-1 mx-3 my-1 text-center text-ellipsis line-clamp-1">{title}{!saved && "*"}</div>
 
       <Flex className={styles.undraggable} gap="1">
         <ButtonIcon onClick={minimizeWindow}>

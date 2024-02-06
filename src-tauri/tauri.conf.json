@@ -11,7 +11,18 @@
   },
   "tauri": {
     "allowlist": {
-      "all": false
+      "all": false,
+      "window": {
+        "all": false,
+        "close": true,
+        "hide": true,
+        "show": true,
+        "maximize": true,
+        "minimize": true,
+        "unmaximize": true,
+        "unminimize": true,
+        "startDragging": true
+      }
     },
     "bundle": {
       "active": true,
@@ -56,10 +67,12 @@
       {
         "fullscreen": false,
         "decorations": false,
+        "transparent": true,
         "height": 600,
         "resizable": true,
         "title": "Markditor",
-        "width": 800
+        "width": 800,
+        "label": "markditor_main"
       }
     ]
   }

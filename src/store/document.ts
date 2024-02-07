@@ -49,18 +49,6 @@ export function createNewDoc() {
   }))
 }
 
-export async function selectDoc() {
-  const file = await PlatformAPI.selectFile()
-  if (file !== undefined) {
-    const content = await PlatformAPI.readFile(file.path)
-    if (content === undefined) {
-      throw Error("Failed to read file")
-    }
-    setFile(file.path, content)
-    setRootDir(getParentDirectory(file.path))
-  }
-}
-
 export async function closeDocIfNotExist() {
   if (getState().path !== undefined) {
     if (!await PlatformAPI.exists(getState().path!)) {

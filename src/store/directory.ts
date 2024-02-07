@@ -1,7 +1,7 @@
 import { PlatformAPI } from "@/ipc"
 import { create } from "zustand"
-import useDocumentStore, { closeDocIfNotExist, setFile } from "./document"
-import { getParentDirectory, isMarkdownFile } from "@/utils/path"
+import useDocumentStore, { closeCurrentDoc, closeDocIfNotExist, setFile } from "./document"
+import { findTargetDirRecursive, getDirectoryFromPath, getNameFromPath, getParentDirectory, isMarkdownFile } from "@/utils/path"
 
 interface DirectoryState {
   root?: DirectoryEntity,
@@ -16,31 +16,14 @@ const useDirectoryStore = create<DirectoryState>(
 const { setState, getState, subscribe } = useDirectoryStore
 
 export const initDirectoryStore = () => {
-  useDocumentStore.subscribe((state, prev) => {
-    if (state.path) {
-      setRootDir(getParentDirectory(state.path))
-    }
-  })
+  // useDocumentStore.subscribe(async (state, prev) => {
+  //   if (state.hasDocOpened()) {
+  //     setRootDir(getDirectoryFromPath(state.baseDir))
+  //   }
+  // })
 }
 
 // -----------------------------------------
-
-function findTargetDirRecursive
-  (children: DirectoryEntity[], targetPath: string): DirectoryEntity | undefined {
-  if (!children || children.length === 0) {
-    return undefined
-  }
-  for (const dir of children) {
-    if (dir.path === targetPath) {
-      return dir
-    }
-    const targetDir = findTargetDirRecursive(dir.children, targetPath)
-    if (targetDir) {
-      return targetDir
-    }
-  }
-  return undefined
-}
 
 export async function setRootDir(root: DirectoryEntity) {
   const children = (await PlatformAPI.listDirectories(root.path))
@@ -53,6 +36,7 @@ export async function selectRootDir() {
   if (root !== undefined) {
     setState((state) => ({ ...state, root, children: root.children }))
     console.log(root);
+    closeCurrentDoc()
   } else {
     console.log("打开文件失败！");
   }
@@ -68,6 +52,21 @@ export async function refreshRootDir() {
   }
   setState((state) => ({ ...state, root: newRoot }))
 }
+
+export async function selectFile() {
+  const file = await PlatformAPI.selectFile()
+  if (file !== undefined) {
+    const content = await PlatformAPI.readFile(file.path)
+    if (content === undefined) {
+      throw Error("Failed to read file")
+    }
+    setFile(file.path, content)
+    setRootDir(getParentDirectory(file.path))
+  }
+}
+
+
+
 
 export async function openDirectory(path: string) {
   try {
@@ -133,6 +132,8 @@ export async function deleteFile(entity: DirectoryEntity) {
   refreshRootDir()
   closeDocIfNotExist()
 }
+
+
 
 
 export default useDirectoryStore

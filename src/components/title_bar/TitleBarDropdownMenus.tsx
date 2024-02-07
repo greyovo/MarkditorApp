@@ -1,5 +1,5 @@
-import { refreshRootDir, selectRootDir } from "@/store/directory";
-import { closeCurrentDoc, selectDoc } from "@/store/document";
+import { refreshRootDir, selectFile, selectRootDir } from "@/store/directory";
+import { closeCurrentDoc } from "@/store/document";
 import { DropdownMenu, Button } from "@radix-ui/themes";
 
 
@@ -10,7 +10,7 @@ export function TitleBarDropdownMenus({ children }: { children: React.ReactNode 
         <div>{children}</div>
       </DropdownMenu.Trigger>
       <DropdownMenu.Content>
-        <DropdownMenu.Item onClick={selectDoc}>打开文件...</DropdownMenu.Item>
+        <DropdownMenu.Item onClick={selectFile}>打开文件...</DropdownMenu.Item>
         <DropdownMenu.Item onClick={selectRootDir}>打开文件夹...</DropdownMenu.Item>
 
         {/* TODO  最近打开列表*/}

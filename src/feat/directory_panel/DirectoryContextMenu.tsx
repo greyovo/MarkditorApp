@@ -40,7 +40,7 @@ export function DirectoryContextMenu({ children, entity, onRename }: { children:
     const date = new Date()
     try {
       const parent = entity.type === 'dir' ? entity : getParentDirectory(entity.path)
-      await createFile(parent, newFileName)
+      await createFile(parent, newFileName + date.getTime() + ".md")
     } catch (err) {
       console.error("Failed to create new file.", err);
       toast.error("创建文件失败");
@@ -66,6 +66,7 @@ export function DirectoryContextMenu({ children, entity, onRename }: { children:
     <>
       <div onContextMenu={(e) => {
         e.preventDefault()
+        e.stopPropagation()
         setOffset({
           left: e.clientX + 2,
           top: e.clientY + 2
@@ -90,13 +91,15 @@ export function DirectoryContextMenu({ children, entity, onRename }: { children:
               }
             >
               <ListboxSection showDivider>
-                <ListboxItem key={"open"}>打开</ListboxItem>
                 <ListboxItem key={"rename"}>重命名</ListboxItem>
                 <ListboxItem key={"copy"}>创建副本</ListboxItem>
               </ListboxSection>
-              <ListboxItem key={"newfile"}>新建文件</ListboxItem>
-              <ListboxItem key={"newfolder"}>新建文件夹</ListboxItem>
-              <ListboxItem color="danger" className="text-danger" key={"delete"}>删除</ListboxItem>
+              <ListboxItem key={"newfile"} onClick={handleCreateNewFile}>新建文件</ListboxItem>
+              <ListboxItem key={"newfolder"} onClick={handleCreateNewFolder}>新建文件夹</ListboxItem>
+              <ListboxItem
+                color="danger" className="text-danger" key={"delete"} onClick={handleDelete}>
+                删除
+              </ListboxItem>
             </Listbox>
           </PopoverContent>
         </Popover>

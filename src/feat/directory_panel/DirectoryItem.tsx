@@ -5,12 +5,11 @@ import useDocumentStore from "@/store/document"
 import { FolderIcon, FolderOpenIcon } from "@heroicons/react/24/solid"
 import { DocumentTextIcon } from "@heroicons/react/24/outline"
 import { ChevronDown, ChevronRight } from "lucide-react"
-import { useContext, useEffect, useLayoutEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { DialogContext } from "@/components/dialog/DialogContext"
 import { isMarkdownFile } from "@/utils/path"
 import { toast } from "sonner"
 import { DirectoryContextMenu } from "./DirectoryContextMenu"
-import { TextField } from "@radix-ui/themes"
 
 interface DirectoryItemProps {
   entity: DirectoryEntity,

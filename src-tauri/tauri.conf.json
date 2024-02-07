@@ -20,8 +20,15 @@
         "open": true,
         "save": true
       },
+      "path": {
+        "all": true
+      },
       "fs": {
         "all": true,
+        "scope": [
+          "*:/**/**",
+          "*:\\**\\**"
+        ],
         "readFile": true,
         "writeFile": true,
         "readDir": true,

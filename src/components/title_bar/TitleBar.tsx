@@ -8,8 +8,6 @@ import { Square2StackIcon } from "@heroicons/react/24/outline"
 import { PlatformAPI } from "@/ipc"
 import { useDialog } from "../dialog/Dialog"
 
-
-
 type ButtonIconProps = { children: ReactNode, onClick: () => void, isDanger?: boolean }
 
 const ButtonIcon = ({ children, onClick, isDanger = false }: ButtonIconProps) => {
@@ -26,11 +24,24 @@ const ButtonIcon = ({ children, onClick, isDanger = false }: ButtonIconProps) =>
   )
 }
 
+function TitleSection({ className, title }: { className: string, title: string }) {
+  return (
+    <div data-tauri-drag-region className={className +" mx-3 my-1 text-center text-ellipsis line-clamp-1"}>
+      {title} 
+    </div>
+  )
+}
+
 export function WindowTitleBar() {
   const hasDoc = useDocumentStore((state) => state.hasDocOpened())
-  const title = useDocumentStore((state) => state.fileName ?? "")
-  const saved = useDocumentStore((state) => state.saved)
-  const windowTitle = saved ? title : title + "*"
+  const docTitle = useDocumentStore((state) => state.fileName ?? "")
+  const docSaved = useDocumentStore((state) => state.saved)
+
+  let windowTitle = ""
+  if (hasDoc) {
+    windowTitle = docSaved ? docTitle : docTitle + "*"
+  }
+
   const { openDialog } = useDialog()
   const iconSize = 17
   const [maximized, setMaximized] = useState(false)
@@ -54,7 +65,7 @@ export function WindowTitleBar() {
   function closeWindow() {
     const content = useDocumentStore.getState().content ?? ""
 
-    if (!saved && content.trim().length > 0) {
+    if (!docSaved && content.trim().length > 0) {
       openDialog({
         title: "保存更改？",
         content: "要在关闭前保存修改后的内容吗？",
@@ -74,16 +85,13 @@ export function WindowTitleBar() {
     }
   }
 
-
   return (
     <div data-tauri-drag-region className={styles.draggable + " flex border-b select-none"}>
       <Flex className={styles.undraggable} align={"center"} gap="1">
         {titleBarMenuItems}
       </Flex>
 
-      <div data-tauri-drag-region className="flex-1 mx-3 my-1 text-center text-ellipsis line-clamp-1">
-        {hasDoc && windowTitle}
-      </div>
+      <TitleSection className="flex-1" title={windowTitle} />
 
       <Flex className={styles.undraggable} gap="1">
         <ButtonIcon onClick={minimizeWindow}>

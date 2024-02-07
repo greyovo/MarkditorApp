@@ -4,7 +4,6 @@ import { createDirectory, createFile, deleteDirectory, deleteFile, openFile, ren
 import { createNewDoc } from "@/store/document";
 import { getParentDirectory } from "@/utils/path";
 import { Button, Listbox, ListboxItem, ListboxSection, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Popover, PopoverContent, PopoverTrigger, useDisclosure } from "@nextui-org/react";
-import { error } from "console";
 import { ReactNode, useState } from "react";
 import { toast } from "sonner";
 

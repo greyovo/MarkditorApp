@@ -39,13 +39,16 @@ function DirItem(props: DirectoryItemProps) {
   const data = props.entity
   const [dirOpened, setDirOpened] = useState(false)
   const childrenNode = dirOpened ? extractChildrenNode(data.children, props.depth + 1) : []
-  const normalStyle = "hover:bg-blue-50 active:bg-blue-100 focus:bg-blue-100"
-  const folderIconStyle = "w-4 text-blue-800"
+  const normalStyle = "hover:bg-primary-50 active:bg-primary-100 focus:bg-primary-100"
+  const folderIconStyle = "w-4 text-primary-600"
 
   const folderIcon = dirOpened
-    ? <FolderIcon title="" className={folderIconStyle} /> : <FolderIcon className={folderIconStyle} />
+    ? <FolderIcon className={folderIconStyle} /> :
+    <FolderIcon className={folderIconStyle} />
+
   const arrow = dirOpened
-    ? <ChevronDown className={folderIconStyle} /> : <ChevronRight className={folderIconStyle} />
+    ? <ChevronDown className={folderIconStyle} /> :
+    <ChevronRight className={folderIconStyle} />
 
   async function handleClick() {
     if (dirOpened) {
@@ -94,12 +97,27 @@ function DirItem(props: DirectoryItemProps) {
 
 function FileItem(props: DirectoryItemProps) {
   const data = props.entity
+  const isMarkdown = isMarkdownFile(data.name)
   const curDocPath = useDocumentStore((state) => state.path ?? "")
   const fileOpened = curDocPath === data.path
-  const fileIconStyle = fileOpened ? "w-4 text-white" : "w-4 text-blue-800"
-  const fileIcon = <DocumentTextIcon className={fileIconStyle} />
 
-  const normalStyle = fileOpened ? "bg-primary text-white" : "hover:bg-blue-50 active:bg-blue-100"
+  let iconStyle = ""
+  let textStyle = ""
+  if (fileOpened) {
+    textStyle = "bg-primary text-white"
+    iconStyle = "w-4 text-white"
+  } else {
+    if (isMarkdown) {
+      textStyle = "hover:bg-primary-50 active:bg-primary-100"
+      iconStyle = "w-4 text-primary-600"
+    } else {
+      textStyle = "text-default-400"
+      iconStyle = "w-4 text-default-400"
+    }
+  }
+
+  const icon = <DocumentTextIcon className={iconStyle} />
+
 
   async function handleClick() {
     if (!isMarkdownFile(data.path)) {
@@ -127,10 +145,10 @@ function FileItem(props: DirectoryItemProps) {
 
   return (
     <ListItem
-      className={normalStyle}
+      className={textStyle}
       key={data.path}
       leadingSpace={20 * props.depth}
-      leading={fileIcon}
+      leading={icon}
       onClick={props.editable ? () => { } : handleClick}
       trailing={<span />}
     >

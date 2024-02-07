@@ -4,7 +4,7 @@ export interface IPlatformAPI {
   win: {
     // TODO
     close(): void,
-    
+
     minimize(): void,
 
     toggleMaximize(): void,
@@ -32,6 +32,8 @@ export interface IPlatformAPI {
   async deleteDir(path: string): Promise<boolean>;
 
   async deleteFile(path: string): Promise<boolean>;
+
+  async exists(path: string) :Promise<boolean>;
 
   async showSaveDialog(): Promise<string | undefined>;
   // 获取系统信息

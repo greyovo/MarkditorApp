@@ -1,8 +1,8 @@
 import { PlatformAPI } from '@/ipc'
 import { getNameFromPath, getParentDirectory } from '@/utils/path'
-import { setWindowTitle } from '@/utils/window'
 import { create } from 'zustand'
 import { setRootDir } from './directory'
+import { stat } from 'fs'
 
 
 interface DocumentState {
@@ -26,24 +26,37 @@ const useDocumentStore = create<DocumentState>(
 const { setState, getState, subscribe } = useDocumentStore
 
 // -----------------------------------------
-
-export function createNewDoc() {
-  const fileName = "Untitled.md"
+function resetDocState() {
   setState(state => ({
-    ...state,
     content: undefined,
     path: undefined,
     baseDir: undefined,
-    fileName: fileName,
+    fileName: "",
     saved: false,
   }))
-  setWindowTitle(fileName + "*")
+}
+
+export function createNewDoc() {
+  setState(state => ({
+    content: "",
+    path: undefined,
+    baseDir: undefined,
+    fileName: "Untitled.md",
+    saved: false,
+  }))
+}
+
+export async function closeDocIfNeeded() {
+  if (getState().path !== undefined) {
+    if (!await PlatformAPI.exists(getState().path!)) {
+      resetDocState()
+    }
+  }
 }
 
 export function updateContent(content: string) {
   console.log("updateContent!");
   setState(state => ({ ...state, content, saved: false }))
-  setWindowTitle((getState().fileName ?? "Untitled.md") + "*")
 }
 
 export function setFile(path: string, content: string) {
@@ -57,7 +70,6 @@ export function setFile(path: string, content: string) {
     fileName,
     saved: true
   }))
-  setWindowTitle(fileName)
 }
 
 export async function saveFile(): Promise<boolean> {
@@ -77,7 +89,6 @@ export async function saveFile(): Promise<boolean> {
       saved: true,
       fileName,
     }))
-    setWindowTitle(fileName)
     setRootDir(getParentDirectory(path))
     return true
   } else {
@@ -87,15 +98,6 @@ export async function saveFile(): Promise<boolean> {
 
 // markAsDirty: () => set((state) => ({ ...state, saved: false })),
 
-function closeFile() {
-  setState(state => ({
-    content: undefined,
-    path: undefined,
-    baseDir: undefined,
-    fileName: undefined,
-    saved: false,
-  }))
-  setWindowTitle("")
-}
+
 
 export default useDocumentStore

@@ -1,5 +1,5 @@
 import { appWindow } from '@tauri-apps/api/window'
-import { createDir, BaseDirectory, readDir, removeDir, renameFile, writeTextFile, readTextFile, removeFile } from '@tauri-apps/api/fs';
+import { createDir, BaseDirectory, readDir, removeDir, renameFile, writeTextFile, readTextFile, removeFile, exists } from '@tauri-apps/api/fs';
 import { open, save } from '@tauri-apps/api/dialog';
 import { invoke } from '@tauri-apps/api';
 import { IPlatformAPI } from "shared/platformApi";
@@ -17,7 +17,7 @@ export const TauriAPI: IPlatformAPI = {
         name: getNameFromPath(selectedPath),
         path: selectedPath,
         children: await this.listDirectories(selectedPath),
-      }
+      };
     }
     return undefined;
   },
@@ -33,14 +33,14 @@ export const TauriAPI: IPlatformAPI = {
           name: entry.name ?? "",
           path: entry.path,
           children: []
-        })
+        });
       } else {
         files.push({
           type: "file",
           name: entry.name ?? "",
           path: entry.path,
           children: []
-        })
+        });
       }
 
     }
@@ -60,29 +60,29 @@ export const TauriAPI: IPlatformAPI = {
         name: getNameFromPath(selectedPath),
         path: selectedPath,
         children: []
-      }
+      };
     }
     return undefined;
   },
 
   async readFile(path: string): Promise<string | undefined> {
-    return await readTextFile(path)
+    return await readTextFile(path);
   },
 
   async saveFile(path: string, content: string): Promise<boolean> {
     try {
       await writeTextFile(path, content);
-      return true
+      return true;
     } catch (error) {
-      return false
+      return false;
     }
   },
   async createDir(path: string): Promise<boolean> {
     try {
-      await createDir(path, { recursive: true })
-      return true
+      await createDir(path, { recursive: true });
+      return true;
     } catch (error) {
-      return false
+      return false;
     }
   },
 
@@ -94,38 +94,42 @@ export const TauriAPI: IPlatformAPI = {
   async renameDir(oldPath: string, newPath: string): Promise<boolean> {
     // TODO
     try {
-      invoke("rename_dir", { oldPath, newPath })
-      return true
+      invoke("rename_dir", { oldPath, newPath });
+      return true;
     } catch (_) {
-      return false
+      return false;
     }
   },
 
   async renameFile(oldPath: string, newPath: string): Promise<boolean> {
     try {
-      await renameFile(oldPath, newPath)
-      return true
+      await renameFile(oldPath, newPath);
+      return true;
     } catch (error) {
-      return false
+      return false;
     }
   },
 
   async deleteDir(path: string): Promise<boolean> {
     try {
-      await removeDir(path, { recursive: true })
-      return true
+      await removeDir(path, { recursive: true });
+      return true;
     } catch (error) {
-      return false
+      return false;
     }
   },
 
   async deleteFile(path: string): Promise<boolean> {
     try {
-      await removeFile(path)
-      return true
+      await removeFile(path);
+      return true;
     } catch (error) {
-      return false
+      return false;
     }
+  },
+
+  exists: async function (path: string): Promise<boolean> {
+    return await exists(path)
   },
 
   async showSaveDialog(): Promise<string | undefined> {
@@ -136,7 +140,7 @@ export const TauriAPI: IPlatformAPI = {
       }]
     });
     if (selectedPath && typeof selectedPath === 'string') {
-      return selectedPath
+      return selectedPath;
     }
     return undefined;
   },
@@ -160,5 +164,6 @@ export const TauriAPI: IPlatformAPI = {
     toggleMaximize: async function () {
       appWindow.toggleMaximize();
     },
-  }
+  },
+
 }

@@ -1,6 +1,6 @@
 import { PlatformAPI } from "@/ipc"
 import { create } from "zustand"
-import useDocumentStore, { setFile } from "./document"
+import useDocumentStore, { closeDocIfNeeded, setFile } from "./document"
 import { getParentDirectory, isMarkdownFile } from "@/utils/path"
 
 interface DirectoryState {
@@ -119,13 +119,14 @@ export async function renameDirectory(entity: DirectoryEntity, newName: string) 
 export async function deleteDirectory(entity: DirectoryEntity) {
   await PlatformAPI.deleteDir(entity.path)
   refreshRootDir()
+  closeDocIfNeeded()
 }
 
 export async function deleteFile(entity: DirectoryEntity) {
   await PlatformAPI.deleteFile(entity.path)
   refreshRootDir()
+  closeDocIfNeeded()
 }
-
 
 
 export default useDirectoryStore

@@ -20,7 +20,7 @@ const useDocumentStore = create<DocumentState>(
     baseDir: undefined,
     fileName: undefined,
     saved: false,
-    hasDocOpened() { return !!get().fileName && !!get().path }
+    hasDocOpened() { return get().content !== undefined }
     // get hasDoc: () => !!get().content,
   }),
 )

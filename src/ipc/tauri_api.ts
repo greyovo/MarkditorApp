@@ -82,13 +82,20 @@ export const TauriAPI: IPlatformAPI = {
       await createDir(path, { recursive: true });
       return true;
     } catch (error) {
+      console.log(error);
       return false;
     }
   },
 
   async createFile(path: string): Promise<boolean> {
-    // TODO
-    throw new Error("Method not implemented.");
+    try {
+      console.log("createing file:",path);
+      await writeTextFile(path, "");
+      return true;
+    } catch (error) {
+      console.error(error);
+      return false;
+    }
   },
 
   async renameDir(oldPath: string, newPath: string): Promise<boolean> {

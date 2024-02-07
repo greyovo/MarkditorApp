@@ -8,16 +8,19 @@ import "vditor/dist/index.css"
 import { DialogProvider } from './components/dialog/DialogContext';
 import { Dialog } from './components/dialog/Dialog';
 import { initDirectoryStore } from './store/directory';
+import { NextUIProvider } from '@nextui-org/react';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
-    <Theme>
-      <DialogProvider>
-        <App />
-        <Dialog />
-      </DialogProvider>
-      {/* <ThemePanel /> */}
-    </Theme>
+    <NextUIProvider>
+      <Theme>
+        <DialogProvider>
+          <App />
+          <Dialog />
+        </DialogProvider>
+        {/* <ThemePanel /> */}
+      </Theme>
+    </NextUIProvider>
   </React.StrictMode>
 )
 

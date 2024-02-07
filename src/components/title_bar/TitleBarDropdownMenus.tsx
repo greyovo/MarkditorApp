@@ -25,7 +25,7 @@ export function TitleBarDropdownMenus({ children }: { children: React.ReactNode 
           </DropdownMenu.SubContent>
         </DropdownMenu.Sub>
 
-        <DropdownMenu.Item onClick={closeCurrentDoc}>关闭当前</DropdownMenu.Item>
+        {/* <DropdownMenu.Item onClick={closeCurrentDoc}>关闭当前</DropdownMenu.Item> */}
 
         <DropdownMenu.Separator />
         <DropdownMenu.Item onClick={refreshRootDir}>刷新</DropdownMenu.Item>

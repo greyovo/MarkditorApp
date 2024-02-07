@@ -1,7 +1,8 @@
 import { NotImplementError } from "./errors";
 
 const supportedBackends = ["electron", "tauri"]
-
+const backend = import.meta.env.VITE_BACKEND ?? "unknown"
+console.log("Running with backend:", backend);
 export class Constants {
   public static readonly CODE_LANGUAGES: string[] = ["mermaid", "abc", "apache",
     "js", "ts", "html",
@@ -17,9 +18,7 @@ export class Constants {
   ];
 
   private static get BACKEND(): string {
-    const backend = import.meta.env.VITE_BACKEND ?? "unknown"
     if (supportedBackends.includes(backend ?? "")) {
-      console.log("Running with backend:", backend);
       return backend
     } else {
       throw new NotImplementError(`Unsupported backend: ${backend}.`)

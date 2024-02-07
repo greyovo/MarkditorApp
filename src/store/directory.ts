@@ -2,6 +2,8 @@ import { PlatformAPI } from "@/ipc"
 import { create } from "zustand"
 import useDocumentStore, { closeCurrentDoc, closeDocIfNotExist, setFile } from "./document"
 import { findTargetDirRecursive, getDirectoryFromPath, getNameFromPath, getParentDirectory, isMarkdownFile } from "@/utils/path"
+import useNavigationStore from "./navigation"
+import { error } from "console"
 
 interface DirectoryState {
   root?: DirectoryEntity,
@@ -36,6 +38,7 @@ export async function selectRootDir() {
   if (root !== undefined) {
     setState((state) => ({ ...state, root, children: root.children }))
     console.log(root);
+    useNavigationStore.setState((state) => ({ ...state, sidebarExpanded: true }))
     closeCurrentDoc()
   } else {
     console.log("打开文件失败！");
@@ -51,6 +54,14 @@ export async function refreshRootDir() {
     ...getState().root!, children,
   }
   setState((state) => ({ ...state, root: newRoot }))
+}
+
+export async function refreshDirectory(dir: DirectoryEntity) {
+  if (dir.path === getState().root!.path) {
+    refreshRootDir()
+  } else {
+    openDirectory(dir.path)
+  }
 }
 
 export async function selectFile() {
@@ -109,27 +120,54 @@ export async function openFile(path: string) {
   setFile(path, content)
 }
 
+
+
+export async function createDirectory(base: DirectoryEntity, name: string) {
+  let target = base.path + "/" + name
+  const exist = await PlatformAPI.exists(target)
+  if (exist) {
+    console.error("已存在目录或文件：", target);
+    return false
+  }
+  const res = await PlatformAPI.createDir(target)
+  refreshDirectory(base)
+  return res
+}
+
+export async function createFile(base: DirectoryEntity, name: string): Promise<boolean> {
+  let target = base.path + "/" + name
+  const exist = await PlatformAPI.exists(target)
+  if (exist) {
+    console.error("已存在目录或文件：", target);
+    return false
+  }
+  const res = await PlatformAPI.createFile(target)
+  refreshDirectory(base)
+  return res
+}
+
+
 export async function renameFile(entity: DirectoryEntity, newName: string) {
   const parent = getParentDirectory(entity.path)
   await PlatformAPI.renameFile(entity.path, parent + "/" + newName)
-  refreshRootDir()
+  refreshDirectory(parent)
 }
 
 export async function renameDirectory(entity: DirectoryEntity, newName: string) {
   const parent = getParentDirectory(entity.path)
   await PlatformAPI.renameFile(entity.path, parent + "/" + newName)
-  refreshRootDir()
+  refreshDirectory(parent)
 }
 
 export async function deleteDirectory(entity: DirectoryEntity) {
   await PlatformAPI.deleteDir(entity.path)
-  refreshRootDir()
+  refreshDirectory(getParentDirectory(entity.path))
   closeDocIfNotExist()
 }
 
 export async function deleteFile(entity: DirectoryEntity) {
   await PlatformAPI.deleteFile(entity.path)
-  refreshRootDir()
+  refreshDirectory(getParentDirectory(entity.path))
   closeDocIfNotExist()
 }
 

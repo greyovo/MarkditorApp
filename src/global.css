@@ -1,10 +1,10 @@
 @import "tailwindcss/base";
 @import "@radix-ui/themes/styles.css";
 
-@import "@radix-ui/colors/indigo.css";
+/* @import "@radix-ui/colors/indigo.css";
 @import "@radix-ui/colors/indigo-dark.css";
 @import "@radix-ui/colors/indigo-alpha.css";
-@import "@radix-ui/colors/indigo-dark-alpha.css";
+@import "@radix-ui/colors/indigo-dark-alpha.css"; */
 @tailwind components;
 @tailwind utilities;
 
@@ -21,7 +21,7 @@ body::-webkit-scrollbar-thumb {
   border-radius: 5px;
 }
 
-@layer base {
+/* @layer base {
   :root {
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
@@ -66,16 +66,16 @@ body::-webkit-scrollbar-thumb {
     --input: 217.2 32.6% 17.5%;
     --ring: 224.3 76.3% 48%;
   }
-}
+} */
 
-@layer base {
+/* @layer base {
   * {
     @apply border-border;
   }
   body {
     @apply bg-background text-foreground;
   }
-}
+} */
 
 @font-face {
   font-family: "MiSans";

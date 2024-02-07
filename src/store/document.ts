@@ -1,37 +1,40 @@
 import { PlatformAPI } from '@/ipc'
 import { getNameFromPath, getParentDirectory } from '@/utils/path'
 import { create } from 'zustand'
-import { setRootDir } from './directory'
-import { stat } from 'fs'
+import { openDirectory, setRootDir } from './directory'
 
-
-interface DocumentState {
+type DocumentState = {
   content?: string,
   path?: string,
   baseDir?: string,
   saved: boolean,
   fileName?: string,
+  // computed
+  hasDocOpened: () => boolean,
 }
 
 const useDocumentStore = create<DocumentState>(
-  () => ({
+  (set, get) => ({
     content: undefined,
     path: undefined,
     baseDir: undefined,
     fileName: undefined,
     saved: false,
+    hasDocOpened() { return !!get().fileName && !!get().path }
+    // get hasDoc: () => !!get().content,
   }),
 )
 
 const { setState, getState, subscribe } = useDocumentStore
 
 // -----------------------------------------
+
 function resetDocState() {
   setState(state => ({
     content: undefined,
     path: undefined,
     baseDir: undefined,
-    fileName: "",
+    fileName: undefined,
     saved: false,
   }))
 }
@@ -46,12 +49,28 @@ export function createNewDoc() {
   }))
 }
 
-export async function closeDocIfNeeded() {
+export async function selectDoc() {
+  const file = await PlatformAPI.selectFile()
+  if (file !== undefined) {
+    const content = await PlatformAPI.readFile(file.path)
+    if (content === undefined) {
+      throw Error("Failed to read file")
+    }
+    setFile(file.path, content)
+    setRootDir(getParentDirectory(file.path))
+  }
+}
+
+export async function closeDocIfNotExist() {
   if (getState().path !== undefined) {
     if (!await PlatformAPI.exists(getState().path!)) {
       resetDocState()
     }
   }
+}
+
+export async function closeCurrentDoc() {
+  resetDocState()
 }
 
 export function updateContent(content: string) {
@@ -89,7 +108,6 @@ export async function saveFile(): Promise<boolean> {
       saved: true,
       fileName,
     }))
-    setRootDir(getParentDirectory(path))
     return true
   } else {
     return false

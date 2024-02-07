@@ -1,3 +1,5 @@
+import { openFile } from "@/store/directory";
+import { createNewDoc, selectDoc } from "@/store/document";
 import { Box, Button, Flex, Heading, IconButton, Text } from "@radix-ui/themes";
 import { FolderIcon, HomeIcon, PencilIcon } from "lucide-react";
 
@@ -10,8 +12,12 @@ export function Welcome() {
         </p>
 
         <div className="my-6">
-          <Button className="mr-3 my-1" size={"3"}><PencilIcon width={16} />新建文件</Button>
-          <Button className="my-1" variant="soft" size={"3"}><FolderIcon width={16} />打开 ...</Button>          
+          <Button className="mr-3 my-1" size={"3"} onClick={createNewDoc}>
+            <PencilIcon width={16} />新建文件
+          </Button>
+          <Button className="my-1" variant="soft" size={"3"} onClick={selectDoc}>
+            <FolderIcon width={16} />打开 ...
+          </Button>
         </div>
       </div>
     </div>

@@ -1,12 +1,14 @@
 import { PlatformAPI } from "@/ipc";
-import useDocumentStore, { saveFile, createNewDoc } from "@/store/document";
+import useDocumentStore, { saveFile, createNewDoc, closeCurrentDoc } from "@/store/document";
 import useNavigationStore, { toggleSidebarExpanded } from "@/store/navigation";
 import { Dialog, Flex, Button } from "@radix-ui/themes";
-import { SidebarClose, SidebarOpen, SaveIcon, PlusCircleIcon, Search, Code2Icon, Share, Settings, Hammer, Inspect, Terminal, TerminalSquare } from "lucide-react";
+import { SidebarClose, SidebarOpen, SaveIcon, PlusCircleIcon, Search,  Settings, TerminalSquare, MoreHorizontal } from "lucide-react";
 import { useContext } from "react";
 import { DialogContext } from "../dialog/DialogContext";
 import { TitleMenuItem, TitleMenuItemProps } from "./TitleMenuItem";
 import { toast } from "sonner";
+import { TitleBarDropdownMenus } from "./TitleBarDropdownMenus";
+import { Constants } from "@/utils/constants";
 
 const iconSize = 16
 
@@ -117,18 +119,10 @@ function SearchMenuItem() {
 
 }
 
-function ExportMenuItem() {
-  const props: TitleMenuItemProps = {
-    icon: <Share size={iconSize} />,
-    label: '导出...',
-    onClick: () => { },
-    isDisabled: false,
-  }
-  return <TitleMenuItem props={props} />
-
-}
-
 function OpenDevToolMenuItem() {
+  if (Constants.isTauri) {
+    return <></>
+  }
   const openDevToolMenuItem: TitleMenuItemProps = {
     icon: <TerminalSquare size={iconSize} />,
     label: '开发者工具',
@@ -152,11 +146,22 @@ function SettingsMenuItem() {
   return <TitleMenuItem props={settingsMenuItem} />
 }
 
+function MoreMenuItem() {
+  const moreMenuItem: TitleMenuItemProps = {
+    icon: <MoreHorizontal size={iconSize} />,
+    label: "更多..."
+  }
+  return <TitleMenuItem props={moreMenuItem} />
+}
+
 export const titleBarMenuItems = [
   <ToggleFolderViewMenuItem key={"ToggleFolderViewMenuItem"} />,
   <SaveMenuItem key={"SaveMenuItem"} />,
   <NewFileMenuItem key={"NewFileMenuItem"} />,
   <OpenDevToolMenuItem key={"OpenDevToolMenuItem"} />,
   // <SearchMenuItem key={"SearchMenuItem"} />,
-  <ExportMenuItem key={"ExportMenuItem"} />
+  // <ExportMenuItem key={"ExportMenuItem"} />
+  <TitleBarDropdownMenus key={"MoreMenuItem"}>
+    <MoreMenuItem />
+  </TitleBarDropdownMenus>
 ]

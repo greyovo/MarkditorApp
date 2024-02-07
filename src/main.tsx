@@ -7,6 +7,7 @@ import { Theme, ThemePanel } from '@radix-ui/themes'
 import "vditor/dist/index.css"
 import { DialogProvider } from './components/dialog/DialogContext';
 import { Dialog } from './components/dialog/Dialog';
+import { initDirectoryStore } from './store/directory';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
@@ -21,3 +22,4 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
 )
 
 postMessage({ payload: 'removeLoading' }, '*')
+initDirectoryStore()

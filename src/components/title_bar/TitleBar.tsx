@@ -27,8 +27,10 @@ const ButtonIcon = ({ children, onClick, isDanger = false }: ButtonIconProps) =>
 }
 
 export function WindowTitleBar() {
-  const title = useDocumentStore((state) => state.fileName ?? "Untitled.md")
+  const hasDoc = useDocumentStore((state) => state.hasDocOpened())
+  const title = useDocumentStore((state) => state.fileName ?? "")
   const saved = useDocumentStore((state) => state.saved)
+  const windowTitle = saved ? title : title + "*"
   const { openDialog } = useDialog()
   const iconSize = 17
   const [maximized, setMaximized] = useState(false)
@@ -79,7 +81,9 @@ export function WindowTitleBar() {
         {titleBarMenuItems}
       </Flex>
 
-      <div data-tauri-drag-region className="flex-1 mx-3 my-1 text-center text-ellipsis line-clamp-1">{title}{!saved && "*"}</div>
+      <div data-tauri-drag-region className="flex-1 mx-3 my-1 text-center text-ellipsis line-clamp-1">
+        {hasDoc && windowTitle}
+      </div>
 
       <Flex className={styles.undraggable} gap="1">
         <ButtonIcon onClick={minimizeWindow}>

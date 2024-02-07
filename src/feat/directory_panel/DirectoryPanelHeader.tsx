@@ -1,7 +1,7 @@
 import useDirectoryStore from "@/store/directory";
 import { Tooltip, IconButton } from "@radix-ui/themes";
 import { PlusIcon, MoreVertical, MoreHorizontal } from "lucide-react";
-import { HeaderDropdownMenus } from "./MoreDropdownMenus";
+import { DirectoryDropdownMenus } from "./DirectoryDropdownMenus";
 
 export function DirectoryPanelHeader() {
   const root = useDirectoryStore(state => state.root);
@@ -12,12 +12,12 @@ export function DirectoryPanelHeader() {
           <div className="font-bold self-center text-sm">{(root?.name ?? "")}</div>
         </Tooltip>
         <div className="flex-1"></div>
-        <HeaderDropdownMenus>
+        {/* <DirectoryDropdownMenus>
           <IconButton size="1" className="bg-transparent hover:bg-accent active:bg-accent"
             radius="full" variant="soft">
             <MoreHorizontal width={16} />
           </IconButton>
-        </HeaderDropdownMenus>
+        </DirectoryDropdownMenus> */}
       </div>
       {/* <SearchBar /> */}
     </div>

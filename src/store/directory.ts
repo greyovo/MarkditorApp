@@ -1,21 +1,27 @@
 import { PlatformAPI } from "@/ipc"
 import { create } from "zustand"
-import useDocumentStore, { closeDocIfNeeded, setFile } from "./document"
+import useDocumentStore, { closeDocIfNotExist, setFile } from "./document"
 import { getParentDirectory, isMarkdownFile } from "@/utils/path"
 
 interface DirectoryState {
-  currentDoc?: DocumentEntity,
   root?: DirectoryEntity,
 }
 
 const useDirectoryStore = create<DirectoryState>(
   () => ({
-    currentDoc: undefined,
     root: undefined,
   })
 )
 
 const { setState, getState, subscribe } = useDirectoryStore
+
+export const initDirectoryStore = () => {
+  useDocumentStore.subscribe((state, prev) => {
+    if (state.path) {
+      setRootDir(getParentDirectory(state.path))
+    }
+  })
+}
 
 // -----------------------------------------
 
@@ -119,13 +125,13 @@ export async function renameDirectory(entity: DirectoryEntity, newName: string) 
 export async function deleteDirectory(entity: DirectoryEntity) {
   await PlatformAPI.deleteDir(entity.path)
   refreshRootDir()
-  closeDocIfNeeded()
+  closeDocIfNotExist()
 }
 
 export async function deleteFile(entity: DirectoryEntity) {
   await PlatformAPI.deleteFile(entity.path)
   refreshRootDir()
-  closeDocIfNeeded()
+  closeDocIfNotExist()
 }
 
 

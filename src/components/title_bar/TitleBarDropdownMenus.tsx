@@ -1,11 +1,12 @@
 import { refreshRootDir, selectRootDir } from "@/store/directory";
 import { DropdownMenu, Button } from "@radix-ui/themes";
 
-export function HeaderDropdownMenus({ children }: { children: React.ReactNode }) {
+
+export function TitleBarDropdownMenus({ children }: { children: React.ReactNode }) {
   return (
     <DropdownMenu.Root>
       <DropdownMenu.Trigger>
-        {children}
+        <div>{children}</div>
       </DropdownMenu.Trigger>
       <DropdownMenu.Content>
         <DropdownMenu.Item onClick={selectRootDir}>打开文件夹...</DropdownMenu.Item>

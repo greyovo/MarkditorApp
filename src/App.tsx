@@ -5,12 +5,16 @@ import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from "./componen
 import { DirectoryPanel } from "./feat/directory_panel/DirectoryPanel";
 import useNavigationStore from "./store/navigation";
 import { WindowTitleBar } from "./components/title_bar/TitleBar";
+import useDocumentStore from "./store/document";
+import { Welcome } from "./feat/welcome/Welcome";
 
 const App = () => {
   const showSidePanel = useNavigationStore((state) => state.sidebarExpanded);
   const [panelSize, setPanelSize] = useState(20)
   const onResize = (size: number) => setPanelSize(size)
   const titleBarHeight = "33px";
+
+  const hasDoc = useDocumentStore((state) => state.hasDocOpened());
 
   return (
     <div className="overflow-clip">
@@ -33,7 +37,8 @@ const App = () => {
             </>
           )}
           <ResizablePanel id="mainEditor" order={2}>
-            <Editor /> {/* 编辑器 */}
+            {/* 右侧主体 */}
+            {hasDoc ? <Editor /> : <Welcome />}
           </ResizablePanel>
         </ResizablePanelGroup>
       </div>

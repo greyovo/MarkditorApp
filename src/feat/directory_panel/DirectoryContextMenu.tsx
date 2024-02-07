@@ -3,11 +3,17 @@ import { DialogContext } from "@/components/dialog/DialogContext";
 import { createDirectory, createFile, deleteDirectory, deleteFile, openFile, renameDirectory, renameFile } from "@/store/directory";
 import { createNewDoc } from "@/store/document";
 import { getParentDirectory } from "@/utils/path";
-import { Button, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, useDisclosure } from "@nextui-org/react";
-import { ContextMenu, Dialog, TextField, TextFieldInput } from "@radix-ui/themes";
+import { Button, Listbox, ListboxItem, ListboxSection, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Popover, PopoverContent, PopoverTrigger, useDisclosure } from "@nextui-org/react";
 import { error } from "console";
-import { useState } from "react";
+import { ReactNode, useState } from "react";
 import { toast } from "sonner";
+
+
+export const ListboxWrapper = ({ children }: { children: ReactNode }) => (
+  <div className="w-full max-w-[260px] border-small px-1 py-2 rounded-small border-default-200 dark:border-default-100">
+    {children}
+  </div>
+);
 
 export function DirectoryContextMenu({ children, entity, onRename }: { children: React.ReactNode, entity: DirectoryEntity, onRename: () => void }) {
   const { openDialog } = useDialog();
@@ -54,42 +60,48 @@ export function DirectoryContextMenu({ children, entity, onRename }: { children:
 
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
 
+  const [isPopoverOpen, setIsPopoverOpen] = useState(false)
+  const [offset, setOffset] = useState({})
+
   return (
     <>
-      <ContextMenu.Root>
-        <ContextMenu.Trigger>
-          {children}
-        </ContextMenu.Trigger>
-        <ContextMenu.Content>
-          <ContextMenu.Item onClick={() => openFile(entity.path)}>打开</ContextMenu.Item>
-          <ContextMenu.Item onClick={onRename}>重命名</ContextMenu.Item>
-          <ContextMenu.Item >创建副本</ContextMenu.Item>
-          <ContextMenu.Separator />
+      <div onContextMenu={(e) => {
+        e.preventDefault()
+        setOffset({
+          left: e.clientX + 2,
+          top: e.clientY + 2
+        })
+        setIsPopoverOpen(true)
+      }}>
+        {children}
+      </div>
 
-          {/* 新建文件和对话框 */}
-
-          <ContextMenu.Item onClick={onOpen}>
-            新建文件
-          </ContextMenu.Item>
-
-          <ContextMenu.Item onClick={handleCreateNewFolder} >新建文件夹</ContextMenu.Item>
-
-          {/* <ContextMenu.Sub>
-          <ContextMenu.SubTrigger>More</ContextMenu.SubTrigger>
-          <ContextMenu.SubContent>
-            <ContextMenu.Item>Move to project…</ContextMenu.Item>
-            <ContextMenu.Item>Move to folder…</ContextMenu.Item>
-            <ContextMenu.Separator />
-            <ContextMenu.Item>Advanced options…</ContextMenu.Item>
-          </ContextMenu.SubContent>
-        </ContextMenu.Sub> */}
-
-          {/* <ContextMenu.Item>Share</ContextMenu.Item>
-        <ContextMenu.Item>Add to favorites</ContextMenu.Item> */}
-          <ContextMenu.Separator />
-          <ContextMenu.Item color="red" onClick={handleDelete}>删除</ContextMenu.Item>
-        </ContextMenu.Content>
-      </ContextMenu.Root>
+      <div className="absolute" style={offset}>
+        <Popover placement={"right-start"}
+          onOpenChange={(open) => setIsPopoverOpen(open)} isOpen={isPopoverOpen}>
+          <PopoverTrigger><div></div></PopoverTrigger>
+          <PopoverContent className="p-1">
+            <Listbox label="Right!" className="w-[150px] select-none" onAction={(k) => {
+              console.log(k)
+              setIsPopoverOpen(false)
+            }}
+              topContent={
+                <div className="text-ellipsis line-clamp-1 break-all text-xs 
+                px-2 py-1 text-default-400">{entity.name}</div>
+              }
+            >
+              <ListboxSection showDivider>
+                <ListboxItem key={"open"}>打开</ListboxItem>
+                <ListboxItem key={"rename"}>重命名</ListboxItem>
+                <ListboxItem key={"copy"}>创建副本</ListboxItem>
+              </ListboxSection>
+              <ListboxItem key={"newfile"}>新建文件</ListboxItem>
+              <ListboxItem key={"newfolder"}>新建文件夹</ListboxItem>
+              <ListboxItem color="danger" className="text-danger" key={"delete"}>删除</ListboxItem>
+            </Listbox>
+          </PopoverContent>
+        </Popover>
+      </div>
 
       <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
         <ModalContent>

@@ -17,7 +17,7 @@ body::-webkit-scrollbar {
 }
 
 body::-webkit-scrollbar-thumb {
-  background: #ccc; 
+  background: #ccc;
   border-radius: 5px;
 }
 
@@ -87,10 +87,10 @@ body::-webkit-scrollbar-thumb {
 
 * {
   font-family: MiSans;
-  :before{
+  :before {
     font-family: MiSans;
   }
-  :after{
+  :after {
     font-family: MiSans;
   }
 }
@@ -102,12 +102,8 @@ body::-webkit-scrollbar-thumb {
 }
 
 /* 修复 TaiwindCSS 和 Vditor 在有序列表样式冲突的问题 */
-@layer base {
-  ol,
-  ul,
-  menu {
-    list-style: decimal;
-  }
+.vditor-reset ol,
+.vditor-reset ul,
+.vditor-reset menu {
+  list-style: decimal;
 }
-
-

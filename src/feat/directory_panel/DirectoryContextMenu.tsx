@@ -1,3 +1,4 @@
+import { ContextMenu } from "@/components/context_menu";
 import { useDialog } from "@/components/dialog/Dialog";
 import { DialogContext } from "@/components/dialog/DialogContext";
 import { createDirectory, createFile, deleteDirectory, deleteFile, openFile, renameDirectory, renameFile } from "@/store/directory";
@@ -59,12 +60,25 @@ export function DirectoryContextMenu({ children, entity, onRename }: { children:
 
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
 
-  const [isPopoverOpen, setIsPopoverOpen] = useState(false)
-  const [offset, setOffset] = useState({})
+  const topContent = <div className="text-ellipsis line-clamp-1 break-all text-xs
+  px-2 text-default-400">{entity.name}</div>
 
   return (
     <>
-      <div onContextMenu={(e) => {
+      <ContextMenu trigger={children} topContent={topContent}>
+        <ListboxSection showDivider>
+          <ListboxItem key={"rename"}>重命名</ListboxItem>
+          <ListboxItem key={"copy"}>创建副本</ListboxItem>
+        </ListboxSection>
+        <ListboxItem key={"newfile"} onClick={handleCreateNewFile}>新建文件</ListboxItem>
+        <ListboxItem key={"newfolder"} onClick={handleCreateNewFolder}>新建文件夹</ListboxItem>
+        <ListboxItem
+          color="danger" className="text-danger" key={"delete"} onClick={handleDelete}>
+          删除
+        </ListboxItem>
+      </ContextMenu>
+
+      {/* <div onContextMenu={(e) => {
         e.preventDefault()
         e.stopPropagation()
         setOffset({
@@ -81,14 +95,10 @@ export function DirectoryContextMenu({ children, entity, onRename }: { children:
           onOpenChange={(open) => setIsPopoverOpen(open)} isOpen={isPopoverOpen}>
           <PopoverTrigger><div></div></PopoverTrigger>
           <PopoverContent className="p-1">
-            <Listbox label="Right!" className="w-[150px] select-none" onAction={(k) => {
-              console.log(k)
-              setIsPopoverOpen(false)
-            }}
-              topContent={
-                <div className="text-ellipsis line-clamp-1 break-all text-xs 
-                px-2 py-1 text-default-400">{entity.name}</div>
-              }
+            <Listbox label="DirContextMenu"
+              className="w-[150px] select-none"
+              onAction={() => setIsPopoverOpen(false)}
+              topContent={topContent}
             >
               <ListboxSection showDivider>
                 <ListboxItem key={"rename"}>重命名</ListboxItem>
@@ -103,7 +113,7 @@ export function DirectoryContextMenu({ children, entity, onRename }: { children:
             </Listbox>
           </PopoverContent>
         </Popover>
-      </div>
+      </div> */}
 
       <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
         <ModalContent>

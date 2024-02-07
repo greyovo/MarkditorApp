@@ -12,7 +12,7 @@ import { NextUIProvider } from '@nextui-org/react';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
-    <NextUIProvider>
+    <NextUIProvider onContextMenu={(e) => e.preventDefault()}>
       <Theme>
         <DialogProvider>
           <App />

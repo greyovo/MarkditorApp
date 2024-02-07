@@ -26,8 +26,8 @@ const ButtonIcon = ({ children, onClick, isDanger = false }: ButtonIconProps) =>
 
 function TitleSection({ className, title }: { className: string, title: string }) {
   return (
-    <div data-tauri-drag-region className={className +" mx-3 my-1 text-center text-ellipsis line-clamp-1"}>
-      {title} 
+    <div data-tauri-drag-region className={className + " mx-3 my-1 text-center text-ellipsis line-clamp-1"}>
+      {title}
     </div>
   )
 }

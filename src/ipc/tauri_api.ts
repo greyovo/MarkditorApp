@@ -4,6 +4,7 @@ import { open, save } from '@tauri-apps/api/dialog';
 import { invoke } from '@tauri-apps/api';
 import { IPlatformAPI } from "shared/platformApi";
 import { getNameFromPath, isMarkdownFile } from '@/utils/path';
+import { simulateKeyPress } from '@/utils/hotkeys';
 
 export const TauriAPI: IPlatformAPI = {
   async selectDirectory(): Promise<DirectoryEntity | undefined> {
@@ -159,7 +160,7 @@ export const TauriAPI: IPlatformAPI = {
 
   async openDevTools(): Promise<void> {
     // TODO
-    throw new Error("Method not implemented.");
+    // throw new Error("Method not implemented.");
   },
 
   win: {

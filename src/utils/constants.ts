@@ -1,3 +1,7 @@
+import { NotImplementError } from "./errors";
+
+const supportedBackends = ["electron", "tauri"]
+
 export class Constants {
   public static readonly CODE_LANGUAGES: string[] = ["mermaid", "abc", "apache",
     "js", "ts", "html",
@@ -11,4 +15,23 @@ export class Constants {
     // ext
     "solidity", "yul"
   ];
+
+  private static get BACKEND(): string {
+    const backend = import.meta.env.VITE_BACKEND ?? "unknown"
+    if (supportedBackends.includes(backend ?? "")) {
+      console.log("Running with backend:", backend);
+      return backend
+    } else {
+      throw new NotImplementError(`Unsupported backend: ${backend}.`)
+    }
+  }
+
+  public static get isElectron(): boolean {
+    return this.BACKEND === "electron"
+  }
+
+  public static get isTauri(): boolean {
+    return this.BACKEND === "tauri"
+  }
+
 }

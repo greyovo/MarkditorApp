@@ -12,6 +12,26 @@
   "tauri": {
     "allowlist": {
       "all": false,
+      "dialog": {
+        "all": true,
+        "ask": true,
+        "confirm": true,
+        "message": true,
+        "open": true,
+        "save": true
+      },
+      "fs": {
+        "all": true,
+        "readFile": true,
+        "writeFile": true,
+        "readDir": true,
+        "copyFile": true,
+        "createDir": true,
+        "removeDir": true,
+        "removeFile": true,
+        "renameFile": true,
+        "exists": true
+      },
       "window": {
         "all": false,
         "close": true,
@@ -65,14 +85,13 @@
     },
     "windows": [
       {
+        "label": "main",
         "fullscreen": false,
         "decorations": false,
-        "transparent": true,
         "height": 600,
         "resizable": true,
         "title": "Markditor",
-        "width": 800,
-        "label": "markditor_main"
+        "width": 1000
       }
     ]
   }

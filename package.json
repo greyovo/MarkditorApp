@@ -43,6 +43,7 @@
   },
   "devDependencies": {
     "@playwright/test": "^1.37.1",
+    "@tauri-apps/api": "^1.5.3",
     "@types/node": "^20.11.0",
     "@types/react": "^18.2.20",
     "@types/react-dom": "^18.2.7",
@@ -50,9 +51,9 @@
     "autoprefixer": "^10.4.16",
     "electron": "^18.0.0",
     "electron-builder": "^24.6.3",
+    "lucide-react": "^0.309.0",
     "postcss": "^8.4.31",
     "react": "^18.2.0",
-    "lucide-react": "^0.309.0",
     "react-dom": "^18.2.0",
     "tailwindcss": "^3.3.3",
     "typescript": "^5.1.6",

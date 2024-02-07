@@ -1,58 +1,164 @@
-import { NotImplementError } from "@/utils/errors";
+import { appWindow } from '@tauri-apps/api/window'
+import { createDir, BaseDirectory, readDir, removeDir, renameFile, writeTextFile, readTextFile, removeFile } from '@tauri-apps/api/fs';
+import { open, save } from '@tauri-apps/api/dialog';
+import { invoke } from '@tauri-apps/api';
 import { IPlatformAPI } from "shared/platformApi";
+import { getNameFromPath } from '@/utils/path';
 
 export const TauriAPI: IPlatformAPI = {
-  selectDirectory(): Promise<DirectoryEntity | undefined> {
+  async selectDirectory(): Promise<DirectoryEntity | undefined> {
+    const selectedPath = await open({
+      multiple: false,
+      directory: true,
+    });
+    if (selectedPath && typeof selectedPath === 'string') {
+      return {
+        type: "dir",
+        name: getNameFromPath(selectedPath),
+        path: selectedPath,
+        children: await this.listDirectories(selectedPath),
+      }
+    }
+    return undefined;
+  },
+
+  async listDirectories(path: string): Promise<DirectoryEntity[]> {
+    const entries = await readDir(path);
+    const dirs: DirectoryEntity[] = [];
+    const files: DirectoryEntity[] = [];
+    for (const entry of entries) {
+      if (entry.children) {
+        dirs.push({
+          type: "dir",
+          name: entry.name ?? "",
+          path: entry.path,
+          children: []
+        })
+      } else {
+        files.push({
+          type: "file",
+          name: entry.name ?? "",
+          path: entry.path,
+          children: []
+        })
+      }
+
+    }
+    return [...dirs, ...files];
+  },
+
+  async selectFile(): Promise<DirectoryEntity | undefined> {
+    const selectedPath = await open({
+      filters: [{
+        name: 'Untitle',
+        extensions: ['md', 'markdown'],
+      }]
+    });
+    if (selectedPath && typeof selectedPath === 'string') {
+      return {
+        type: "file",
+        name: getNameFromPath(selectedPath),
+        path: selectedPath,
+        children: []
+      }
+    }
+    return undefined;
+  },
+
+  async readFile(path: string): Promise<string | undefined> {
+    return await readTextFile(path)
+  },
+
+  async saveFile(path: string, content: string): Promise<boolean> {
+    try {
+      await writeTextFile(path, content);
+      return true
+    } catch (error) {
+      return false
+    }
+  },
+  async createDir(path: string): Promise<boolean> {
+    try {
+      await createDir(path, { recursive: true })
+      return true
+    } catch (error) {
+      return false
+    }
+  },
+
+  async createFile(path: string): Promise<boolean> {
+    // TODO
     throw new Error("Method not implemented.");
   },
-  listDirectories(path: string): Promise<DirectoryEntity[]> {
+
+  async renameDir(oldPath: string, newPath: string): Promise<boolean> {
+    // TODO
+    try {
+      invoke("rename_dir", { oldPath, newPath })
+      return true
+    } catch (_) {
+      return false
+    }
+  },
+
+  async renameFile(oldPath: string, newPath: string): Promise<boolean> {
+    try {
+      await renameFile(oldPath, newPath)
+      return true
+    } catch (error) {
+      return false
+    }
+  },
+
+  async deleteDir(path: string): Promise<boolean> {
+    try {
+      await removeDir(path, { recursive: true })
+      return true
+    } catch (error) {
+      return false
+    }
+  },
+
+  async deleteFile(path: string): Promise<boolean> {
+    try {
+      await removeFile(path)
+      return true
+    } catch (error) {
+      return false
+    }
+  },
+
+  async showSaveDialog(): Promise<string | undefined> {
+    const selectedPath = await save({
+      filters: [{
+        name: 'Markdown Document',
+        extensions: ['md', 'markdown'],
+      }]
+    });
+    if (selectedPath && typeof selectedPath === 'string') {
+      return selectedPath
+    }
+    return undefined;
+  },
+
+  async getSystemInfo(): Promise<string> {
+    return "Hello! This is tauri.";
+  },
+
+  async openDevTools(): Promise<void> {
+    // TODO
     throw new Error("Method not implemented.");
   },
-  selectFile(): Promise<DirectoryEntity | undefined> {
-    throw new Error("Method not implemented.");
-  },
-  readFile(path: string): Promise<string | undefined> {
-    throw new Error("Method not implemented.");
-  },
-  saveFile(path: string, content: string): Promise<boolean> {
-    throw new Error("Method not implemented.");
-  },
-  createDir(path: string): Promise<boolean> {
-    throw new Error("Method not implemented.");
-  },
-  createFile(path: string): Promise<boolean> {
-    throw new Error("Method not implemented.");
-  },
-  renameDir(oldPath: string, newPath: string): Promise<boolean> {
-    throw new Error("Method not implemented.");
-  },
-  renameFile(oldPath: string, newPath: string): Promise<boolean> {
-    throw new Error("Method not implemented.");
-  },
-  deleteDir(path: string): Promise<boolean> {
-    throw new Error("Method not implemented.");
-  },
-  deleteFile(path: string): Promise<boolean> {
-    throw new Error("Method not implemented.");
-  },
-  showSaveDialog(): Promise<string | undefined> {
-    throw new Error("Method not implemented.");
-  },
-  getSystemInfo(): Promise<string> {
-    throw new Error("Method not implemented.");
-  },
-  openDevTools(): Promise<void> {
-    throw new Error("Method not implemented.");
-  },
+
   win: {
     close: function (): void {
-      throw new Error("Function not implemented.");
+      appWindow.close();
     },
     minimize: function (): void {
-      throw new Error("Function not implemented.");
+      appWindow.minimize();
     },
-    toggleMaximize: function (): void {
-      throw new Error("Function not implemented.");
+    toggleMaximize: async function () {
+      appWindow.toggleMaximize();
     },
   }
 }

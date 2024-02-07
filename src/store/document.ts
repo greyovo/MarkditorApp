@@ -1,5 +1,5 @@
 import { PlatformAPI } from '@/ipc'
-import { getFileNameFromPath, getParentDirectory } from '@/utils/path'
+import { getNameFromPath, getParentDirectory } from '@/utils/path'
 import { setWindowTitle } from '@/utils/window'
 import { create } from 'zustand'
 import { setRootDir } from './directory'
@@ -47,7 +47,7 @@ export function updateContent(content: string) {
 }
 
 export function setFile(path: string, content: string) {
-  const fileName = getFileNameFromPath(path)
+  const fileName = getNameFromPath(path)
   const baseDir = getParentDirectory(path).path
   setState(state => ({
     ...state,
@@ -68,7 +68,7 @@ export async function saveFile(): Promise<boolean> {
   }
   const success = await PlatformAPI.saveFile(path!, getState().content!)
   if (success) {
-    const fileName = getFileNameFromPath(path)
+    const fileName = getNameFromPath(path)
     const baseDir = getParentDirectory(path).path
     setState(state => ({
       ...state,

@@ -60,7 +60,7 @@ export const apiHandlers: IPlatformAPI = {
   },
 
   async getSystemInfo(): Promise<string> {
-    return "Hello! getSystemInfo invoked!";
+    return "Hello! This is electron.";
   },
 
   async openDevTools(): Promise<void> {

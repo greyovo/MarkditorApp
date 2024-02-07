@@ -1,6 +1,6 @@
 import useDocumentStore from "@/store/document";
 
-export function getFileNameFromPath(path: string): string {
+export function getNameFromPath(path: string): string {
   let pathParts = path.split('\\');
   if (pathParts.length === 0) {
     pathParts = path.split("/")

@@ -2,22 +2,15 @@ import { NotImplementError } from "@/utils/errors"
 import { ElectronAPI } from "./electron_api";
 import { TauriAPI } from "./tauri_api";
 import { IPlatformAPI } from "shared/platformApi";
+import { Constants } from "@/utils/constants";
 
-const backend = import.meta.env.VITE_BACKEND ?? "unknown"
-console.log("Running with backend:", backend);
-
-const isElectron = backend === "electron"
-const isTauri = backend === "tauri"
 
 let PlatformAPI: IPlatformAPI
 
-if (isElectron) {
+if (Constants.isElectron) {
   PlatformAPI = ElectronAPI
-} else if (isTauri) {
+} else if (Constants.isTauri) {
   PlatformAPI = TauriAPI
-} else {
-  throw new NotImplementError(`Unsupported backend: ${backend}. 
-Please set the right backend via environment variable.`)
 }
 
 export { PlatformAPI }

@@ -10,7 +10,9 @@ type ContextMenuProps = {
 
 export function ContextMenu(props: ContextMenuProps) {
   const [isOpen, setIsOpen] = useState(false)
+  const [isSubOpen, setSubIsOpen] = useState(false)
   const [position, setPosition] = useState({ left: 0, top: 0 })
+  const [subPposition, setSubPosition] = useState({ left: 0, top: 0 })
 
   return (
     <>

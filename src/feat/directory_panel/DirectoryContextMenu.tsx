@@ -1,10 +1,12 @@
-import { ContextMenu } from "@/components/context_menu";
+// import { ContextMenu } from "@/components/context_menu";
 import { useDialog } from "@/components/dialog/Dialog";
 import { DialogContext } from "@/components/dialog/DialogContext";
+import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuPortal, ContextMenuSeparator, ContextMenuShortcut, ContextMenuSub, ContextMenuSubContent, ContextMenuSubTrigger, ContextMenuTrigger } from "@/components/ui/context-menu";
 import { createDirectory, createFile, deleteDirectory, deleteFile, openFile, renameDirectory, renameFile } from "@/store/directory";
 import { createNewDoc } from "@/store/document";
 import { getParentDirectory } from "@/utils/path";
 import { Button, Listbox, ListboxItem, ListboxSection, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Popover, PopoverContent, PopoverTrigger, useDisclosure } from "@nextui-org/react";
+import { ChevronRightIcon } from "lucide-react";
 import { ReactNode, useState } from "react";
 import { toast } from "sonner";
 
@@ -21,20 +23,21 @@ export function DirectoryContextMenu({ children, entity, onRename }: { children:
   const [newFileName, setNewFileName] = useState("")
 
   function handleDelete() {
-    openDialog({
-      title: `删除: ${entity.name}`,
-      content: "确定？",
-      danger: true,
-      confirmText: "删除",
-      denyText: "取消",
-      onConfirm: () => {
-        if (entity.type === 'file') {
-          deleteFile(entity)
-        } else {
-          deleteDirectory(entity)
-        }
-      }
-    })
+    onOpen()
+    // openDialog({
+    //   title: `删除: ${entity.name}`,
+    //   content: "确定？",
+    //   danger: true,
+    //   confirmText: "删除",
+    //   denyText: "取消",
+    //   onConfirm: () => {
+    //     if (entity.type === 'file') {
+    //       deleteFile(entity)
+    //     } else {
+    //       deleteDirectory(entity)
+    //     }
+    //   }
+    // })
   }
 
   async function handleCreateNewFile() {
@@ -59,13 +62,45 @@ export function DirectoryContextMenu({ children, entity, onRename }: { children:
   }
 
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
+  const [isSubOpen, setIsSubOpen] = useState(false);
 
   const topContent = <div className="text-ellipsis line-clamp-1 break-all text-xs
   px-2 text-default-400">{entity.name}</div>
 
   return (
     <>
-      <ContextMenu trigger={children} topContent={topContent}>
+      <ContextMenu>
+        <ContextMenuTrigger>{children}</ContextMenuTrigger>
+        <ContextMenuContent className="w-[200px] select-none">
+          <div className="line-clamp-1 text-xs pl-1.5 text-default-400 py-1 break-all text-ellipsis">{entity.name}</div>
+          <ContextMenuSeparator />
+          <ContextMenuItem>重命名
+            <ContextMenuShortcut>⌘+R</ContextMenuShortcut>
+          </ContextMenuItem>
+          <ContextMenuItem>创建副本</ContextMenuItem>
+          <ContextMenuItem>在文件管理器打开
+            <ContextMenuShortcut>⌘+E</ContextMenuShortcut>
+          </ContextMenuItem>
+
+          <ContextMenuSeparator />
+          <ContextMenuItem>新建文件</ContextMenuItem>
+          <ContextMenuItem>新建文件夹</ContextMenuItem>
+          {/* <ContextMenuSub>
+            <ContextMenuSubTrigger>移动到...</ContextMenuSubTrigger>
+            <ContextMenuSubContent>
+              <ContextMenuItem>Desktop</ContextMenuItem>
+              <ContextMenuItem>Documents</ContextMenuItem>
+              <ContextMenuItem>Downloads</ContextMenuItem>
+            </ContextMenuSubContent>
+          </ContextMenuSub> */}
+          <ContextMenuSeparator />
+          <ContextMenuItem className="text-danger focus:bg-danger-50 focus:text-danger">
+            删除
+          </ContextMenuItem>
+        </ContextMenuContent>
+      </ContextMenu>
+
+      {/* <ContextMenu trigger={children} topContent={topContent}>
         <ListboxSection showDivider>
           <ListboxItem key={"rename"}>重命名</ListboxItem>
           <ListboxItem key={"copy"}>创建副本</ListboxItem>
@@ -76,44 +111,7 @@ export function DirectoryContextMenu({ children, entity, onRename }: { children:
           color="danger" className="text-danger" key={"delete"} onClick={handleDelete}>
           删除
         </ListboxItem>
-      </ContextMenu>
-
-      {/* <div onContextMenu={(e) => {
-        e.preventDefault()
-        e.stopPropagation()
-        setOffset({
-          left: e.clientX + 2,
-          top: e.clientY + 2
-        })
-        setIsPopoverOpen(true)
-      }}>
-        {children}
-      </div>
-
-      <div className="absolute" style={offset}>
-        <Popover placement={"right-start"}
-          onOpenChange={(open) => setIsPopoverOpen(open)} isOpen={isPopoverOpen}>
-          <PopoverTrigger><div></div></PopoverTrigger>
-          <PopoverContent className="p-1">
-            <Listbox label="DirContextMenu"
-              className="w-[150px] select-none"
-              onAction={() => setIsPopoverOpen(false)}
-              topContent={topContent}
-            >
-              <ListboxSection showDivider>
-                <ListboxItem key={"rename"}>重命名</ListboxItem>
-                <ListboxItem key={"copy"}>创建副本</ListboxItem>
-              </ListboxSection>
-              <ListboxItem key={"newfile"} onClick={handleCreateNewFile}>新建文件</ListboxItem>
-              <ListboxItem key={"newfolder"} onClick={handleCreateNewFolder}>新建文件夹</ListboxItem>
-              <ListboxItem
-                color="danger" className="text-danger" key={"delete"} onClick={handleDelete}>
-                删除
-              </ListboxItem>
-            </Listbox>
-          </PopoverContent>
-        </Popover>
-      </div> */}
+      </ContextMenu> */}
 
       <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
         <ModalContent>

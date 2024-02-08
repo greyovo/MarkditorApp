@@ -1,9 +1,9 @@
 import { useDialog } from "@/components/dialog/Dialog";
 import { DialogContext } from "@/components/dialog/DialogContext";
-import { Dialog, DialogHeader } from "@/components/ui/dialog";
+import { Dialog, DialogFooter, DialogHeader } from "@/components/ui/dialog";
 import { deleteDirectory, deleteFile, openFile, renameDirectory, renameFile } from "@/store/directory";
 import { createNewDoc } from "@/store/document";
-import { ContextMenu, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from "@radix-ui/themes";
+import { Button, ContextMenu, DialogContent, DialogDescription, DialogTitle, DialogTrigger, TextField, TextFieldInput } from "@radix-ui/themes";
 import { useState } from "react";
 
 export function DirectoryContextMenu({ children, entity, onRename }: { children: React.ReactNode, entity: DirectoryEntity, onRename: () => void }) {
@@ -62,13 +62,17 @@ export function DirectoryContextMenu({ children, entity, onRename }: { children:
 
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent>
-          <DialogHeader>
+          <DialogHeader className="mb-2">
             <DialogTitle>Are you absolutely sure?</DialogTitle>
             <DialogDescription>
-              This action cannot be undone. This will permanently delete your account
-              and remove your data from our servers.
+            <TextField.Input placeholder="Enter your email" />
             </DialogDescription>
           </DialogHeader>
+
+          <DialogFooter className="mt-2">
+            <Button onClick={() => setOpen(false)}>Cancel</Button>
+            <Button color="red" onClick={() => setOpen(false)}>删除</Button>
+          </DialogFooter>
         </DialogContent>
       </Dialog>
 

@@ -3,7 +3,7 @@ import { createDir, BaseDirectory, readDir, removeDir, renameFile, writeTextFile
 import { open, save } from '@tauri-apps/api/dialog';
 import { invoke } from '@tauri-apps/api';
 import { IPlatformAPI } from "shared/platformApi";
-import { getNameFromPath } from '@/utils/path';
+import { getNameFromPath, isMarkdownFile } from '@/utils/path';
 
 export const TauriAPI: IPlatformAPI = {
   async selectDirectory(): Promise<DirectoryEntity | undefined> {
@@ -35,14 +35,15 @@ export const TauriAPI: IPlatformAPI = {
           children: []
         });
       } else {
-        files.push({
-          type: "file",
-          name: entry.name ?? "",
-          path: entry.path,
-          children: []
-        });
+        if (isMarkdownFile(entry.name ?? "")) {
+          files.push({
+            type: "file",
+            name: entry.name ?? "",
+            path: entry.path,
+            children: []
+          });
+        }
       }
-
     }
     return [...dirs, ...files];
   },

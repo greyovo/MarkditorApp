@@ -2,6 +2,7 @@ import { PlatformAPI } from "@/ipc"
 import { create } from "zustand"
 import useDocumentStore, { closeCurrentDoc, closeDocIfNotExist, setFile } from "./document"
 import { findTargetDirRecursive, getDirectoryFromPath, getNameFromPath, getParentDirectory, isMarkdownFile } from "@/utils/path"
+import useNavigationStore from "./navigation"
 
 interface DirectoryState {
   root?: DirectoryEntity,
@@ -37,6 +38,7 @@ export async function selectRootDir() {
     setState((state) => ({ ...state, root, children: root.children }))
     console.log(root);
     closeCurrentDoc()
+    useNavigationStore.setState((state) => ({ ...state, sidebarExpanded: true }))
   } else {
     console.log("打开文件失败！");
   }

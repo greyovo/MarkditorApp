@@ -1,7 +1,7 @@
-import { selectFile } from "@/store/directory";
+import { selectFile, selectRootDir } from "@/store/directory";
 import { createNewDoc } from "@/store/document";
 import { Box, Button, Flex, Heading, IconButton, Text } from "@radix-ui/themes";
-import { FolderIcon, HomeIcon, PencilIcon } from "lucide-react";
+import { FileTextIcon, FolderIcon, HomeIcon, PencilIcon } from "lucide-react";
 
 export function Welcome() {
   return (
@@ -11,14 +11,17 @@ export function Welcome() {
           🤗 Welcome to <b ><span className="text-blue-700">Mark</span><span >ditor</span>.</b>
         </p>
 
-        <div className="my-6">
-          <Button className="mr-3 my-1" size={"3"} onClick={createNewDoc}>
-            <PencilIcon width={16} />新建文件
+        <Flex gap="3" mt="5">
+          <Button size={"3"} onClick={createNewDoc}>
+            <PencilIcon width={16} />新建 Markdown
           </Button>
-          <Button className="my-1" variant="soft" size={"3"} onClick={selectFile}>
-            <FolderIcon width={16} />打开 ...
+          <Button variant="soft" size={"3"} onClick={selectFile}>
+            <FileTextIcon width={16} />打开文档 ...
           </Button>
-        </div>
+          <Button variant="soft" size={"3"} onClick={selectRootDir}>
+            <FolderIcon width={16} />打开文件夹 ...
+          </Button>
+        </Flex>
       </div>
     </div>
   )

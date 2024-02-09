@@ -51,7 +51,7 @@ export const TauriAPI: IPlatformAPI = {
   async selectFile(): Promise<DirectoryEntity | undefined> {
     const selectedPath = await open({
       filters: [{
-        name: 'Untitle',
+        name: 'Markdown Document',
         extensions: ['md', 'markdown'],
       }]
     });

@@ -71,8 +71,9 @@ export function DirectoryContextMenu({ children, entity }: { children: React.Rea
         </ContextMenu.Content>
       </ContextMenu.Root>
 
+
       <DeleteDialog show={showDelete} entity={entity} onOpenChange={setShowDelete} />
-      <RenameDialog show={showRename} entity={entity} onOpenChange={setShowRename} />
+      <RenameDialog show={showRename} key={entity.path} entity={entity} onOpenChange={setShowRename} />
       <CreateDialog show={showCreate}
         newItemType={newItemType}
         entity={entity} onOpenChange={setShowCreate}

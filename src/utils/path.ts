@@ -43,7 +43,6 @@ export function isMarkdownFile(fileName: string) {
   return fileName.endsWith(".md") || fileName.endsWith(".markdown");
 }
 
-
 export function findTargetDirRecursive
   (children: DirectoryEntity[], targetPath: string): DirectoryEntity | undefined {
   if (!children || children.length === 0) {
@@ -76,14 +75,13 @@ export function convertImagePath(html: string, baseDir: string): string {
   return el.innerHTML
 }
 
-export function validateFileName(fileName: string): string {
-  fileName = fileName.trim().replace(/[\\/:*?"<>|]/g, "")
+export function fixMdFileName(fileName: string): string {
   if (!isMarkdownFile(fileName)) {
     fileName += ".md"
   }
   return fileName
 }
 
-export function validateDirectoryName(dirName: string): string {
-  return dirName.trim().replace(/[\\/:*?"<>|]/g, "")
+export function validateDirectoryName(dirName: string): boolean {
+  return (dirName.trim().match(/[\\/:*?"<>|]/g)?.length ?? 0) === 0
 }

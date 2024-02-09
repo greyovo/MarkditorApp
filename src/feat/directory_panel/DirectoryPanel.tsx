@@ -1,10 +1,11 @@
 
 import { FolderOpenIcon } from "@heroicons/react/24/outline";
 import { extractChildrenNode } from "./DirectoryItem";
-import { Button, } from "@radix-ui/themes";
+import { Button, ScrollArea, } from "@radix-ui/themes";
 import { PlatformAPI } from "@/ipc";
 import useDirectoryStore, { selectRootDir } from "@/store/directory";
 import { DirectoryPanelHeader } from "./DirectoryPanelHeader";
+import { DirectoryContextMenu } from "./DirectoryContextMenu";
 
 function DirectoryEmptyView() {
   return (
@@ -20,13 +21,18 @@ function DirectoryEmptyView() {
 
 function DirectoryTreeView() {
   const children = useDirectoryStore((state) => state.root?.children ?? [])
+  const rootDir = useDirectoryStore((state) => state.root)
 
   const childrenNode = extractChildrenNode(children, 0)
 
   return (
-    <div className="flex flex-col">
-      {childrenNode}
-    </div>
+    <DirectoryContextMenu entity={rootDir!}>
+      <ScrollArea scrollbars="vertical" style={{ width: "auto" }} size={"1"}>
+        <div className="flex flex-col">
+          {childrenNode}
+        </div>
+      </ScrollArea>
+    </DirectoryContextMenu >
   )
 }
 
@@ -36,9 +42,9 @@ export function DirectoryPanel() {
   return (
     <div className="flex flex-col h-full bg-slate-50">
       {root !== undefined && <DirectoryPanelHeader />}
-      <div className="h-full overflow-y-auto">
-        {root !== undefined ? <DirectoryTreeView /> : <DirectoryEmptyView />}
-      </div>
+      {/* <div className="overflow-y-auto"> */}
+      {root !== undefined ? <DirectoryTreeView /> : <DirectoryEmptyView />}
+      {/* </div> */}
     </div>
   )
 }

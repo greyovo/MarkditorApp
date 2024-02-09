@@ -23,7 +23,7 @@ function DocInfoPopover({ children }: { children: React.ReactNode }) {
         <Flex className="text-sm" gap="2" direction="column">
           <div className="line-clamp-1 font-bold">{fileName}</div>
           <Flex justify="between" align="center" gap="5">
-            <div className="line-clamp-1">{path}</div>
+            <div className="line-clamp-3">{path}</div>
             <IconButton size="1" variant="soft"> <FolderOpen size={14} /></IconButton>
           </Flex>
 

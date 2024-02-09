@@ -1,23 +1,19 @@
 import { ListItem } from "@/components/ListItem"
 import { PlatformAPI } from "@/ipc"
-import useDirectoryStore, { openDirectory, openFile } from "@/store/directory"
+import { openDirectory, openFile } from "@/store/directory"
 import useDocumentStore from "@/store/document"
 import { FolderIcon, FolderOpenIcon } from "@heroicons/react/24/solid"
 import { DocumentTextIcon } from "@heroicons/react/24/outline"
 import { ChevronDown, ChevronRight } from "lucide-react"
-import { useContext, useEffect, useLayoutEffect, useRef, useState } from "react"
-import { DialogContext } from "@/components/dialog/DialogContext"
+import { useState } from "react"
 import { isMarkdownFile } from "@/utils/path"
 import { toast } from "sonner"
 import { DirectoryContextMenu } from "./DirectoryContextMenu"
-import { TextField } from "@radix-ui/themes"
 
 interface DirectoryItemProps {
   entity: DirectoryEntity,
   open?: boolean,
   depth: number,
-  editable?: boolean,
-  onBlur?: () => void,
 }
 
 export function extractChildrenNode
@@ -56,36 +52,16 @@ function DirItem(props: DirectoryItemProps) {
     setDirOpened(true)
   }
 
-  //-------------------------------------------------------
-  // TODO 封装一个可编辑的列表项，避免重复代码（DirItem、FileItem）
-  const inputRefs = useRef<HTMLInputElement>(null)
-  const inputEl =
-    <input id="myinput" ref={inputRefs}
-      className="text-black"
-      defaultValue={data.name}
-      onBlur={() => { props.onBlur?.() }}
-    />
-
-  const content = props.editable ? inputEl : data.name
-
-  useEffect(() => {
-    setTimeout(() => {
-      inputRefs.current?.focus()
-      inputRefs.current?.select()
-    }, 200);
-  }, [props.editable])
-  // ------------------------------------------------------
-
   return (
     <>
       <ListItem
         className={normalStyle}
         key={data.path}
-        leadingSpace={20 * props.depth}
-        leading={folderIcon}
-        onClick={props.editable ? () => { } : handleClick}
-        trailing={arrow}
-      >{content}
+        leadingSpace={15 * props.depth}
+        leading={arrow}
+        onClick={handleClick}
+      >
+        <div className="flex gap-2">{folderIcon} {data.name}</div>
       </ListItem>
       {childrenNode}
     </>
@@ -108,48 +84,31 @@ function FileItem(props: DirectoryItemProps) {
     openFile(data.path)
   }
 
-  const inputRefs = useRef<HTMLInputElement>(null)
-  const inputEl =
-    <input id="myinput" ref={inputRefs}
-      className="text-black"
-      defaultValue={data.name}
-      onBlur={() => { props.onBlur?.() }}
-    />
-
-  const content = props.editable ? inputEl : data.name
-
-  useEffect(() => {
-    setTimeout(() => {
-      inputRefs.current?.focus()
-      inputRefs.current?.select()
-    }, 200);
-  }, [props.editable])
 
   return (
     <ListItem
       className={normalStyle}
       key={data.path}
-      leadingSpace={20 * props.depth}
-      leading={fileIcon}
-      onClick={props.editable ? () => { } : handleClick}
+      leadingSpace={15 * props.depth}
+      leading={<div className="opacity-0">{fileIcon}</div>}
+      onClick={handleClick}
       trailing={<span />}
     >
-      {content}
+      <div className="flex gap-2">{fileIcon} {data.name}</div>
     </ListItem>
   )
 }
 
 export default function DirectoryItem(props: DirectoryItemProps) {
-  const [enableRename, setEnableRename] = useState(false)
   let child
   if (props.entity.type === "dir") {
-    child = <DirItem entity={props.entity} depth={props.depth} open={props.open} editable={enableRename} onBlur={() => { setEnableRename(false) }} />
+    child = <DirItem entity={props.entity} depth={props.depth} open={props.open} />
   } else {
-    child = <FileItem entity={props.entity} depth={props.depth} open={props.open} editable={enableRename} onBlur={() => { setEnableRename(false) }} />
+    child = <FileItem entity={props.entity} depth={props.depth} open={props.open} />
   }
 
   return (
-    <DirectoryContextMenu entity={props.entity} onRename={() => setEnableRename(true)}>
+    <DirectoryContextMenu entity={props.entity}>
       <div>{child}</div>
     </DirectoryContextMenu>
   )

@@ -90,7 +90,7 @@ export const TauriAPI: IPlatformAPI = {
   async createFile(path: string): Promise<boolean> {
     // TODO
     console.log(path);
-    
+
     try {
       await this.saveFile(path, "");
       return true;
@@ -102,9 +102,10 @@ export const TauriAPI: IPlatformAPI = {
   async renameDir(oldPath: string, newPath: string): Promise<boolean> {
     // TODO
     try {
-      invoke("rename_dir", { oldPath, newPath });
+      await invoke("rename_dir", { oldPath, newPath });
       return true;
-    } catch (_) {
+    } catch (err) {
+      console.error(err);
       return false;
     }
   },
@@ -113,7 +114,8 @@ export const TauriAPI: IPlatformAPI = {
     try {
       await renameFile(oldPath, newPath);
       return true;
-    } catch (error) {
+    } catch (err) {
+      console.error(err);
       return false;
     }
   },

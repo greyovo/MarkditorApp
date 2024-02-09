@@ -148,20 +148,26 @@ export async function createFile(base: DirectoryEntity, name: string): Promise<b
 
 export async function renameFile(entity: DirectoryEntity, newName: string) {
   const parent = getParentDirectory(entity.path)
-  await PlatformAPI.renameFile(entity.path, parent + "/" + newName)
-  refreshRootDir()
+  const res = await PlatformAPI.renameFile(entity.path, parent.path + "/" + newName)
+  if (res) {
+    refreshDirectory(parent)
+  }
+  return res
 }
 
 export async function renameDirectory(entity: DirectoryEntity, newName: string) {
   const parent = getParentDirectory(entity.path)
-  await PlatformAPI.renameFile(entity.path, parent + "/" + newName)
-  refreshRootDir()
+  const res = await PlatformAPI.renameDir(entity.path, parent.path + "/" + newName)
+  if (res) {
+    refreshDirectory(parent)
+  }
+  return res
 }
 
 export async function deleteDirectory(entity: DirectoryEntity) {
   const res = await PlatformAPI.deleteDir(entity.path)
   if (res) {
-    refreshRootDir()
+    refreshDirectory(getParentDirectory(entity.path))
     closeDocIfNotExist()
   }
   return res
@@ -170,7 +176,7 @@ export async function deleteDirectory(entity: DirectoryEntity) {
 export async function deleteFile(entity: DirectoryEntity) {
   const res = await PlatformAPI.deleteFile(entity.path)
   if (res) {
-    refreshRootDir()
+    refreshDirectory(getParentDirectory(entity.path))
     closeDocIfNotExist()
   }
   return res

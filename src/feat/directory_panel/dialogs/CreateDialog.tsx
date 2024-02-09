@@ -2,7 +2,7 @@ import { Dialog, DialogFooter, DialogHeader } from "@/components/ui/dialog";
 import { Button, DialogContent, DialogDescription, DialogTitle, Kbd, TextField } from "@radix-ui/themes";
 import { useState } from "react";
 import { DialogProps } from "./DialogProps";
-import { getParentDirectory, isMarkdownFile } from "@/utils/path";
+import { getParentDirectory, isMarkdownFile, validateDirectoryName, validateFileName } from "@/utils/path";
 import { PlatformAPI } from "@/ipc";
 import { toast } from "sonner";
 import { createDirectory, createFile } from "@/store/directory";
@@ -15,19 +15,22 @@ export function CreateDialog({ show, entity, onOpenChange, newItemType }:
 
   async function confirm() {
     let result = false
+    let finalName = inputName
     switch (newItemType) {
-      case "dir":
-        result = await createDirectory(targetDir, inputName)
-        break;
       case "file":
-        result = await createFile(targetDir, inputName)
+        finalName = validateFileName(inputName);
+        result = await createFile(targetDir, finalName)
+        break;
+      case "dir":
+        finalName = validateDirectoryName(inputName);
+        result = await createDirectory(targetDir, finalName)
         break;
     }
     onOpenChange(false);
     if (result) {
-      toast.success(`创建成功: ${inputName}`);
+      toast.success(`创建成功: ${finalName}`);
     } else {
-      toast.error(`无法创建文件: ${inputName}`, {
+      toast.error(`无法创建: ${finalName}`, {
         description: "文件已存在或无法访问"
       });
     }

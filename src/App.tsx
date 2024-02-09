@@ -1,4 +1,3 @@
-import { Toaster } from "sonner";
 import { Editor } from "./feat/editor/Editor";
 import { useState } from "react";
 import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from "./components/ui/resizable";
@@ -22,7 +21,6 @@ const App = () => {
         <WindowTitleBar />
       </div>
       <div className="flex" style={{ height: `calc(100vh - ${titleBarHeight}px)` }} >
-        <Toaster position="bottom-right" richColors closeButton duration={3000} />
         {/* 侧边菜单栏 */}
         {/* <AsideMenuBar /> */}
         <ResizablePanelGroup direction="horizontal">

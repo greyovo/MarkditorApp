@@ -8,6 +8,7 @@ import "vditor/dist/index.css"
 import { DialogProvider } from './components/dialog/DialogContext';
 import { Dialog } from './components/dialog/Dialog';
 import { initDirectoryStore } from './store/directory';
+import { Toaster } from 'sonner';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
@@ -15,6 +16,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
       <DialogProvider>
         <App />
         <Dialog />
+        <Toaster position="bottom-right" richColors closeButton duration={3000} />
       </DialogProvider>
       {/* <ThemePanel /> */}
     </Theme>

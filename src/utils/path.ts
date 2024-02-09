@@ -75,3 +75,15 @@ export function convertImagePath(html: string, baseDir: string): string {
   }
   return el.innerHTML
 }
+
+export function validateFileName(fileName: string): string {
+  fileName = fileName.trim().replace(/[\\/:*?"<>|]/g, "")
+  if (!isMarkdownFile(fileName)) {
+    fileName += ".md"
+  }
+  return fileName
+}
+
+export function validateDirectoryName(dirName: string): string {
+  return dirName.trim().replace(/[\\/:*?"<>|]/g, "")
+}

@@ -1,4 +1,5 @@
 .draggable {
+  /* margin-top: 5px; */
   -webkit-app-region: drag;
 }
 

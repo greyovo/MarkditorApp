@@ -12,7 +12,7 @@ const App = () => {
   const showSidePanel = useNavigationStore((state) => state.sidebarExpanded);
   const [panelSize, setPanelSize] = useState(20)
   const onResize = (size: number) => setPanelSize(size)
-  const titleBarHeight = "33px";
+  const titleBarHeight = 33;
 
   const hasDoc = useDocumentStore((state) => state.hasDocOpened());
 
@@ -21,8 +21,8 @@ const App = () => {
       <div style={{ height: titleBarHeight }}>
         <WindowTitleBar />
       </div>
-      <div className="flex" style={{ height: `calc(100vh - ${titleBarHeight})` }} >
-        <Toaster position="bottom-right" richColors closeButton />
+      <div className="flex" style={{ height: `calc(100vh - ${titleBarHeight}px)` }} >
+        <Toaster position="bottom-right" richColors closeButton duration={3000} />
         {/* 侧边菜单栏 */}
         {/* <AsideMenuBar /> */}
         <ResizablePanelGroup direction="horizontal">

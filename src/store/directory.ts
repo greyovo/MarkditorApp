@@ -111,6 +111,41 @@ export async function openFile(path: string) {
   setFile(path, content)
 }
 
+export async function refreshDirectory(dir: DirectoryEntity) {
+  if (dir.path === getState().root!.path) {
+    refreshRootDir()
+  } else {
+    openDirectory(dir.path)
+  }
+}
+
+export async function createDirectory(base: DirectoryEntity, name: string): Promise<boolean> {
+  let target = base.path + "/" + name
+  const exist = await PlatformAPI.exists(target)
+  if (exist) {
+    console.error("已存在目录或文件：", target);
+    return false
+  }
+  const res = await PlatformAPI.createDir(target)
+  refreshDirectory(base)
+  return res
+}
+
+export async function createFile(base: DirectoryEntity, name: string): Promise<boolean> {
+  if (!isMarkdownFile(name)) {
+    name += ".md"
+  }
+  let target = base.path + "/" + name
+  const exist = await PlatformAPI.exists(target)
+  if (exist) {
+    console.error("已存在目录或文件：", target);
+    return false
+  }
+  const res = await PlatformAPI.createFile(target)
+  refreshDirectory(base)
+  return res
+}
+
 export async function renameFile(entity: DirectoryEntity, newName: string) {
   const parent = getParentDirectory(entity.path)
   await PlatformAPI.renameFile(entity.path, parent + "/" + newName)

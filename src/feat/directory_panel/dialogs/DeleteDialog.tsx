@@ -7,21 +7,28 @@ import { DialogProps } from "./DialogProps";
 export function DeleteDialog({ show, entity, onOpenChange }: DialogProps) {
   async function confirm() {
     onOpenChange(false);
+    let result = false
     if (entity.type === "dir") {
-      await deleteDirectory(entity);
+      result = await deleteDirectory(entity);
     } else {
-      await deleteFile(entity);
+      result = await deleteFile(entity);
     }
-    toast.success(`已删除: ${entity.name}`, {
-      description: entity.path,
-    })
+    if (result) {
+      toast.success(`已删除: ${entity.name}`, {
+        description: entity.path,
+      })
+    } else {
+      toast.error(`删除失败: ${entity.name}`, {
+        description: "文件可能在打开状态，无法删除"
+      })
+    }
   }
 
   return (
     <Dialog open={show} onOpenChange={onOpenChange}>
       <DialogContent>
         <DialogHeader className="mb-2">
-          <DialogTitle>删除确认</DialogTitle>
+          <DialogTitle>确认删除</DialogTitle>
           <DialogDescription>
             要删除{entity.type === "dir" ? "文件夹" : "文件"}<Kbd mx="1">{entity.name}</Kbd>吗？删除后不可恢复。
           </DialogDescription>

@@ -159,15 +159,21 @@ export async function renameDirectory(entity: DirectoryEntity, newName: string) 
 }
 
 export async function deleteDirectory(entity: DirectoryEntity) {
-  await PlatformAPI.deleteDir(entity.path)
-  refreshRootDir()
-  closeDocIfNotExist()
+  const res = await PlatformAPI.deleteDir(entity.path)
+  if (res) {
+    refreshRootDir()
+    closeDocIfNotExist()
+  }
+  return res
 }
 
 export async function deleteFile(entity: DirectoryEntity) {
-  await PlatformAPI.deleteFile(entity.path)
-  refreshRootDir()
-  closeDocIfNotExist()
+  const res = await PlatformAPI.deleteFile(entity.path)
+  if (res) {
+    refreshRootDir()
+    closeDocIfNotExist()
+  }
+  return res
 }
 
 

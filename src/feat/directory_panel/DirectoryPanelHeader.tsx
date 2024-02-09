@@ -1,7 +1,6 @@
 import useDirectoryStore from "@/store/directory";
 import { Tooltip, IconButton } from "@radix-ui/themes";
 import { PlusIcon, MoreVertical, MoreHorizontal } from "lucide-react";
-import { DirectoryDropdownMenus } from "./DirectoryDropdownMenus";
 
 export function DirectoryPanelHeader() {
   const root = useDirectoryStore(state => state.root);

@@ -5,6 +5,24 @@ import { CreateDialog } from "./dialogs/CreateDialog";
 import { RenameDialog } from "./dialogs/RenameDialog";
 import { DeleteDialog } from "./dialogs/DeleteDialog";
 
+type DirectoryMenuItemsProps = {
+  entity: DirectoryEntity;
+  onRename: () => void;
+  onDelete: () => void;
+  onCopy: () => void;
+}
+
+function DirectoryMenuItems({ entity, onRename, onCopy, onDelete }: DirectoryMenuItemsProps) {
+  return (
+    <>
+      <ContextMenu.Item onClick={() => openFile(entity.path)}>打开</ContextMenu.Item>
+      <ContextMenu.Item onClick={onRename}>重命名</ContextMenu.Item>
+      <ContextMenu.Item onClick={onCopy}>创建副本</ContextMenu.Item>
+      <ContextMenu.Item color="red" onClick={onDelete}>删除</ContextMenu.Item>
+    </>
+  )
+}
+
 export function DirectoryContextMenu({ children, entity }: { children: React.ReactNode, entity: DirectoryEntity }) {
   const rootDir = useDirectoryStore((state) => state.root)
   const isRoot = entity.path === rootDir?.path
@@ -38,26 +56,20 @@ export function DirectoryContextMenu({ children, entity }: { children: React.Rea
           </div>
           {
             !isRoot &&
-            <ContextMenu.Item onClick={() => openFile(entity.path)}>打开</ContextMenu.Item>
+            <DirectoryMenuItems
+              entity={entity}
+              onRename={() => setShowRename(true)}
+              onDelete={() => setShowDelete(true)}
+              onCopy={handleCopy}
+            />
           }
-          {
-            !isRoot &&
-            <ContextMenu.Item onClick={() => setShowRename(true)}>重命名</ContextMenu.Item>
-          }
-          {!isRoot && <ContextMenu.Item onClick={handleCopy}>创建副本</ContextMenu.Item>}
-          {!isRoot && <ContextMenu.Separator />}
+
+          <ContextMenu.Separator />
 
           <ContextMenu.Item onClick={handleCreateFile}>新建文件</ContextMenu.Item>
           <ContextMenu.Item onClick={handleCreateDirectory}>新建文件夹</ContextMenu.Item>
-
-          {!isRoot && <ContextMenu.Separator />}
-          {
-            !isRoot &&
-            <ContextMenu.Item color="red" onClick={() => setShowDelete(true)}>删除</ContextMenu.Item>
-          }
         </ContextMenu.Content>
       </ContextMenu.Root>
-
 
       <DeleteDialog show={showDelete} entity={entity} onOpenChange={setShowDelete} />
       <RenameDialog show={showRename} entity={entity} onOpenChange={setShowRename} />

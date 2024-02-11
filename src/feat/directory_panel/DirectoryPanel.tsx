@@ -40,7 +40,7 @@ export function DirectoryPanel() {
   const root = useDirectoryStore((state) => state.root)
 
   return (
-    <div className="flex flex-col h-full bg-slate-50">
+    <div className="flex flex-col h-full bg-popover">
       {root !== undefined && <DirectoryPanelHeader />}
       {/* <div className="overflow-y-auto"> */}
       {root !== undefined ? <DirectoryTreeView /> : <DirectoryEmptyView />}

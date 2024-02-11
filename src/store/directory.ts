@@ -40,7 +40,7 @@ export async function selectRootDir() {
     closeCurrentDoc()
     useNavigationStore.setState((state) => ({ ...state, sidebarExpanded: true }))
   } else {
-    console.log("打开文件失败！");
+    console.error("selectRootDir:", "打开文件夹失败！");
   }
 }
 
@@ -60,7 +60,7 @@ export async function selectFile() {
   if (file !== undefined) {
     const content = await PlatformAPI.readFile(file.path)
     if (content === undefined) {
-      throw Error("Failed to read file")
+      throw Error("selectFile: Failed to read file")
     }
     setFile(file.path, content)
     setRootDir(getParentDirectory(file.path))

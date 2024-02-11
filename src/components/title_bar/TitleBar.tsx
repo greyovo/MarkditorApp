@@ -12,8 +12,8 @@ type ButtonIconProps = { children: ReactNode, onClick: () => void, isDanger?: bo
 
 const ButtonIcon = ({ children, onClick, isDanger = false }: ButtonIconProps) => {
   const cls = isDanger
-    ? "hover:bg-red-600 active:bg-red-700 hover:text-primary-foreground active:text-primary-foreground"
-    : "hover:bg-gray-200 active:bg-gray-300"
+    ? "hover:bg-red-600 active:opacity-60 hover:text-foreground active:text-foreground"
+    : "hover:bg-accent active:bg-accent active:opacity-60"
   return (
     <div className={
       "px-1 py-1 w-11 h-8 text-center flex items-center justify-center transition ease-in-out duration-200 "
@@ -86,7 +86,7 @@ export function WindowTitleBar() {
   }
 
   return (
-    <div className={styles.draggable + " flex border-b select-none"}>
+    <div className={styles.draggable + " bg-background flex border-b select-none"}>
       <Flex className={styles.undraggable} align={"center"} gap="1">
         {titleBarMenuItems}
       </Flex>

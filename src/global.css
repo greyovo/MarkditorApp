@@ -1,10 +1,10 @@
 @import "tailwindcss/base";
-@import "@radix-ui/themes/styles.css";
+/* @import "@radix-ui/themes/styles.css"; */
 
 @import "@radix-ui/colors/indigo.css";
 @import "@radix-ui/colors/indigo-dark.css";
-@import "@radix-ui/colors/indigo-alpha.css";
-@import "@radix-ui/colors/indigo-dark-alpha.css";
+/* @import "@radix-ui/colors/indigo-alpha.css";
+@import "@radix-ui/colors/indigo-dark-alpha.css"; */
 @tailwind components;
 @tailwind utilities;
 
@@ -17,7 +17,7 @@ body::-webkit-scrollbar {
 }
 
 body::-webkit-scrollbar-thumb {
-  background: #ccc; 
+  background: #ccc;
   border-radius: 5px;
 }
 
@@ -27,7 +27,7 @@ body::-webkit-scrollbar-thumb {
     --foreground: 222.2 84% 4.9%;
     --card: 0 0% 100%;
     --card-foreground: 222.2 84% 4.9%;
-    --popover: 0 0% 100%;
+    --popover: var(--accent-2);
     --popover-foreground: 222.2 84% 4.9%;
     --primary: var(--accent-9);
     --primary-foreground: 210 40% 98%;
@@ -46,25 +46,25 @@ body::-webkit-scrollbar-thumb {
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-    --primary: var(--accent-9);
-    --primary-foreground: 222.2 47.4% 11.2%;
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 224.3 76.3% 48%;
+    --background: var(--indigo-1);
+    --foreground: var(--indigo-11);
+    --card: var(--indigo-2);
+    --card-foreground: var(--indigo-12);
+    --popover: var(--indigo-2);
+    --popover-foreground: var(--indigo-12);
+    --primary: var(--indigo-9);
+    --primary-foreground: white;
+    --secondary: var(--indigo-7);
+    --secondary-foreground: var(--indigo-12);
+    --muted: var(--indigo-4);
+    --muted-foreground: var(--indigo-1);
+    --accent: var(--indigo-7);
+    --accent-foreground: white;
+    --destructive: red;
+    --destructive-foreground: white;
+    --border: var(--indigo-4);
+    --input: var(--indigo-9);
+    --ring: var(--indigo-9);
   }
 }
 
@@ -87,10 +87,10 @@ body::-webkit-scrollbar-thumb {
 
 * {
   font-family: MiSans;
-  :before{
+  :before {
     font-family: MiSans;
   }
-  :after{
+  :after {
     font-family: MiSans;
   }
 }
@@ -109,5 +109,3 @@ body::-webkit-scrollbar-thumb {
     list-style: decimal;
   }
 }
-
-

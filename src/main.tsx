@@ -12,11 +12,12 @@ import { Toaster } from 'sonner';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
-    <Theme>
+    <Theme appearance="dark" className='dark'>
       <DialogProvider>
         <App />
         <Dialog />
         <Toaster position="bottom-right" richColors closeButton duration={3000} />
+        <ThemePanel />
       </DialogProvider>
       {/* <ThemePanel /> */}
     </Theme>

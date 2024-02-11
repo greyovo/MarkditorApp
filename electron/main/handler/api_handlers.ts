@@ -151,16 +151,18 @@ export const apiHandlers: IPlatformAPI = {
 
   win: {
     close: function (): void {
-      closeWindow()
+      closeWindow();
     },
 
     minimize: function (): void {
-      minimizeWindow()
+      minimizeWindow();
     },
 
     toggleMaximize: function (): void {
-      toggleMaximizeWindow()
+      toggleMaximizeWindow();
     },
-
+  },
+  exists: function (path: string): Promise<boolean> {
+    throw new Error("Function not implemented.");
   }
 }

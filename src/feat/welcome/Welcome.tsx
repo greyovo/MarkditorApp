@@ -5,7 +5,7 @@ import { FileTextIcon, FolderIcon, HomeIcon, PencilIcon } from "lucide-react";
 
 export function Welcome() {
   return (
-    <div className="flex flex-col p-10 gap-2 justify-center align-middle" style={{ height: "100%" }}>
+    <div className="flex flex-col bg-background p-10 gap-2 justify-center align-middle" style={{ height: "100%" }}>
       <div>
         <p className="text-4xl select-none">
           🤗 Welcome to <b ><span className="text-blue-700">Mark</span><span >ditor</span>.</b>

@@ -12,8 +12,8 @@ type BottomInfoBarButtonProps = {
 function BottomInfoBarButton(props: BottomInfoBarButtonProps) {
   return (
     <Tooltip content={props.tooltip}>
-      <IconButton variant="soft"
-        className="bg-transparent hover:bg-blue-50 active:bg-blue-100"
+      <IconButton variant='ghost'
+        className="px-2 py-2 mx-0"
         radius="none"
         onClick={props.onClick}>
         {props.children}
@@ -25,7 +25,7 @@ function BottomInfoBarButton(props: BottomInfoBarButtonProps) {
 export function BottomInfoBar() {
   const iconSize = 17
   return (
-    <div className="flex justify-between items-center border-t">
+    <div className="flex justify-between items-center border-t bg-background">
       <Flex gap="1" grow={"1"}>
         <BottomInfoBarButton tooltip={"大纲"} onClick={() => { toggleOutline() }}>
           <ListIcon width={iconSize} />

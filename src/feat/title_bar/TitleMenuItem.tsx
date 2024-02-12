@@ -12,7 +12,7 @@ export interface TitleMenuItemProps {
 export function TitleMenuItem({ props }: { props: TitleMenuItemProps }) {
   if (props.isDisabled) {
     return (
-      <IconButton disabled variant='ghost' radius="none" highContrast className='px-3 py-2 m-0 text-muted'
+      <IconButton disabled variant='ghost' radius="none" className='px-3 py-2 m-0 text-muted'
         onClick={() => props.onClick?.()}>
         {props.icon}
       </IconButton>
@@ -20,7 +20,7 @@ export function TitleMenuItem({ props }: { props: TitleMenuItemProps }) {
   }
   return (
     <Tooltip side='bottom' content={props.label} delayDuration={0} >
-      <IconButton variant="ghost" size="1" radius="none" className='px-3 py-2 mx-0 text-primary'
+      <IconButton variant="ghost" size="1" radius="none" className='px-3 py-2 mx-0'
         onClick={() => props.onClick?.()}>
         {props.icon}
       </IconButton>

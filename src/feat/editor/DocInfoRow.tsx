@@ -43,8 +43,8 @@ export function DocInfoRow() {
 
   return (
     <DocInfoPopover>
-      <Button variant="soft" highContrast
-        className="bg-transparent hover:bg-blue-50 active:bg-blue-100" radius="none">
+      <Button variant="ghost"
+        className="py-2.5 px-4" radius="none">
         <Flex gap="4" className="items-center text-sm select-none">
           <Flex gap="1" className={(saved ? "opacity-30" : "") + " items-center"}>
             {saved ? <CheckCircle2 strokeWidth={1.5} size={16} /> : <LoaderIcon strokeWidth={1.5} size={16} />}

@@ -3,7 +3,7 @@ import { useState } from "react";
 import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from "./components/ui/resizable";
 import { DirectoryPanel } from "./feat/directory_panel/DirectoryPanel";
 import useNavigationStore from "./store/navigation";
-import { WindowTitleBar } from "./components/title_bar/TitleBar";
+import { WindowTitleBar } from "./feat/title_bar/TitleBar";
 import useDocumentStore from "./store/document";
 import { Welcome } from "./feat/welcome/Welcome";
 
@@ -11,7 +11,7 @@ const App = () => {
   const showSidePanel = useNavigationStore((state) => state.sidebarExpanded);
   const [panelSize, setPanelSize] = useState(20)
   const onResize = (size: number) => setPanelSize(size)
-  const titleBarHeight = 33;
+  const titleBarHeight = 32;
 
   const hasDoc = useDocumentStore((state) => state.hasDocOpened());
 
@@ -20,7 +20,7 @@ const App = () => {
       <div style={{ height: titleBarHeight }}>
         <WindowTitleBar />
       </div>
-      <div className="flex" style={{ height: `calc(100vh - ${titleBarHeight}px)` }} >
+      <div className="flex border-t" style={{ height: `calc(100vh - ${titleBarHeight}px)` }} >
         {/* 侧边菜单栏 */}
         {/* <AsideMenuBar /> */}
         <ResizablePanelGroup direction="horizontal">
@@ -31,7 +31,7 @@ const App = () => {
                 onResize={onResize}>
                 <DirectoryPanel /> {/* 侧边文件夹栏 */}
               </ResizablePanel>
-              <ResizableHandle id="handle" />
+              <ResizableHandle style={{ width: 0 }} id="handle" />
             </>
           )}
           <ResizablePanel id="mainEditor" order={2}>

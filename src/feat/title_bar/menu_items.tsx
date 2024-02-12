@@ -4,7 +4,7 @@ import useNavigationStore, { toggleSidebarExpanded } from "@/store/navigation";
 import { Dialog, Flex, Button } from "@radix-ui/themes";
 import { SidebarClose, SidebarOpen, SaveIcon, PlusCircleIcon, Search,  Settings, TerminalSquare, MoreHorizontal } from "lucide-react";
 import { useContext } from "react";
-import { DialogContext } from "../dialog/DialogContext";
+import { DialogContext } from "../../components/dialog/DialogContext";
 import { TitleMenuItem, TitleMenuItemProps } from "./TitleMenuItem";
 import { toast } from "sonner";
 import { TitleBarDropdownMenus } from "./TitleBarDropdownMenus";

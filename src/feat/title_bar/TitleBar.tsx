@@ -2,27 +2,12 @@ import { Button, Flex, IconButton, Tooltip } from "@radix-ui/themes"
 import styles from "./TitleBar.module.css"
 import useDocumentStore, { saveFile } from "@/store/document"
 import { Maximize, Minimize, Minus, MinusIcon, Square, X } from "lucide-react"
-import { ReactNode, useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { titleBarMenuItems } from "./menu_items"
 import { Square2StackIcon } from "@heroicons/react/24/outline"
 import { PlatformAPI } from "@/ipc"
-import { useDialog } from "../dialog/Dialog"
-
-type ButtonIconProps = { children: ReactNode, onClick: () => void, isDanger?: boolean }
-
-const ButtonIcon = ({ children, onClick, isDanger = false }: ButtonIconProps) => {
-  const cls = isDanger
-    ? "hover:bg-red-600 active:opacity-60 hover:text-foreground active:text-foreground"
-    : "hover:bg-accent active:bg-accent active:opacity-60"
-  return (
-    <div className={
-      "px-1 py-1 w-11 h-8 text-center flex items-center justify-center transition ease-in-out duration-200 "
-      + cls
-    } onClick={onClick}>
-      {children}
-    </div>
-  )
-}
+import { useDialog } from "../../components/dialog/Dialog"
+import { WindowActionButton } from "./WindowActionButton"
 
 function TitleSection({ className, title }: { className: string, title: string }) {
   return (
@@ -94,17 +79,17 @@ export function WindowTitleBar() {
       <TitleSection className="flex-1" title={windowTitle} />
 
       <Flex className={styles.undraggable} gap="1">
-        <ButtonIcon onClick={minimizeWindow}>
+        <WindowActionButton onClick={minimizeWindow}>
           <Minus size={iconSize + 1} />
-        </ButtonIcon>
-        <ButtonIcon onClick={maximizeWindow}>
+        </WindowActionButton>
+        <WindowActionButton onClick={maximizeWindow}>
           {maximized
             ? <Square2StackIcon className="rotate-90" strokeWidth={1.8} width={iconSize} />
             : <Square size={iconSize - 1} />}
-        </ButtonIcon>
-        <ButtonIcon isDanger onClick={closeWindow}>
+        </WindowActionButton>
+        <WindowActionButton isDanger onClick={closeWindow}>
           <X size={iconSize} />
-        </ButtonIcon>
+        </WindowActionButton>
       </Flex>
     </div>
   )

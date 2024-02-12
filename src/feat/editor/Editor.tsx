@@ -4,7 +4,7 @@ import { EditorContextMenu } from "./EditorContextMenu";
 import useDocumentStore, { updateContent } from "@/store/document";
 import { BottomInfoBar } from "./BottomInfoBar";
 import { Constants } from "@/utils/constants";
-import useEditorStore, { getVditor, setVditor } from "@/store/editor";
+import useEditorStore, { getVditor, initVditor } from "@/store/editor";
 import { convertImagePath } from "@/utils/path";
 import usePreferenceStore from "@/store/preference";
 
@@ -25,7 +25,7 @@ export function Editor() {
         const content = useDocumentStore.getState().content
         vditor.setValue(content ?? "")
         // updateContent(vditor.getValue())
-        setVditor(vditor)
+        initVditor(vditor)
       },
       placeholder: _placeHolder,
       cdn: "./lib",
@@ -83,12 +83,12 @@ export function Editor() {
     })
 
     return () => {
-      setVditor(undefined)
+      initVditor(undefined)
       unsubscribe()
     };
   }, []);
 
-  const editorContainer = <div id="vditor" className="overflow-y-auto flex-grow" />
+  const editorContainer = <div id="vditor" className="overflow-y-auto flex-grow bg-background" />
 
   return (
     <div className="flex flex-col h-full">

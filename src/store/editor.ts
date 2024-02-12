@@ -1,5 +1,6 @@
 import Vditor from 'vditor'
 import { create } from 'zustand'
+import usePreferenceStore from './preference'
 
 interface EditorState {
   instance?: Vditor
@@ -17,10 +18,27 @@ const { setState, getState, subscribe } = useEditorStore
 
 // -----------------------------------------
 
-export const setVditor = (instance?: Vditor) => setState({ instance })
+export const initVditor = (instance?: Vditor) => {
+  setState({ instance })
+  const themeMode = usePreferenceStore.getState().themeMode()
+  if (themeMode === "light") {
+    instance?.setTheme("classic", "light", "github")
+  } else {
+    instance?.setTheme("dark", "dark", "native")
+  }
+}
 
 export function getVditor(): Vditor | undefined {
   return getState().instance
+}
+
+export function syncEditorTheme() {
+  const themeMode = usePreferenceStore.getState().themeMode()
+  if (themeMode === "light") {
+    getVditor()?.setTheme("classic", "light", "github")
+  } else {
+    getVditor()?.setTheme("dark", "dark", "native")
+  }
 }
 
 export function getEditorSelection(): string {

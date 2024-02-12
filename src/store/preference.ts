@@ -1,21 +1,41 @@
 import { create } from 'zustand'
+import { getVditor } from './editor'
 
 interface PreferenceState {
-  themeMode: "light" | "dark" | "system", // Default to "system"
+  prefThemeMode: "light" | "dark" | "system", // Default to "system"
   autoSaveTimeout: number, // Default to 8000 ms
+  // Computed
+  themeMode: () => "light" | "dark",
 }
 
 const usePreferenceStore = create<PreferenceState>(
-  (set) => ({
-    themeMode: "system",
+  (set, get) => ({
+    prefThemeMode: "system",
     autoSaveTimeout: 8000,
 
-    setThemeMode: (themeMode: "light" | "dark" | "system") =>
-      set((state) => ({ ...state, themeMode })),
-
-    setAutoSaveTimeout: (autoSaveTimeout: number) =>
-      set((state) => ({ ...state, autoSaveTimeout })),
+    themeMode() {
+      if (get().prefThemeMode === "system") {
+        return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"
+      }
+      return get().prefThemeMode === "light" ? "light" : "dark"
+    }
   })
 )
+
+const { setState, getState, subscribe } = usePreferenceStore
+
+
+export function setThemeMode(prefThemeMode: "light" | "dark" | "system") {
+  setState((state) => ({ ...state, prefThemeMode }))
+  const realThemeMode = getState().themeMode()
+  const editorTheme = realThemeMode === "light" ? "classic" : "dark"
+  getVditor()?.setTheme(editorTheme, realThemeMode)
+}
+
+
+function setAutoSaveTimeout(autoSaveTimeout: number) {
+  setState((state) => ({ ...state, autoSaveTimeout }))
+}
+
 
 export default usePreferenceStore

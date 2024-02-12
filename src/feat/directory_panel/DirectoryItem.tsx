@@ -35,8 +35,8 @@ function DirItem(props: DirectoryItemProps) {
   const data = props.entity
   const [dirOpened, setDirOpened] = useState(false)
   const childrenNode = dirOpened ? extractChildrenNode(data.children, props.depth + 1) : []
-  const normalStyle = "hover:bg-accent active:bg-accent focus:bg-accent"
-  const folderIconStyle = "w-4 text-blue-800"
+  const normalStyle = "hover:bg-accent active:bg-accent focus:bg-accent text-foreground opacity-85 hover:opacity-100"
+  const folderIconStyle = "w-4"
 
   const folderIcon = dirOpened
     ? <FolderIcon title="" className={folderIconStyle} /> : <FolderIcon className={folderIconStyle} />
@@ -72,10 +72,10 @@ function FileItem(props: DirectoryItemProps) {
   const data = props.entity
   const curDocPath = useDocumentStore((state) => state.path ?? "")
   const fileOpened = curDocPath === data.path
-  const fileIconStyle = fileOpened ? "w-4 text-forebackground" : "w-4 text-blue-800"
-  const fileIcon = <DocumentTextIcon className={fileIconStyle} />
+  const fileIconStyle = fileOpened ? "w-4" : "w-4"
+  const fileIcon = <DocumentTextIcon className={fileIconStyle} strokeWidth={fileOpened ? 2.5 : 1.5} />
 
-  const normalStyle = fileOpened ? "bg-primary text-forebackground" : "hover:bg-accent active:bg-accent"
+  const normalStyle = fileOpened ? "bg-accent font-bold text-primary" : "hover:bg-accent active:bg-accent text-accent-foreground opacity-85 hover:opacity-100"
 
   async function handleClick() {
     if (!isMarkdownFile(data.path)) {

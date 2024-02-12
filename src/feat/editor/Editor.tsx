@@ -6,11 +6,14 @@ import { BottomInfoBar } from "./BottomInfoBar";
 import { Constants } from "@/utils/constants";
 import useEditorStore, { getVditor, setVditor } from "@/store/editor";
 import { convertImagePath } from "@/utils/path";
+import usePreferenceStore from "@/store/preference";
 
 // const _placeHolder = "# Welcome to Markditor \nHello, welcome to `Markditor`.\n# 欢迎使用 Markditor\n你好，欢迎使用 `Markditor`"
 const _placeHolder = "在此开始记录..."
 
 export function Editor() {
+  const themeMode = usePreferenceStore(s => s.themeMode())
+
   useEffect(() => {
     let vditor: Vditor
     // vidtor options
@@ -18,7 +21,7 @@ export function Editor() {
       undoDelay: 100,
       after: () => {
         // TODO 显示上次关闭时未保存的内容？
-        // 是则updateContent，否则设置空串
+        // 是则 updateContent，否则设置空串
         const content = useDocumentStore.getState().content
         vditor.setValue(content ?? "")
         // updateContent(vditor.getValue())
@@ -31,6 +34,7 @@ export function Editor() {
       toolbarConfig: {
         enable: false
       },
+      theme: themeMode === "light" ? "classic" : "dark",
       cache: {
         enable: false
       },

@@ -8,10 +8,13 @@
 /* var(--indigo-N) */
 @import "@radix-ui/colors/indigo.css";
 @import "@radix-ui/colors/indigo-dark.css";
+@import "@radix-ui/colors/indigo-dark-alpha.css";
 /* var(--white-aN) */
 @import "@radix-ui/colors/white-alpha.css";
 /* var(--black-aN) */
 @import "@radix-ui/colors/black-alpha.css"; 
+/* @import "vditor/dist/css/content-theme/light.css";
+@import "vditor/dist/css/content-theme/dark.css"; */
 
 @tailwind components;
 @tailwind utilities;
@@ -32,19 +35,19 @@ body::-webkit-scrollbar-thumb {
 @layer base {
   :root {
     --background: var(--indigo-1);
-    --foreground: var(--indigo-11);
-    --card: var(--indigo-2);
-    --card-foreground: var(--indigo-12);
-    --popover: var(--indigo-2);
+    --foreground: var(--black-a11);
+    --card: var(--gray-2);
+    --card-foreground: var(--gray-12);
+    --popover: var(--indigo-1);
     --popover-foreground: var(--indigo-12);
     --primary: var(--indigo-9);
-    --primary-foreground: white;
+    --primary-foreground: var(--white-a12);
     --secondary: var(--indigo-7);
     --secondary-foreground: var(--indigo-12);
-    --muted: var(--indigo-4);
+    --muted: var(--gray-7);
     --muted-foreground: var(--indigo-1);
-    --accent: var(--indigo-7);
-    --accent-foreground: white;
+    --accent: var(--indigo-4);
+    --accent-foreground: var(--black-a11);
     --destructive: red;
     --destructive-foreground: white;
     --border: var(--indigo-4);
@@ -54,19 +57,19 @@ body::-webkit-scrollbar-thumb {
 
   .dark {
     --background: var(--indigo-1);
-    --foreground: var(--indigo-11);
-    --card: var(--indigo-2);
-    --card-foreground: var(--indigo-12);
-    --popover: var(--indigo-2);
-    --popover-foreground: var(--indigo-12);
+    --foreground: var(--white-a10);
+    --card: var(--gray-2);
+    --card-foreground: var(--gray-12);
+    --popover: var(--gray-2);
+    --popover-foreground: var(--white-a12);
     --primary: var(--indigo-9);
     --primary-foreground: white;
     --secondary: var(--indigo-7);
     --secondary-foreground: var(--indigo-12);
-    --muted: var(--indigo-4);
-    --muted-foreground: var(--indigo-1);
-    --accent: var(--indigo-7);
-    --accent-foreground: white;
+    --muted: var(--gray-7);
+    --muted-foreground: var(--gray-10);
+    --accent: var(--indigo-a2);
+    --accent-foreground: var(--white-a12);
     --destructive: red;
     --destructive-foreground: white;
     --border: var(--white-a1);

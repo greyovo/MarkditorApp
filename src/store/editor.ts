@@ -85,8 +85,8 @@ export function toggleOutline() {
 }
 
 export function toggleToolbar() {
-  setState((state) => ({ ...state, toolbarVisible: !state.toolbarVisible }))
   getVditor()?.toggleToolbar()
+  setState((state) => ({ ...state, toolbarVisible: getVditor()?.getToolbarVisible() }))
 }
 
 export function toggleSourceMode() {

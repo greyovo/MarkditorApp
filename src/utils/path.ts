@@ -66,6 +66,9 @@ export function convertImagePath(html: string, baseDir: string): string {
   el.innerHTML = html
   const imgs = el.getElementsByTagName("img")
   for (const img of imgs) {
+    if (img.src.startsWith("http://") || img.src.startsWith("https://")) {
+      continue
+    }
     if (Constants.isTauri) {
       img.src = convertFileSrc(img.src.replace(img.baseURI, baseDir + "/"))
     } else {

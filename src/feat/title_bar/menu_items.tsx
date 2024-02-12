@@ -2,17 +2,18 @@ import { PlatformAPI } from "@/ipc";
 import useDocumentStore, { saveFile, createNewDoc, closeCurrentDoc } from "@/store/document";
 import useNavigationStore, { toggleSidebarExpanded } from "@/store/navigation";
 import { Dialog, Flex, Button } from "@radix-ui/themes";
-import { SidebarClose, SidebarOpen, SaveIcon, PlusCircleIcon, Search,  Settings, TerminalSquare, MoreHorizontal } from "lucide-react";
+import { SidebarClose, SidebarOpen, SaveIcon, PlusCircleIcon, Search, Settings, TerminalSquare, MoreHorizontal, MoonIcon, Sun } from "lucide-react";
 import { useContext } from "react";
 import { DialogContext } from "../../components/dialog/DialogContext";
 import { TitleMenuItem, TitleMenuItemProps } from "./TitleMenuItem";
 import { toast } from "sonner";
 import { TitleBarDropdownMenus } from "./TitleBarDropdownMenus";
 import { Constants } from "@/utils/constants";
+import usePreferenceStore, { setThemeMode } from "@/store/preference";
 
 const iconSize = 16
 
-function ToggleFolderViewMenuItem() {
+function ToggleFolderView() {
   const open = useNavigationStore((state) => state.sidebarExpanded);
   let icon
   if (open) {
@@ -35,7 +36,7 @@ function ToggleFolderViewMenuItem() {
 }
 
 
-function SaveMenuItem() {
+function Save() {
   const saved = useDocumentStore((state) => state.saved);
   const icon = <SaveIcon size={iconSize} />
   const props: TitleMenuItemProps = {
@@ -55,7 +56,7 @@ function SaveMenuItem() {
   return <TitleMenuItem props={props} />
 }
 
-function NewFileMenuItem() {
+function NewFile() {
   const saved = useDocumentStore((state) => (state.saved));
   console.log("已经保存", saved);
 
@@ -108,7 +109,7 @@ function NewFileMenuItem() {
   )
 }
 
-function SearchMenuItem() {
+function ShowSearch() {
   const props: TitleMenuItemProps = {
     icon: <Search size={iconSize} />,
     label: '搜索',
@@ -119,7 +120,7 @@ function SearchMenuItem() {
 
 }
 
-function OpenDevToolMenuItem() {
+function OpenDevTool() {
   if (Constants.isTauri) {
     return <></>
   }
@@ -132,18 +133,17 @@ function OpenDevToolMenuItem() {
   return <TitleMenuItem props={openDevToolMenuItem} />
 }
 
-function SettingsMenuItem() {
-  const { openDialog } = useContext(DialogContext);
-
-  const settingsMenuItem: TitleMenuItemProps = {
-    icon: <Settings size={iconSize} />,
-    label: '设置',
+function ToggleThemeMode() {
+  const themeMode = usePreferenceStore(s => s.themeMode())
+  const menuItem: TitleMenuItemProps = {
+    icon: themeMode === "light" ? <Sun size={iconSize} /> : <MoonIcon size={iconSize} />,
+    label: '主题模式',
     onClick: () => {
-
+      setThemeMode(themeMode === "light" ? "dark" : "light")
     },
     isDisabled: false,
   }
-  return <TitleMenuItem props={settingsMenuItem} />
+  return <TitleMenuItem props={menuItem} />
 }
 
 function MoreMenuItem() {
@@ -155,10 +155,11 @@ function MoreMenuItem() {
 }
 
 export const titleBarMenuItems = [
-  <ToggleFolderViewMenuItem key={"ToggleFolderViewMenuItem"} />,
-  <SaveMenuItem key={"SaveMenuItem"} />,
-  <NewFileMenuItem key={"NewFileMenuItem"} />,
-  <OpenDevToolMenuItem key={"OpenDevToolMenuItem"} />,
+  <ToggleFolderView key={"ToggleFolderViewMenuItem"} />,
+  <Save key={"SaveMenuItem"} />,
+  <NewFile key={"NewFileMenuItem"} />,
+  <OpenDevTool key={"OpenDevToolMenuItem"} />,
+  <ToggleThemeMode key={"ToggleThemeMode"} />,
   // <SearchMenuItem key={"SearchMenuItem"} />,
   // <ExportMenuItem key={"ExportMenuItem"} />
   <TitleBarDropdownMenus key={"MoreMenuItem"}>

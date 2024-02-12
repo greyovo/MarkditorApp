@@ -10,6 +10,7 @@ import { isMarkdownFile } from "@/utils/path"
 import { toast } from "sonner"
 import { DirectoryContextMenu } from "./DirectoryContextMenu"
 import { cn } from "@/utils"
+import { Flex } from "@radix-ui/themes"
 
 interface DirectoryItemProps {
   entity: DirectoryEntity,
@@ -62,7 +63,7 @@ function DirItem(props: DirectoryItemProps) {
         leading={arrow}
         onClick={handleClick}
       >
-        <div className="flex gap-2">{folderIcon} {data.name}</div>
+        <div className="flex gap-2 justify-center items-center">{folderIcon} {data.name}</div>
       </ListItem>
       {childrenNode}
     </>

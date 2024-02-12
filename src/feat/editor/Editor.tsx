@@ -4,7 +4,7 @@ import { EditorContextMenu } from "./EditorContextMenu";
 import useDocumentStore, { updateContent } from "@/store/document";
 import { BottomInfoBar } from "./BottomInfoBar";
 import { Constants } from "@/utils/constants";
-import useEditorStore, { getVditor, initVditor } from "@/store/editor";
+import useEditorStore, { editorAction, getVditor } from "@/store/editor";
 import { convertImagePath } from "@/utils/path";
 import usePreferenceStore from "@/store/preference";
 
@@ -25,7 +25,7 @@ export function Editor() {
         const content = useDocumentStore.getState().content
         vditor.setValue(content ?? "")
         // updateContent(vditor.getValue())
-        initVditor(vditor)
+        editorAction.initVditor(vditor)
       },
       placeholder: _placeHolder,
       cdn: "./lib",
@@ -51,7 +51,9 @@ export function Editor() {
       upload: {
         // TODO 在这里处理外部粘贴的图片
         handler: (files) => {
-          vditor.insertValue("![](images.png)")
+          files.forEach(file => {
+            vditor.insertValue(`![${file.path}](images.png)`)
+          })
           return null
         },
       },
@@ -83,7 +85,7 @@ export function Editor() {
     })
 
     return () => {
-      initVditor(undefined)
+      editorAction.initVditor(undefined)
       unsubscribe()
     };
   }, []);

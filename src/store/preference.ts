@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import { persist, createJSONStorage } from 'zustand/middleware'
-import { getVditor, syncEditorTheme } from './editor'
+import { editorAction, getVditor } from './editor'
 
 interface PreferenceState {
   prefThemeMode: "light" | "dark" | "system", // Default to "system"
@@ -40,8 +40,7 @@ const { setState, getState, subscribe } = usePreferenceStore
 
 export function setThemeMode(prefThemeMode: "light" | "dark" | "system") {
   setState((state) => ({ ...state, prefThemeMode }))
-  const realThemeMode = getState().themeMode()
-  syncEditorTheme()
+  editorAction.syncTheme()
 }
 
 

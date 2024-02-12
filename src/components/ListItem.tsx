@@ -12,7 +12,7 @@ export interface ListItemProps {
 export function ListItem({ leading, leadingSpace, children, trailing, onClick, className }: ListItemProps) {
   return (
     <button onClick={onClick}
-      className={`flex justify-center px-2 py-1 ${(className ?? "")} w-full`}>
+      className={`flex px-2 py-1 ${(className ?? "")} w-full`}>
       <div className="flex-shrink-0 self-center h-full" style={{ paddingLeft: leadingSpace ?? 0 }}>
         {leading}
       </div>

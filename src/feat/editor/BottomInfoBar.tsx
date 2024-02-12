@@ -1,7 +1,7 @@
 import { Button, Flex, IconButton, Tooltip } from "@radix-ui/themes";
 import { Code2Icon, CodeIcon, ListIcon, Redo2Icon, Undo2Icon } from "lucide-react";
 import { DocInfoRow } from "./DocInfoRow";
-import { redo, toggleOutline, undo } from "@/store/editor";
+import { editorAction } from "@/store/editor";
 
 type BottomInfoBarButtonProps = {
   tooltip: string;
@@ -27,19 +27,19 @@ export function BottomInfoBar() {
   return (
     <div className="flex justify-between items-center border-t bg-background">
       <Flex gap="1" grow={"1"}>
-        <BottomInfoBarButton tooltip={"大纲"} onClick={() => { toggleOutline() }}>
+        <BottomInfoBarButton tooltip={"大纲"} onClick={editorAction.toggleOutline}>
           <ListIcon width={iconSize} />
         </BottomInfoBarButton>
 
-        <BottomInfoBarButton tooltip={"源码模式"} onClick={() => { }}>
+        <BottomInfoBarButton tooltip={"源码模式"} onClick={() => { /* TODO 源码模式 */ }}>
           <Code2Icon width={iconSize} />
         </BottomInfoBarButton>
 
-        <BottomInfoBarButton tooltip={"撤销"} onClick={() => { undo() }}>
+        <BottomInfoBarButton tooltip={"撤销"} onClick={editorAction.undo}>
           <Undo2Icon width={iconSize} />
         </BottomInfoBarButton>
 
-        <BottomInfoBarButton tooltip={"重做"} onClick={() => { redo() }}>
+        <BottomInfoBarButton tooltip={"重做"} onClick={editorAction.redo}>
           <Redo2Icon width={iconSize} />
         </BottomInfoBarButton>
 

@@ -4,11 +4,12 @@ import { openDirectory, openFile } from "@/store/directory"
 import useDocumentStore from "@/store/document"
 import { FolderIcon, FolderOpenIcon } from "@heroicons/react/24/solid"
 import { DocumentTextIcon } from "@heroicons/react/24/outline"
-import { ChevronDown, ChevronRight } from "lucide-react"
+import { ChevronDown, ChevronRight, Folder, FolderClosed } from "lucide-react"
 import { useState } from "react"
 import { isMarkdownFile } from "@/utils/path"
 import { toast } from "sonner"
 import { DirectoryContextMenu } from "./DirectoryContextMenu"
+import { cn } from "@/utils"
 
 interface DirectoryItemProps {
   entity: DirectoryEntity,
@@ -35,11 +36,11 @@ function DirItem(props: DirectoryItemProps) {
   const data = props.entity
   const [dirOpened, setDirOpened] = useState(false)
   const childrenNode = dirOpened ? extractChildrenNode(data.children, props.depth + 1) : []
-  const normalStyle = "hover:bg-accent active:bg-accent focus:bg-accent text-foreground opacity-85 hover:opacity-100"
-  const folderIconStyle = "w-4"
+  const normalStyle = "pl-[12px] hover:bg-accent active:bg-accent focus:bg-accent text-foreground opacity-75 hover:opacity-100"
+  const folderIconStyle = "w-[15px] opacity-75"
 
   const folderIcon = dirOpened
-    ? <FolderIcon title="" className={folderIconStyle} /> : <FolderIcon className={folderIconStyle} />
+    ? <Folder className={folderIconStyle} /> : <FolderClosed className={folderIconStyle} />
   const arrow = dirOpened
     ? <ChevronDown className={folderIconStyle} /> : <ChevronRight className={folderIconStyle} />
 
@@ -72,10 +73,10 @@ function FileItem(props: DirectoryItemProps) {
   const data = props.entity
   const curDocPath = useDocumentStore((state) => state.path ?? "")
   const fileOpened = curDocPath === data.path
-  const fileIconStyle = fileOpened ? "w-4" : "w-4"
-  const fileIcon = <DocumentTextIcon className={fileIconStyle} strokeWidth={fileOpened ? 2.5 : 1.5} />
+  const fileIconStyle = "w-[15px] opacity-75"
+  const fileIcon = <DocumentTextIcon className={fileIconStyle} />
 
-  const normalStyle = fileOpened ? "bg-accent font-bold text-primary" : "hover:bg-accent active:bg-accent text-accent-foreground opacity-85 hover:opacity-100"
+  const normalStyle = fileOpened ? "border-l-[4px] bg-accent" : "pl-[12px] hover:bg-accent active:bg-accent text-accent-foreground opacity-75 hover:opacity-100"
 
   async function handleClick() {
     if (!isMarkdownFile(data.path)) {
@@ -87,7 +88,7 @@ function FileItem(props: DirectoryItemProps) {
 
   return (
     <ListItem
-      className={normalStyle}
+      className={cn(normalStyle, " border-l-primary")}
       key={data.path}
       leadingSpace={15 * props.depth}
       leading={<div className="opacity-0">{fileIcon}</div>}

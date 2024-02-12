@@ -6,6 +6,27 @@ import useNavigationStore from "./store/navigation";
 import { WindowTitleBar } from "./feat/title_bar/TitleBar";
 import useDocumentStore from "./store/document";
 import { Welcome } from "./feat/welcome/Welcome";
+import { Dialog } from "@radix-ui/react-dialog";
+import { Theme } from "@radix-ui/themes";
+import { Toaster } from "sonner";
+import { DialogProvider } from "./components/dialog/DialogContext";
+import usePreferenceStore from "./store/preference";
+
+export function ThemedApp() {
+  // const themeMode = "dark" // usePreferenceStore(state => state.themeMode)
+  const themeMode = usePreferenceStore((state) => state.themeMode())
+  return (
+    <Theme appearance={themeMode} className={themeMode === "dark" ? "dark" : ""}>
+      <DialogProvider>
+        <App />
+        <Dialog />
+        <Toaster position="bottom-right" className='-mr-5'
+          theme={themeMode} richColors closeButton duration={3000} />
+      </DialogProvider>
+      {/* <ThemePanel /> */}
+    </Theme>
+  )
+}
 
 const App = () => {
   const showSidePanel = useNavigationStore((state) => state.sidebarExpanded);
@@ -43,5 +64,3 @@ const App = () => {
     </div>
   )
 };
-
-export default App;

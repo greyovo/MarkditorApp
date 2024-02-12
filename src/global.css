@@ -34,9 +34,9 @@ body::-webkit-scrollbar-thumb {
 
 @layer base {
   :root {
-    --background: var(--white-a1);
+    --background: var(--gray-1);
     --foreground: var(--black-a11);
-    --card: var(--gray-2);
+    --card: var(--gray-1);
     --card-foreground: var(--gray-12);
     --popover: var(--indigo-1);
     --popover-foreground: var(--indigo-12);

@@ -41,4 +41,6 @@ export interface IPlatformAPI {
 
   // 打开开发者调试工具
   async openDevTools(): Promise<void>;
+
+  async openInBrowser(url: string): Promise<void>;
 } 

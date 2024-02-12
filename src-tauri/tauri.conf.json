@@ -25,7 +25,9 @@
       },
       "protocol": {
         "asset": true,
-        "assetScope": ["**"]
+        "assetScope": [
+          "**"
+        ]
       },
       "fs": {
         "all": true,
@@ -57,6 +59,12 @@
         "all": true,
         "writeText": true,
         "readText": true
+      },
+      "shell": {
+        "all": true,
+        "execute": true,
+        "sidecar": true,
+        "open": true
       }
     },
     "bundle": {

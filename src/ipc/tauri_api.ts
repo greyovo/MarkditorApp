@@ -1,13 +1,15 @@
 import { appWindow } from '@tauri-apps/api/window'
 import { createDir, BaseDirectory, readDir, removeDir, renameFile, writeTextFile, readTextFile, removeFile, exists } from '@tauri-apps/api/fs';
-import { open, save } from '@tauri-apps/api/dialog';
+import { open as openDialog, save } from '@tauri-apps/api/dialog';
 import { invoke } from '@tauri-apps/api';
 import { IPlatformAPI } from "shared/platformApi";
 import { getNameFromPath, isMarkdownFile } from '@/utils/path';
+import { open as openIn } from '@tauri-apps/api/shell';
+
 
 export const TauriAPI: IPlatformAPI = {
   async selectDirectory(): Promise<DirectoryEntity | undefined> {
-    const selectedPath = await open({
+    const selectedPath = await openDialog({
       multiple: false,
       directory: true,
     });
@@ -49,7 +51,7 @@ export const TauriAPI: IPlatformAPI = {
   },
 
   async selectFile(): Promise<DirectoryEntity | undefined> {
-    const selectedPath = await open({
+    const selectedPath = await openDialog({
       filters: [{
         name: 'Markdown Document',
         extensions: ['md', 'markdown'],
@@ -139,7 +141,7 @@ export const TauriAPI: IPlatformAPI = {
   },
 
   exists: async function (path: string): Promise<boolean> {
-    return await exists(path)
+    return await exists(path);
   },
 
   async showSaveDialog(): Promise<string | undefined> {
@@ -176,4 +178,7 @@ export const TauriAPI: IPlatformAPI = {
     },
   },
 
+  openInBrowser: async function (url: string): Promise<void> {
+    await openIn(url);
+  }
 }

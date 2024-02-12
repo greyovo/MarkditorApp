@@ -156,8 +156,8 @@ function MoreMenuItem() {
 
 export const titleBarMenuItems = [
   <ToggleFolderView key={"ToggleFolderViewMenuItem"} />,
-  <Save key={"SaveMenuItem"} />,
   <NewFile key={"NewFileMenuItem"} />,
+  <Save key={"SaveMenuItem"} />,
   <OpenDevTool key={"OpenDevToolMenuItem"} />,
   <ToggleThemeMode key={"ToggleThemeMode"} />,
   // <SearchMenuItem key={"SearchMenuItem"} />,

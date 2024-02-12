@@ -78,7 +78,11 @@ export function EditorContextMenu(
 
         <ContextMenu.Item onClick={editorAction.insertImage}>插入图片...</ContextMenu.Item>
 
-        <ContextMenu.Item onClick={editorAction.insertImage}>插入表格...</ContextMenu.Item>
+        {/* <ContextMenu.Item onClick={editorAction.insertTable}>添加表格...</ContextMenu.Item> */}
+
+        {/* <ContextMenu.Item onClick={editorAction.}>插入段落(上)</ContextMenu.Item> */}
+
+        {/* <ContextMenu.Item onClick={editorAction.}>插入段落(下)</ContextMenu.Item> */}
 
         <ContextMenu.Separator />
 

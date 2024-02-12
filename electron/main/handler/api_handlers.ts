@@ -162,7 +162,12 @@ export const apiHandlers: IPlatformAPI = {
       toggleMaximizeWindow();
     },
   },
-  exists: function (path: string): Promise<boolean> {
-    throw new Error("Function not implemented.");
+
+  exists: async function (path: string): Promise<boolean> {
+    throw new Error("Method not implemented.");
+  },
+
+  openInBrowser: async function (url: string): Promise<void> {
+    throw new Error("Method not implemented.");
   }
 }

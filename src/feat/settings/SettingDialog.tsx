@@ -1,17 +1,18 @@
 import { ReactNode, useState } from 'react';
-// import { Dialog, DialogFooter, DialogHeader } from "@/components/ui/dialog";
-import { Dialog, Button, DialogContent, DialogDescription, DialogTitle, Kbd, TextField, Flex, DropdownMenu, Select, Link, Separator, Switch, TextFieldInput } from "@radix-ui/themes";
+import { Dialog, Button, DialogContent, DialogDescription, DialogTitle, Kbd, TextField, Flex, DropdownMenu, Select, Link, Separator, Switch, TextFieldInput, ScrollArea } from "@radix-ui/themes";
 import { PlatformAPI } from '@/ipc';
+import { cn } from '@/utils';
 
 type SettingItemProps = {
+  className?: string,
   title: string,
   subtitle: string,
   trailing: ReactNode
 }
 
-const SettingItem = ({ title, subtitle, trailing }: SettingItemProps) => {
+const SettingItem = ({ className, title, subtitle, trailing }: SettingItemProps) => {
   return (
-    <Flex justify={"between"} align={"center"}>
+    <Flex className={cn(className, "select-none")} justify={"between"} align={"center"}>
       <Flex direction={"column"} gap={"1"}>
         <div className=''>{title}</div>
         {subtitle.length > 0 && <div className='text-xs opacity-30'>{subtitle}</div>}
@@ -22,8 +23,6 @@ const SettingItem = ({ title, subtitle, trailing }: SettingItemProps) => {
 }
 
 export const SettingDialog = ({ show, onOpenChange }: { show: boolean, onOpenChange: (v: boolean) => void }) => {
-  const [themeMode, setThemeMode] = useState('light');
-  const [showTopStatusBar, setShowTopStatusBar] = useState(true);
 
   function closeDialog() {
     onOpenChange(false);
@@ -36,48 +35,49 @@ export const SettingDialog = ({ show, onOpenChange }: { show: boolean, onOpenCha
   return (
     <Dialog.Root open={show} onOpenChange={onOpenChange}>
       <DialogContent>
-        {/* <DialogHeader className="mb-2"> */}
+
         <DialogTitle>设置</DialogTitle>
-        {/* <Separator className='w-full' /> */}
 
-        {/* </DialogHeader> */}
-        <Flex direction={"column"} gap={"3"} my={"5"}>
+        <ScrollArea className=' h-[300px] my-5 pr-6'>
+          <Flex direction={"column"} gap={"4"} className=' overflow-y-auto'>
+            <SettingItem title={'主题模式'} subtitle={'浅色、深色或跟随系统'}
+              trailing={
+                <Select.Root defaultValue="system">
+                  <Select.Trigger className='w-[120px]' />
+                  <Select.Content>
+                    <Select.Item value="light">浅色</Select.Item>
+                    <Select.Item value="dark">深色</Select.Item>
+                    <Select.Item value="system">跟随系统</Select.Item>
+                  </Select.Content>
+                </Select.Root>}
+            />
 
-          <SettingItem title={'主题模式'} subtitle={'浅色、深色或跟随系统'}
-            trailing={
-              <Select.Root defaultValue="system">
-                <Select.Trigger className='w-[100px]' />
-                <Select.Content>
-                  <Select.Item value="light">浅色</Select.Item>
-                  <Select.Item value="dark">深色</Select.Item>
-                  <Select.Item value="system">跟随系统</Select.Item>
-                </Select.Content>
-              </Select.Root>}
-          />
+            <SettingItem title={'自动保存'} subtitle={''}
+              trailing={<Switch defaultChecked />}
+            />
 
-          <SettingItem title={'自动保存'} subtitle={''}
-            trailing={<Switch defaultChecked />}
-          />
 
-          <SettingItem title={'自动保存间隔'} subtitle={'单位：毫秒'}
-            trailing={<TextFieldInput className='w-[100px]' />}
-          />
-        </Flex>
 
-        <Separator className='w-full' />
-        <DialogDescription className='opacity-55 my-4 text-sm'>
-          Markditor is open-source on <Link onClick={() => openUrl("https://github.com/greyovo/MarkditorApp")}>Github</Link>.<br></br>
-          © 2024 <Link onClick={() => openUrl("https://github.com/greyovo")}>@greyovo</Link>. All rights reserved.
 
-        </DialogDescription>
+            <SettingItem className=' opacity-45' title={'自动保存间隔'} subtitle={'单位：毫秒'}
+              trailing={
+                <Flex justify={"end"} align={"center"} gap={"2"}>
+                  <TextFieldInput disabled className='w-[90px]' /> ms
+                </Flex>
+              }
+            />
+          </Flex>
 
-        {/* <DialogFooter className="mt-2"> */}
+          <DialogDescription className='flex justify-between opacity-55 my-4 text-xs'>
+            <span><b>Markditor</b> is open-source on <Link onClick={() => openUrl("https://github.com/greyovo/MarkditorApp")}>Github</Link>.</span>
+            <span>© 2024 <Link onClick={() => openUrl("https://github.com/greyovo")}>@greyovo</Link></span>
+          </DialogDescription>
+        </ScrollArea>
+
         <Flex gap="3" justify="end">
-          <Button onClick={closeDialog}>
-            关闭
-          </Button>
+          <Button onClick={closeDialog}>关闭</Button>
         </Flex>
-        {/* </DialogFooter> */}
+
       </DialogContent>
     </Dialog.Root>
   );

@@ -1,5 +1,4 @@
-import { Dialog, DialogFooter, DialogHeader } from "@/components/ui/dialog";
-import { Button, DialogContent, DialogDescription, DialogTitle, Kbd, TextField } from "@radix-ui/themes";
+import { Dialog, Button, DialogContent, DialogDescription, DialogTitle, Kbd, TextField, Flex, DropdownMenu, Select, Link, Separator, Switch, TextFieldInput } from "@radix-ui/themes";
 import { useState } from "react";
 import { DialogProps } from "./DialogProps";
 import { getParentDirectory, isMarkdownFile, validateDirectoryName, fixMdFileName } from "@/utils/path";
@@ -43,25 +42,23 @@ export function CreateDialog({ show, entity, onOpenChange, newItemType }:
   const newItemTypeStr = newItemType === "dir" ? "文件夹" : "文件"
 
   return (
-    <Dialog open={show} onOpenChange={onOpenChange}>
+    <Dialog.Root open={show} onOpenChange={onOpenChange}>
       <DialogContent className="w-[400px]">
-        <DialogHeader className="mb-2">
-          <DialogTitle>新建{newItemTypeStr}</DialogTitle>
-          <DialogDescription>
-            在<Kbd mx="1"> {targetDir.name} </Kbd>下新建{newItemTypeStr}：
-            <TextField.Input
-              my="2" value={inputName} placeholder={`请输入${newItemTypeStr}名`}
-              onInput={(e) => setInputName(e.currentTarget.value)}
-              onKeyUp={(e) => e.key === "Enter" && confirm()}
-            />
-          </DialogDescription>
-        </DialogHeader>
+        <DialogTitle>新建{newItemTypeStr}</DialogTitle>
+        <DialogDescription className="my-3">
+          在<Kbd mx="1"> {targetDir.name} </Kbd>下新建{newItemTypeStr}：
+          <TextField.Input
+            my="2" value={inputName} placeholder={`请输入${newItemTypeStr}名`}
+            onInput={(e) => setInputName(e.currentTarget.value)}
+            onKeyUp={(e) => e.key === "Enter" && confirm()}
+          />
+        </DialogDescription>
 
-        <DialogFooter className="mt-2">
+        <Flex justify={"end"} gap={"2"}>
           <Button variant="soft" onClick={() => onOpenChange(false)}>取消</Button>
           <Button onClick={confirm} disabled={inputName.trim().length === 0}>确定</Button>
-        </DialogFooter>
+        </Flex>
       </DialogContent>
-    </Dialog>
+    </Dialog.Root>
   );
 }

@@ -1,6 +1,5 @@
-import { Dialog, DialogFooter, DialogHeader } from "@/components/ui/dialog";
 import { deleteDirectory, deleteFile } from "@/store/directory";
-import { Button, DialogContent, DialogDescription, DialogTitle, Kbd } from "@radix-ui/themes";
+import { Button, Dialog, DialogContent, DialogDescription, DialogTitle, Flex, Kbd } from "@radix-ui/themes";
 import { toast } from "sonner";
 import { DialogProps } from "./DialogProps";
 
@@ -25,20 +24,18 @@ export function DeleteDialog({ show, entity, onOpenChange }: DialogProps) {
   }
 
   return (
-    <Dialog open={show} onOpenChange={onOpenChange}>
+    <Dialog.Root open={show} onOpenChange={onOpenChange}>
       <DialogContent>
-        <DialogHeader className="mb-2">
-          <DialogTitle>确认删除</DialogTitle>
-          <DialogDescription>
-            要删除{entity.type === "dir" ? "文件夹" : "文件"}<Kbd mx="1">{entity.name}</Kbd>吗？删除后不可恢复。
-          </DialogDescription>
-        </DialogHeader>
+        <DialogTitle>确认删除</DialogTitle>
+        <DialogDescription>
+          要删除{entity.type === "dir" ? "文件夹" : "文件"}<Kbd mx="1">{entity.name}</Kbd>吗？删除后不可恢复。
+        </DialogDescription>
 
-        <DialogFooter className="mt-2">
+        <Flex justify={"end"} gap={"2"}>
           <Button onClick={() => onOpenChange(false)}>取消</Button>
           <Button color="red" onClick={confirm}>删除</Button>
-        </DialogFooter>
+        </Flex>
       </DialogContent>
-    </Dialog>
+    </Dialog.Root>
   );
 }

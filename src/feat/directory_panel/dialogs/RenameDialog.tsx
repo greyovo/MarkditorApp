@@ -1,5 +1,4 @@
-import { Dialog, DialogFooter, DialogHeader } from "@/components/ui/dialog";
-import { Button, DialogContent, DialogDescription, DialogTitle, TextField } from "@radix-ui/themes";
+import { Button, Dialog, DialogContent, DialogDescription, DialogTitle, Flex, Kbd, TextField } from "@radix-ui/themes";
 import { DialogProps } from "./DialogProps";
 import { useState } from "react";
 import { PlatformAPI } from "@/ipc";
@@ -43,25 +42,23 @@ export function RenameDialog({ show, entity, onOpenChange }: DialogProps) {
   }
 
   return (
-    <Dialog open={show} onOpenChange={onOpenChange}>
+    <Dialog.Root open={show} onOpenChange={onOpenChange}>
       <DialogContent className="w-[400px]">
-        <DialogHeader className="mb-2">
-          <DialogTitle>重命名</DialogTitle>
-          <DialogDescription>
-            输入新的{entity.type === "dir" ? "文件夹" : "文件"}名：
-            <TextField.Input
-              my="2" value={inputName} placeholder={entity.name}
-              onInput={(e) => setInputName(e.currentTarget.value)}
-              onKeyUp={(e) => e.key === "Enter" && confirm()}
-            />
-          </DialogDescription>
-        </DialogHeader>
+        <DialogTitle>重命名</DialogTitle>
+        <DialogDescription>
+          输入新的{entity.type === "dir" ? "文件夹" : "文件"}名：
+          <TextField.Input
+            my="2" value={inputName} placeholder={entity.name}
+            onInput={(e) => setInputName(e.currentTarget.value)}
+            onKeyUp={(e) => e.key === "Enter" && confirm()}
+          />
+        </DialogDescription>
 
-        <DialogFooter className="mt-2">
+        <Flex justify={"end"} gap={"2"}>
           <Button variant="soft" onClick={() => onOpenChange(false)}>取消</Button>
           <Button onClick={confirm} disabled={inputName.trim().length === 0}>确定</Button>
-        </DialogFooter>
+        </Flex>
       </DialogContent>
-    </Dialog>
+    </Dialog.Root>
   );
 }

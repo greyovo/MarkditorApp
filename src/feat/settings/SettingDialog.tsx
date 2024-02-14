@@ -36,11 +36,11 @@ export const SettingDialog = ({ show, onOpenChange }: { show: boolean, onOpenCha
 
   return (
     <Dialog.Root open={show} onOpenChange={onOpenChange}>
-      <DialogContent>
+      <DialogContent className='pr-3'>
 
         <DialogTitle>设置</DialogTitle>
 
-        <ScrollArea className=' h-[300px] my-5 pr-6'>
+        <ScrollArea className=' h-[55vh] my-5 pr-5'>
           <Flex direction={"column"} gap={"4"} className=' overflow-y-auto'>
             <SettingItem title={'主题模式'} subtitle={'浅色、深色或跟随系统'}
               trailing={
@@ -58,6 +58,25 @@ export const SettingDialog = ({ show, onOpenChange }: { show: boolean, onOpenCha
               trailing={<Switch defaultChecked />}
             />
 
+            <SettingItem title={'自动保存'} subtitle={''}
+              trailing={<Switch defaultChecked />}
+            /> <SettingItem title={'自动保存'} subtitle={''}
+              trailing={<Switch defaultChecked />}
+            /> <SettingItem title={'自动保存'} subtitle={''}
+              trailing={<Switch defaultChecked />}
+            /> <SettingItem title={'自动保存'} subtitle={''}
+              trailing={<Switch defaultChecked />}
+            /> 
+            <SettingItem title={'自动保存'} subtitle={''}
+              trailing={<Switch defaultChecked />}
+            />
+            <SettingItem title={'自动保存'} subtitle={''}
+              trailing={<Switch defaultChecked />}
+            />
+            <SettingItem title={'自动保存'} subtitle={''}
+              trailing={<Switch defaultChecked />}
+            />
+
             <SettingItem className=' opacity-45' title={'自动保存间隔'} subtitle={'单位：毫秒'}
               trailing={
                 <Flex justify={"end"} align={"center"} gap={"2"}>
@@ -66,11 +85,9 @@ export const SettingDialog = ({ show, onOpenChange }: { show: boolean, onOpenCha
               }
             />
           </Flex>
-
-
         </ScrollArea>
 
-        <Flex gap="3" justify="between" align={"center"}>
+        <Flex gap="3" mr={"4"} justify="between" align={"center"}>
           <DialogDescription className='flex gap-2 opacity-50 text-xs'>
             <span><b>Markditor</b> is open-source on <Link onClick={() => openUrl("https://github.com/greyovo/MarkditorApp")}>Github</Link>.</span>
             <span>© 2024 <Link onClick={() => openUrl("https://github.com/greyovo")}>@greyovo</Link></span>

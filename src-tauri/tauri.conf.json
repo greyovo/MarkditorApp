@@ -116,6 +116,19 @@
         "title": "Markditor",
         "width": 1000
       }
-    ]
+    ],
+    "cli": {
+      "description": "Markditor CLI",
+      "longDescription": "Markditor App CLI.",
+      "args": [
+        {
+          "name": "source",
+          "description": "The source path of a markdown file.",
+          "index": 1,
+          "takesValue": true,
+          "required": true
+        }
+      ]
+    }
   }
 }

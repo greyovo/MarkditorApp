@@ -1,4 +1,4 @@
-import { IPlatformAPI } from "shared/platformApi";
+import { CliArgs, IPlatformAPI } from "shared/platformApi";
 
 export const ElectronAPI: IPlatformAPI = {
   async createDir(path: string): Promise<boolean> {
@@ -66,5 +66,13 @@ export const ElectronAPI: IPlatformAPI = {
   },
   exists: function (path: string): Promise<boolean> {
     throw new Error("Function not implemented.");
+  },
+  openInBrowser: function (url: string): Promise<void> {
+    throw new Error("Function not implemented.");
+  },
+  os: {
+    readCliArgs: function (): Promise<CliArgs> {
+      throw new Error("Function not implemented.");
+    }
   }
 }

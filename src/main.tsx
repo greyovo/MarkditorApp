@@ -4,7 +4,6 @@ import { ThemedApp } from './App'
 import '@radix-ui/themes/styles.css';
 import './global.css'
 import "vditor/dist/index.css"
-import { initDirectoryStore } from './store/directory';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
@@ -13,4 +12,3 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
 )
 
 postMessage({ payload: 'removeLoading' }, '*')
-initDirectoryStore()

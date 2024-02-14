@@ -16,10 +16,9 @@ export class Constants {
     "solidity", "yul"
   ];
 
-  private static get BACKEND(): string {
+  public static get BACKEND(): string {
     const backend = import.meta.env.VITE_BACKEND ?? "unknown"
     if (supportedBackends.includes(backend ?? "")) {
-      console.log("Running with backend:", backend);
       return backend
     } else {
       throw new NotImplementError(`Unsupported backend: ${backend}.`)

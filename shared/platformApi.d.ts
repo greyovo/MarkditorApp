@@ -33,7 +33,7 @@ export interface IPlatformAPI {
 
   async deleteFile(path: string): Promise<boolean>;
 
-  async exists(path: string) :Promise<boolean>;
+  async exists(path: string): Promise<boolean>;
 
   async showSaveDialog(): Promise<string | undefined>;
   // 获取系统信息
@@ -43,4 +43,12 @@ export interface IPlatformAPI {
   async openDevTools(): Promise<void>;
 
   async openInBrowser(url: string): Promise<void>;
-} 
+
+  os: {
+    async readCliArgs(): Promise<CliArgs>;
+  }
+}
+
+type CliArgs = {
+  source?: string
+}

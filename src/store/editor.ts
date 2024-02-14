@@ -1,6 +1,9 @@
 import Vditor from 'vditor'
 import { create } from 'zustand'
 import usePreferenceStore from './preference'
+import { PlatformAPI } from '@/ipc'
+import { openFile, setRootDir } from './directory'
+import { getParentDirectory } from '@/utils/path'
 
 interface EditorState {
   instance?: Vditor
@@ -24,7 +27,7 @@ export function getVditor(): Vditor | undefined {
 
 export class EditorActions {
 
-  public initVditor(instance?: Vditor) {
+  public async initVditor(instance?: Vditor) {
     setState({ instance })
     const themeMode = usePreferenceStore.getState().themeMode()
     if (themeMode === "light") {

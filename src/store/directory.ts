@@ -16,14 +16,6 @@ const useDirectoryStore = create<DirectoryState>(
 
 const { setState, getState, subscribe } = useDirectoryStore
 
-export const initDirectoryStore = () => {
-  // useDocumentStore.subscribe(async (state, prev) => {
-  //   if (state.hasDocOpened()) {
-  //     setRootDir(getDirectoryFromPath(state.baseDir))
-  //   }
-  // })
-}
-
 // -----------------------------------------
 
 export async function setRootDir(root: DirectoryEntity) {

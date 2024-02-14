@@ -1,4 +1,4 @@
-import { IPlatformAPI } from "shared/platformApi";
+import { CliArgs, IPlatformAPI } from "shared/platformApi";
 import { closeWindow, minimizeWindow, openDevTools, setMainWindowName, toggleMaximizeWindow } from "../main_window";
 import fs from "fs"
 import { dialog } from "electron";
@@ -169,5 +169,10 @@ export const apiHandlers: IPlatformAPI = {
 
   openInBrowser: async function (url: string): Promise<void> {
     throw new Error("Method not implemented.");
+  },
+  os: {
+    readCliArgs: function (): Promise<CliArgs> {
+      throw new Error("Function not implemented.");
+    }
   }
 }

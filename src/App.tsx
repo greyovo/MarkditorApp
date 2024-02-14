@@ -11,6 +11,10 @@ import { Theme } from "@radix-ui/themes";
 import { Toaster } from "sonner";
 import { DialogProvider } from "./components/dialog/DialogContext";
 import usePreferenceStore from "./store/preference";
+import { openFile, setRootDir } from "./store/directory";
+import { Constants } from "./utils/constants";
+import { PlatformAPI } from "./ipc";
+import { getParentDirectory } from "./utils/path";
 
 export function ThemedApp() {
   // const themeMode = "dark" // usePreferenceStore(state => state.themeMode)
@@ -64,3 +68,15 @@ const App = () => {
     </div>
   )
 };
+
+async function initApp() {
+  const defaultFilePath = (await PlatformAPI.os.readCliArgs()).source
+  if (defaultFilePath) {
+    if (await PlatformAPI.exists(defaultFilePath)) {
+      openFile(defaultFilePath)
+      setRootDir(getParentDirectory(defaultFilePath))
+    }
+  }
+}
+
+initApp()

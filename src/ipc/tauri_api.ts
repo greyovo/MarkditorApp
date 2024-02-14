@@ -2,9 +2,11 @@ import { appWindow } from '@tauri-apps/api/window'
 import { createDir, BaseDirectory, readDir, removeDir, renameFile, writeTextFile, readTextFile, removeFile, exists } from '@tauri-apps/api/fs';
 import { open as openDialog, save } from '@tauri-apps/api/dialog';
 import { invoke } from '@tauri-apps/api';
-import { IPlatformAPI } from "shared/platformApi";
+import { CliArgs, IPlatformAPI } from "shared/platformApi";
 import { getNameFromPath, isMarkdownFile } from '@/utils/path';
 import { open as openIn } from '@tauri-apps/api/shell';
+import { getMatches } from '@tauri-apps/api/cli';
+import { error } from 'console';
 
 
 export const TauriAPI: IPlatformAPI = {
@@ -180,5 +182,22 @@ export const TauriAPI: IPlatformAPI = {
 
   openInBrowser: async function (url: string): Promise<void> {
     await openIn(url);
+  },
+
+  os: {
+    readCliArgs: async function (): Promise<CliArgs> {
+      const matches = await getMatches()
+      console.log("args:", JSON.stringify(matches, null, 2));
+      const parsedArgs: CliArgs = {}
+      if (matches.args) {
+        const args = matches.args
+        try {
+          parsedArgs.source = args.source.value as string
+        } catch (err) {
+          console.error(err);
+        }
+      }
+      return parsedArgs
+    }
   }
 }

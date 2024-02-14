@@ -1,16 +1,13 @@
 import { PlatformAPI } from "@/ipc";
-import useDocumentStore, { saveDocument, createNewDoc, closeCurrentDoc } from "@/store/document";
+import useDocumentStore, { saveDocument, createNewDoc } from "@/store/document";
 import useNavigationStore, { toggleSidebarExpanded } from "@/store/navigation";
-import { Dialog, Flex, Button } from "@radix-ui/themes";
 import { SidebarClose, SidebarOpen, SaveIcon, PlusCircleIcon, Search, Settings, TerminalSquare, MoreHorizontal, MoonIcon, Sun } from "lucide-react";
-import { useContext, useState } from "react";
-import { DialogContext } from "../../components/dialog/DialogContext";
 import { TitleMenuItem, TitleMenuItemProps } from "./TitleMenuItem";
 import { toast } from "sonner";
 import { TitleBarDropdownMenus } from "./TitleBarDropdownMenus";
 import { Constants } from "@/utils/constants";
 import usePreferenceStore, { setThemeMode } from "@/store/preference";
-import { UnsaveAlertDialog } from "../editor/UnsaveAlertDialog";
+import { dialogActions } from "@/store/dialog";
 
 const iconSize = 16
 
@@ -44,7 +41,6 @@ function Save() {
     icon: icon,
     label: '保存',
     onClick: async () => {
-      console.log("Saving...")
       const res = await saveDocument()
       if (res) {
         toast.success("保存成功")
@@ -61,14 +57,12 @@ const NewFile = () => {
   const saved = useDocumentStore((state) => (state.saved));
   console.log("已经保存", saved);
 
-  const [alertUnsave, setAlertUnsave] = useState(false);
-
   const props: TitleMenuItemProps = {
     icon: <PlusCircleIcon size={iconSize} />,
     label: '新建文件',
     onClick: () => {
       if (useDocumentStore.getState().shouldAlertSave()) {
-        setAlertUnsave(true)
+        dialogActions.toggleUnsaveAlert(true, createNewDoc)
       } else {
         createNewDoc()
       }
@@ -80,13 +74,8 @@ const NewFile = () => {
     return <TitleMenuItem props={props} />
   }
 
-  return (
-    <>
-      <TitleMenuItem props={props} />
+  return <TitleMenuItem props={props} />
 
-      <UnsaveAlertDialog doNext={createNewDoc} open={alertUnsave} onOpenChange={setAlertUnsave} />
-    </>
-  )
 }
 
 function ShowSearch() {
@@ -134,15 +123,15 @@ function MoreMenuItem() {
   return <TitleMenuItem props={moreMenuItem} />
 }
 
-export const titleBarMenuItems = [
-  <ToggleFolderView key={"ToggleFolderViewMenuItem"} />,
-  <NewFile key={"NewFileMenuItem"} />,
-  <Save key={"SaveMenuItem"} />,
-  <OpenDevTool key={"OpenDevToolMenuItem"} />,
-  <ToggleThemeMode key={"ToggleThemeMode"} />,
-  // <SearchMenuItem key={"SearchMenuItem"} />,
-  // <ExportMenuItem key={"ExportMenuItem"} />
-  <TitleBarDropdownMenus key={"MoreMenuItem"}>
-    <MoreMenuItem />
-  </TitleBarDropdownMenus>
-]
+export const TitleBarMenuItems = () => (
+  <>
+    <ToggleFolderView key={"ToggleFolderViewMenuItem"} />
+    <NewFile key={"NewFileMenuItem"} />
+    <Save key={"SaveMenuItem"} />
+    <OpenDevTool key={"OpenDevToolMenuItem"} />
+    <ToggleThemeMode key={"ToggleThemeMode"} />
+    <TitleBarDropdownMenus key={"MoreMenuItem"}>
+      <MoreMenuItem />
+    </TitleBarDropdownMenus>
+  </>
+)

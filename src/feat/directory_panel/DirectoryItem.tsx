@@ -11,7 +11,7 @@ import { toast } from "sonner"
 import { DirectoryContextMenu } from "./DirectoryContextMenu"
 import { cn } from "@/utils"
 import { Flex } from "@radix-ui/themes"
-import { UnsaveAlertDialog } from "../editor/UnsaveAlertDialog"
+import { dialogActions } from "@/store/dialog"
 
 interface DirectoryItemProps {
   entity: DirectoryEntity,
@@ -80,20 +80,17 @@ function FileItem(props: DirectoryItemProps) {
 
   const normalStyle = fileOpened ? "border-l-[4px] bg-accent" : "pl-[12px] hover:bg-accent active:bg-accent text-accent-foreground opacity-75 hover:opacity-100"
 
-  const [alertUnsave, setAlertUnsave] = useState(false);
-
-
   async function handleClick() {
     if (useDocumentStore.getState().path === data.path) {
       return
     }
-    
+
     if (!isMarkdownFile(data.path)) {
       toast.warning("暂不支持打开非 Markdown 文件")
       return
     }
     if (useDocumentStore.getState().shouldAlertSave()) {
-      setAlertUnsave(true)
+      dialogActions.toggleUnsaveAlert(true, () => openFile(data.path))
     } else {
       openFile(data.path)
     }
@@ -101,23 +98,16 @@ function FileItem(props: DirectoryItemProps) {
 
 
   return (
-    <>
-      <ListItem
-        className={cn(normalStyle, " border-l-primary")}
-        key={data.path}
-        leadingSpace={15 * props.depth}
-        leading={<div className="opacity-0">{fileIcon}</div>}
-        onClick={handleClick}
-        trailing={<span />}
-      >
-        <div className="flex gap-2">{fileIcon} {data.name}</div>
-      </ListItem>
-
-      <UnsaveAlertDialog open={alertUnsave} onOpenChange={setAlertUnsave}
-        doNext={() => openFile(data.path)}
-      />
-    </>
-
+    <ListItem
+      className={cn(normalStyle, " border-l-primary")}
+      key={data.path}
+      leadingSpace={15 * props.depth}
+      leading={<div className="opacity-0">{fileIcon}</div>}
+      onClick={handleClick}
+      trailing={<span />}
+    >
+      <div className="flex gap-2">{fileIcon} {data.name}</div>
+    </ListItem>
   )
 }
 

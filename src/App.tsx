@@ -12,6 +12,7 @@ import { Toaster } from "sonner";
 import { DialogProvider } from "./components/dialog/DialogContext";
 import usePreferenceStore from "./store/preference";
 import { onAppLaunch, onAppReady } from "./utils/lifecycle";
+import { UnsaveAlertDialog } from "./feat/editor/UnsaveAlertDialog";
 
 // Do some initialization before DOM is ready.
 onAppLaunch()
@@ -23,12 +24,12 @@ export function ThemedApp() {
   const themeMode = usePreferenceStore((state) => state.themeMode())
   return (
     <Theme appearance={themeMode} className={themeMode === "dark" ? "dark" : ""}>
-      <DialogProvider>
-        <App />
-        <Dialog />
-        <Toaster position="bottom-right" className='-mr-5'
-          theme={themeMode} richColors closeButton duration={3000} />
-      </DialogProvider>
+      <App />
+      <Toaster position="bottom-right" className='-mr-5'
+        theme={themeMode} richColors closeButton duration={3000} />
+
+      {/* Global Alert Dialogs */}
+      <UnsaveAlertDialog />
       {/* <ThemePanel /> */}
     </Theme>
   )

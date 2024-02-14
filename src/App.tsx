@@ -1,5 +1,5 @@
 import { Editor } from "./feat/editor/Editor";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from "./components/ui/resizable";
 import { DirectoryPanel } from "./feat/directory_panel/DirectoryPanel";
 import useNavigationStore from "./store/navigation";
@@ -11,13 +11,15 @@ import { Theme } from "@radix-ui/themes";
 import { Toaster } from "sonner";
 import { DialogProvider } from "./components/dialog/DialogContext";
 import usePreferenceStore from "./store/preference";
-import { openFile, setRootDir } from "./store/directory";
-import { Constants } from "./utils/constants";
-import { PlatformAPI } from "./ipc";
-import { getParentDirectory } from "./utils/path";
+import { onAppLaunch, onAppReady } from "./utils/lifecycle";
+
+// Do some initialization before DOM is ready.
+onAppLaunch()
 
 export function ThemedApp() {
-  // const themeMode = "dark" // usePreferenceStore(state => state.themeMode)
+  // Right after the DOM is ready
+  useEffect(() => { onAppReady() }, [])
+
   const themeMode = usePreferenceStore((state) => state.themeMode())
   return (
     <Theme appearance={themeMode} className={themeMode === "dark" ? "dark" : ""}>
@@ -68,15 +70,3 @@ const App = () => {
     </div>
   )
 };
-
-async function initApp() {
-  const defaultFilePath = (await PlatformAPI.os.readCliArgs()).source
-  if (defaultFilePath) {
-    if (await PlatformAPI.exists(defaultFilePath)) {
-      openFile(defaultFilePath)
-      setRootDir(getParentDirectory(defaultFilePath))
-    }
-  }
-}
-
-initApp()

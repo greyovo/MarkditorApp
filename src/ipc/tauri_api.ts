@@ -1,4 +1,4 @@
-import { appWindow } from '@tauri-apps/api/window'
+import { appWindow, getCurrent } from '@tauri-apps/api/window'
 import { createDir, BaseDirectory, readDir, removeDir, renameFile, writeTextFile, readTextFile, removeFile, exists } from '@tauri-apps/api/fs';
 import { open as openDialog, save } from '@tauri-apps/api/dialog';
 import { invoke } from '@tauri-apps/api';
@@ -7,6 +7,7 @@ import { getNameFromPath, isMarkdownFile } from '@/utils/path';
 import { open as openIn } from '@tauri-apps/api/shell';
 import { getMatches } from '@tauri-apps/api/cli';
 import { error } from 'console';
+import { UnlistenFn } from '@tauri-apps/api/event';
 
 
 export const TauriAPI: IPlatformAPI = {
@@ -178,6 +179,15 @@ export const TauriAPI: IPlatformAPI = {
     toggleMaximize: async function () {
       appWindow.toggleMaximize();
     },
+
+    onWillClose: async function (hanlder): Promise<() => void> {
+      return appWindow.onCloseRequested(async (event) => {
+        const confirmed = await hanlder();
+        if (!confirmed) {
+          event.preventDefault();
+        }
+      });
+    }
   },
 
   openInBrowser: async function (url: string): Promise<void> {
@@ -192,7 +202,7 @@ export const TauriAPI: IPlatformAPI = {
       if (matches.args) {
         const args = matches.args
         try {
-          parsedArgs.source = args.source.value as string
+          parsedArgs.source = args?.source?.value as string ??""
         } catch (err) {
           console.error(err);
         }

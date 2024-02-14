@@ -126,7 +126,7 @@
           "description": "The source path of a markdown file.",
           "index": 1,
           "takesValue": true,
-          "required": true
+          "required": false
         }
       ]
     }

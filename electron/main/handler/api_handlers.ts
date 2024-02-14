@@ -161,6 +161,11 @@ export const apiHandlers: IPlatformAPI = {
     toggleMaximize: function (): void {
       toggleMaximizeWindow();
     },
+
+    onWillClose: function (callback: () => Promise<boolean>) {
+      throw new Error("Method not implemented.");
+    }
+
   },
 
   exists: async function (path: string): Promise<boolean> {

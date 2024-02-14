@@ -8,6 +8,15 @@ export interface IPlatformAPI {
     minimize(): void,
 
     toggleMaximize(): void,
+
+    /**
+     * Notify the callback when current window is about to close.
+     * 
+     * @param callback If `callback` returns `true`, continue closing, 
+     * otherwise it will prevent window from closing.
+     * @returns An unlisten function.
+     */
+    onWillClose(callback: () => Promise<boolean>): Promise<() => void>,
   }
 
   async selectDirectory(): Promise<DirectoryEntity | undefined>;

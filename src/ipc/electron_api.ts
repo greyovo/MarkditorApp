@@ -63,6 +63,9 @@ export const ElectronAPI: IPlatformAPI = {
     toggleMaximize: function (): void {
       window.__ElectronAPI__.win.toggleMaximize();
     },
+    onWillClose: function (callback: () => Promise<boolean>) {
+      throw new Error("Method not implemented.");
+    }
   },
   exists: function (path: string): Promise<boolean> {
     throw new Error("Function not implemented.");

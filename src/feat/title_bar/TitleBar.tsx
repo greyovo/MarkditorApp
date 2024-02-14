@@ -6,7 +6,6 @@ import { useEffect, useState } from "react"
 import { titleBarMenuItems } from "./menu_items"
 import { Square2StackIcon } from "@heroicons/react/24/outline"
 import { PlatformAPI } from "@/ipc"
-import { useDialog } from "../../components/dialog/Dialog"
 import { WindowActionButton } from "./WindowActionButton"
 import { UnsaveAlertDialog } from "../editor/UnsaveAlertDialog"
 
@@ -30,12 +29,13 @@ export function WindowTitleBar() {
   const [maximized, setMaximized] = useState(false)
 
   useEffect(() => {
+    const unlisten = PlatformAPI.win.onWillClose(willCloseWindow)
     // FIXME 监听窗口最大化/还原事件
     // const removeListener = window.__ElectronAPI__.onMaximizedChanged((v) => {
     //   setMaximized(v)
     // })
-    // return removeListener
-  }, [])
+    return () => { unlisten.then((f) => f()) }
+  }, [shouldAlertSave])
 
   function minimizeWindow() {
     PlatformAPI.win.minimize()
@@ -49,11 +49,16 @@ export function WindowTitleBar() {
     PlatformAPI.win.close()
   }
 
-  function willCloseWindow() {
+  async function willCloseWindow(): Promise<boolean> {
+    // console.log("willCloseWindow");
     if (shouldAlertSave) {
+      console.log("should alert");
       setAlertUnsave(true)
+      return false
     } else {
+      // console.log("should not alert");
       closeWindow()
+      return true
     }
   }
 

@@ -1,7 +1,7 @@
 import { PlatformAPI } from '@/ipc'
 import { getNameFromPath, getParentDirectory } from '@/utils/path'
 import { create } from 'zustand'
-import { openDirectory, setRootDir } from './directory'
+import useDirectoryStore, { openDirectory, refreshDirectory, setRootDir } from './directory'
 
 type DocumentState = {
   content?: string,
@@ -96,6 +96,9 @@ export async function saveFile(): Promise<boolean> {
       saved: true,
       fileName,
     }))
+    if (useDirectoryStore.getState().root === undefined) {    
+      setRootDir(getParentDirectory(path))
+    }
     return true
   } else {
     return false

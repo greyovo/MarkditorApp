@@ -95,6 +95,7 @@ export async function saveDocument(force?: boolean): Promise<boolean> {
     path = await PlatformAPI.showSaveDialog()
     if (!path) return false
   }
+  
   try {
     await PlatformAPI.saveFile(path!, getState().content!)
     const fileName = getNameFromPath(path)

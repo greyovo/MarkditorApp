@@ -2,21 +2,28 @@ import { closeCurrentDoc, createNewDoc, saveDocument } from "@/store/document"
 import { toast } from "sonner"
 
 export async function handleEditorHotKey(e: KeyboardEvent) {
-  const key = e.key.toLocaleLowerCase()
+  const key = e.key.toLowerCase()
 
-  if (key === "s" && (e.ctrlKey || e.metaKey)) {
-    try {
-      await saveDocument()
-      toast.success("保存成功", { id: "save-success", dismissible: false})
-    } catch (error) {
-      toast.error("保存失败", { description: `${error}` })
-      console.error(error);
+  if (e.ctrlKey || e.metaKey) {
+    switch (key) {
+      case 's': // Ctrl+S
+        try {
+          const res = await saveDocument()
+          if (res) toast.success("保存成功", { id: "save-success", duration: 3000 })
+        } catch (error) {
+          toast.error("保存失败", { description: `${error}`, duration: 10000 })
+          console.error(error);
+        }
+        break
+      case 'n': // Ctrl+N
+        createNewDoc()
+        break
+      case 'w':
+      case 'q': // Ctrl+W or Ctrl+Q
+        await closeCurrentDoc()
+        break
+      default:
+        return
     }
-  }
-  if (key === "w" && (e.ctrlKey || e.metaKey)) {
-    closeCurrentDoc()
-  }
-  if (key === "n" && (e.ctrlKey || e.metaKey)) {
-    createNewDoc()
   }
 }

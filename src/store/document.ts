@@ -11,6 +11,7 @@ type DocumentState = {
   fileName?: string,
   // computed
   hasDocOpened: () => boolean,
+  shouldAlertSave: () => boolean,
 }
 
 const useDocumentStore = create<DocumentState>(
@@ -20,7 +21,12 @@ const useDocumentStore = create<DocumentState>(
     baseDir: undefined,
     fileName: undefined,
     saved: false,
-    hasDocOpened() { return !!get().fileName }
+
+    // computed
+    hasDocOpened() { return !!get().fileName },
+    shouldAlertSave() {
+      return get().hasDocOpened() && !get().saved
+    }
     // get hasDoc: () => !!get().content,
   }),
 )
@@ -79,14 +85,18 @@ export function setFile(path: string, content: string) {
   }))
 }
 
-export async function saveFile(): Promise<boolean> {
+export async function saveDocument(force?: boolean): Promise<boolean> {
+  if (!force && getState().saved) {
+    return true
+  }
+
   let path = getState().path
   if (path === undefined) {
     path = await PlatformAPI.showSaveDialog()
     if (!path) return false
   }
-  const success = await PlatformAPI.saveFile(path!, getState().content!)
-  if (success) {
+  try {
+    await PlatformAPI.saveFile(path!, getState().content!)
     const fileName = getNameFromPath(path)
     const baseDir = getParentDirectory(path).path
     setState(state => ({
@@ -96,17 +106,16 @@ export async function saveFile(): Promise<boolean> {
       saved: true,
       fileName,
     }))
-    if (useDirectoryStore.getState().root === undefined) {    
+    if (useDirectoryStore.getState().root === undefined) {
       setRootDir(getParentDirectory(path))
     }
     return true
-  } else {
-    return false
+  } catch (e) {
+    throw e
   }
+
 }
 
 // markAsDirty: () => set((state) => ({ ...state, saved: false })),
-
-
 
 export default useDocumentStore

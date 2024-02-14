@@ -1,15 +1,16 @@
 import { PlatformAPI } from "@/ipc";
-import useDocumentStore, { saveFile, createNewDoc, closeCurrentDoc } from "@/store/document";
+import useDocumentStore, { saveDocument, createNewDoc, closeCurrentDoc } from "@/store/document";
 import useNavigationStore, { toggleSidebarExpanded } from "@/store/navigation";
 import { Dialog, Flex, Button } from "@radix-ui/themes";
 import { SidebarClose, SidebarOpen, SaveIcon, PlusCircleIcon, Search, Settings, TerminalSquare, MoreHorizontal, MoonIcon, Sun } from "lucide-react";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { DialogContext } from "../../components/dialog/DialogContext";
 import { TitleMenuItem, TitleMenuItemProps } from "./TitleMenuItem";
 import { toast } from "sonner";
 import { TitleBarDropdownMenus } from "./TitleBarDropdownMenus";
 import { Constants } from "@/utils/constants";
 import usePreferenceStore, { setThemeMode } from "@/store/preference";
+import { UnsaveAlertDialog } from "../editor/UnsaveAlertDialog";
 
 const iconSize = 16
 
@@ -44,7 +45,7 @@ function Save() {
     label: '保存',
     onClick: async () => {
       console.log("Saving...")
-      const res = await saveFile()
+      const res = await saveDocument()
       if (res) {
         toast.success("保存成功")
       } else {
@@ -56,15 +57,19 @@ function Save() {
   return <TitleMenuItem props={props} />
 }
 
-function NewFile() {
+const NewFile = () => {
   const saved = useDocumentStore((state) => (state.saved));
   console.log("已经保存", saved);
+
+  const [alertUnsave, setAlertUnsave] = useState(false);
 
   const props: TitleMenuItemProps = {
     icon: <PlusCircleIcon size={iconSize} />,
     label: '新建文件',
     onClick: () => {
-      if (saved) {
+      if (useDocumentStore.getState().shouldAlertSave()) {
+        setAlertUnsave(true)
+      } else {
         createNewDoc()
       }
     },
@@ -76,36 +81,11 @@ function NewFile() {
   }
 
   return (
-    <Dialog.Root>
-      <Dialog.Trigger>
-        <div onClick={props.onClick}>
-          <TitleMenuItem props={props} />
-        </div>
-      </Dialog.Trigger>
+    <>
+      <TitleMenuItem props={props} />
 
-      <Dialog.Content style={{ maxWidth: 450 }}>
-        <Dialog.Title>文件未保存</Dialog.Title>
-        <Dialog.Description size="2" mb="4">
-          在新建文件前保存当前文件的修改吗？
-        </Dialog.Description>
-
-        <Flex gap="3" mt="4" justify="end">
-          <Dialog.Close>
-            <Button variant="soft" color="gray">
-              点错了
-            </Button>
-          </Dialog.Close>
-          <Dialog.Close>
-            <Button variant="soft" color="red" onClick={createNewDoc}>
-              不保存
-            </Button>
-          </Dialog.Close>
-          <Dialog.Close>
-            <Button onClick={saveFile}>保存</Button>
-          </Dialog.Close>
-        </Flex>
-      </Dialog.Content>
-    </Dialog.Root>
+      <UnsaveAlertDialog doNext={createNewDoc} open={alertUnsave} onOpenChange={setAlertUnsave} />
+    </>
   )
 }
 

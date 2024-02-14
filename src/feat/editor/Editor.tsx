@@ -1,12 +1,13 @@
 import { ReactComponentElement, createElement, useEffect, useRef, useState } from "react";
 import Vditor from "vditor";
 import { EditorContextMenu } from "./EditorContextMenu";
-import useDocumentStore, { updateContent } from "@/store/document";
+import useDocumentStore, { saveDocument, updateContent } from "@/store/document";
 import { BottomInfoBar } from "./BottomInfoBar";
 import { Constants } from "@/utils/constants";
 import useEditorStore, { editorAction, getVditor } from "@/store/editor";
 import { convertImagePath } from "@/utils/path";
 import usePreferenceStore from "@/store/preference";
+import { handleEditorHotKey } from "@/utils/hotkeys";
 
 // const _placeHolder = "# Welcome to Markditor \nHello, welcome to `Markditor`.\n# 欢迎使用 Markditor\n你好，欢迎使用 `Markditor`"
 const _placeHolder = "在此开始记录..."
@@ -84,9 +85,12 @@ export function Editor() {
       }, 50);
     })
 
+    document.addEventListener("keydown", handleEditorHotKey)
+
     return () => {
       editorAction.initVditor(undefined)
       unsubscribe()
+      document.removeEventListener("keydown", handleEditorHotKey)
     };
   }, []);
 

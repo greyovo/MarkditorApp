@@ -58,9 +58,6 @@ export const SettingDialog = ({ show, onOpenChange }: { show: boolean, onOpenCha
               trailing={<Switch defaultChecked />}
             />
 
-
-
-
             <SettingItem className=' opacity-45' title={'自动保存间隔'} subtitle={'单位：毫秒'}
               trailing={
                 <Flex justify={"end"} align={"center"} gap={"2"}>
@@ -70,13 +67,14 @@ export const SettingDialog = ({ show, onOpenChange }: { show: boolean, onOpenCha
             />
           </Flex>
 
-          <DialogDescription className='flex justify-between opacity-55 my-4 text-xs'>
+
+        </ScrollArea>
+
+        <Flex gap="3" justify="between" align={"center"}>
+          <DialogDescription className='flex gap-2 opacity-50 text-xs'>
             <span><b>Markditor</b> is open-source on <Link onClick={() => openUrl("https://github.com/greyovo/MarkditorApp")}>Github</Link>.</span>
             <span>© 2024 <Link onClick={() => openUrl("https://github.com/greyovo")}>@greyovo</Link></span>
           </DialogDescription>
-        </ScrollArea>
-
-        <Flex gap="3" justify="end">
           <Button onClick={closeDialog}>关闭</Button>
         </Flex>
 

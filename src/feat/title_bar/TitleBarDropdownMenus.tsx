@@ -3,7 +3,7 @@ import { closeCurrentDoc } from "@/store/document";
 import { DropdownMenu, Button, Flex } from "@radix-ui/themes";
 import { SettingDialog } from "../settings/SettingDialog";
 import { useState } from "react";
-import { Settings } from "lucide-react";
+import { RefreshCcw, Settings } from "lucide-react";
 
 
 export function TitleBarDropdownMenus({ children }: { children: React.ReactNode }) {
@@ -36,7 +36,7 @@ export function TitleBarDropdownMenus({ children }: { children: React.ReactNode 
           <DropdownMenu.Separator />
           <DropdownMenu.Item onClick={refreshRootDir}>刷新</DropdownMenu.Item>
           <DropdownMenu.Item onClick={() => setSettingVisible(true)}>
-            <Flex gap={"2"} align={"center"}><Settings size={14} /> 设置</Flex>
+            <Flex gap={"2"} align={"center"}> {/*<Settings size={14} />*/} 设置</Flex>
           </DropdownMenu.Item>
           {/* <DropdownMenu.Item>Share</DropdownMenu.Item> */}
           {/* <DropdownMenu.Item>Add to favorites</DropdownMenu.Item> */}

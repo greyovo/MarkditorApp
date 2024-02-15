@@ -1,6 +1,6 @@
 import { selectFile, selectRootDir } from "@/store/directory";
 import { createNewDoc } from "@/store/document";
-import { Box, Button, Flex, Heading, IconButton, Text } from "@radix-ui/themes";
+import { Box, Button, Flex } from "@radix-ui/themes";
 import { FileTextIcon, FolderIcon, HomeIcon, PencilIcon } from "lucide-react";
 
 export function Welcome() {

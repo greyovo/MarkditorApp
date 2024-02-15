@@ -3,7 +3,9 @@ import { create } from 'zustand'
 import usePreferenceStore from './preference'
 import { PlatformAPI } from '@/ipc'
 import { openFile, setRootDir } from './directory'
-import { getParentDirectory } from '@/utils/path'
+import { convertRelativePath, getFileNameWithoutExtension, getParentDirectory, resolveWhitespace } from '@/utils/path'
+import { imagesFilter } from '@shared/file_filters'
+import useDocumentStore from './document'
 
 interface EditorState {
   instance?: Vditor
@@ -157,8 +159,24 @@ export class EditorActions {
     getVditor()?.deleteValue()
   }
 
+  public insertParagraph = async (position: "up" | "down") => {
+    // TODO 在上方或在下方插入段落
+  }
+
   public async insertImage() {
     // TODO 插入图片
+    const imgDirEntity = (await PlatformAPI.selectFile(imagesFilter))
+    if (!imgDirEntity) return
+    const imgPath = resolveWhitespace(imgDirEntity.path)
+    const baseDir = useDocumentStore.getState().baseDir
+    if (imgPath) {
+      let imgSrc = imgPath
+      // 转为相对路径而
+      if (baseDir) {
+      }
+      // const imgSrc = convertRelativePath(imgPath.path, baseDir)
+      getVditor()?.insertValue(`![${getFileNameWithoutExtension(imgDirEntity.name)}](${imgSrc})`)
+    }
   }
 
   public async insertTable() {

@@ -58,25 +58,6 @@ export const SettingDialog = ({ show, onOpenChange }: { show: boolean, onOpenCha
               trailing={<Switch defaultChecked />}
             />
 
-            <SettingItem title={'自动保存'} subtitle={''}
-              trailing={<Switch defaultChecked />}
-            /> <SettingItem title={'自动保存'} subtitle={''}
-              trailing={<Switch defaultChecked />}
-            /> <SettingItem title={'自动保存'} subtitle={''}
-              trailing={<Switch defaultChecked />}
-            /> <SettingItem title={'自动保存'} subtitle={''}
-              trailing={<Switch defaultChecked />}
-            /> 
-            <SettingItem title={'自动保存'} subtitle={''}
-              trailing={<Switch defaultChecked />}
-            />
-            <SettingItem title={'自动保存'} subtitle={''}
-              trailing={<Switch defaultChecked />}
-            />
-            <SettingItem title={'自动保存'} subtitle={''}
-              trailing={<Switch defaultChecked />}
-            />
-
             <SettingItem className=' opacity-45' title={'自动保存间隔'} subtitle={'单位：毫秒'}
               trailing={
                 <Flex justify={"end"} align={"center"} gap={"2"}>

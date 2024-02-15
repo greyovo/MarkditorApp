@@ -4,10 +4,23 @@ import { DropdownMenu, Button, Flex } from "@radix-ui/themes";
 import { SettingDialog } from "../settings/SettingDialog";
 import { useState } from "react";
 import { RefreshCcw, Settings } from "lucide-react";
+import { dialogActions } from "@/store/dialog";
 
 
 export function TitleBarDropdownMenus({ children }: { children: React.ReactNode }) {
   const [settingVisible, setSettingVisible] = useState(false)
+
+  function handleSelectFile() {
+    dialogActions.showUnsaveAlertIfNeeded({
+      doNext: selectFile
+    })
+  }
+
+  function handleSelectRootDir() {
+    dialogActions.showUnsaveAlertIfNeeded({
+      doNext: selectRootDir
+    })
+  }
 
   return (
     <>
@@ -16,8 +29,8 @@ export function TitleBarDropdownMenus({ children }: { children: React.ReactNode 
           <div>{children}</div>
         </DropdownMenu.Trigger>
         <DropdownMenu.Content>
-          <DropdownMenu.Item onClick={selectFile}>打开文件...</DropdownMenu.Item>
-          <DropdownMenu.Item onClick={selectRootDir}>打开文件夹...</DropdownMenu.Item>
+          <DropdownMenu.Item onClick={handleSelectFile}>打开文件...</DropdownMenu.Item>
+          <DropdownMenu.Item onClick={handleSelectRootDir}>打开文件夹...</DropdownMenu.Item>
 
           {/* TODO  最近打开列表*/}
           <DropdownMenu.Sub>

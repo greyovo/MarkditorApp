@@ -61,11 +61,9 @@ const NewFile = () => {
     icon: <PlusCircleIcon size={iconSize} />,
     label: '新建文件',
     onClick: () => {
-      if (useDocumentStore.getState().shouldAlertSave()) {
-        dialogActions.toggleUnsaveAlert(true, createNewDoc)
-      } else {
-        createNewDoc()
-      }
+      dialogActions.showUnsaveAlertIfNeeded({
+        doNext: createNewDoc
+      })
     },
     isDisabled: false,
   }

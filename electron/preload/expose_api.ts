@@ -1,6 +1,6 @@
 import { app, contextBridge, ipcRenderer } from 'electron'
 import ipcHandlers from '../main/handler';
-import { IPlatformAPI } from 'shared/platformApi';
+import { IPlatformAPI } from 'shared/platform_api';
 
 function buildFunction(name: string) {
   return async (...args: any) => {

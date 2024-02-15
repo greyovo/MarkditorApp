@@ -5,21 +5,12 @@ import { Button, ScrollArea, } from "@radix-ui/themes";
 import useDirectoryStore, { selectRootDir } from "@/store/directory";
 import { DirectoryPanelHeader } from "./DirectoryPanelHeader";
 import { DirectoryContextMenu } from "./DirectoryContextMenu";
-import useDocumentStore from "@/store/document";
-import { UnsaveAlertDialog } from "../editor/UnsaveAlertDialog";
-import { useState } from "react";
+import { dialogActions } from "@/store/dialog";
 
 function DirectoryEmptyView() {
 
-  const [openAlert, setOpenAlert] = useState(false)
-
   function willSelectDir() {
-    const shouldAlertSave = useDocumentStore.getState().shouldAlertSave()
-    if (shouldAlertSave) {
-      setOpenAlert(true)
-    } else {
-      selectRootDir()
-    }
+    dialogActions.showUnsaveAlertIfNeeded({ doNext: selectRootDir })
   }
 
   return (

@@ -89,11 +89,9 @@ function FileItem(props: DirectoryItemProps) {
       toast.warning("暂不支持打开非 Markdown 文件")
       return
     }
-    if (useDocumentStore.getState().shouldAlertSave()) {
-      dialogActions.toggleUnsaveAlert(true, () => openFile(data.path))
-    } else {
-      openFile(data.path)
-    }
+    dialogActions.showUnsaveAlertIfNeeded(
+      { doNext: () => openFile(data.path) }
+    )
   }
 
 

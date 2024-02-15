@@ -1,4 +1,4 @@
-import { CliArgs, IPlatformAPI } from "shared/platformApi";
+import { CliArgs, IPlatformAPI } from "shared/platform_api";
 
 export const ElectronAPI: IPlatformAPI = {
   async createDir(path: string): Promise<boolean> {

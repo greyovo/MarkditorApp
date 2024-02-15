@@ -1,4 +1,4 @@
-import { CliArgs, IPlatformAPI } from "shared/platformApi";
+import { CliArgs, IPlatformAPI } from "shared/platform_api";
 import { closeWindow, minimizeWindow, openDevTools, setMainWindowName, toggleMaximizeWindow } from "../main_window";
 import fs from "fs"
 import { dialog } from "electron";

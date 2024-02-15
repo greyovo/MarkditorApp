@@ -35,6 +35,7 @@ export function getParentDirectory(path: string): DirectoryEntity {
 }
 
 export function getFileNameWithoutExtension(fileName: string): string {
+  fileName = getNameFromPath(fileName);
   return fileName.substring(0, fileName.lastIndexOf("."));
 }
 
@@ -70,12 +71,21 @@ export function convertImagePath(html: string, baseDir: string): string {
       continue
     }
     if (Constants.isTauri) {
-      img.src = convertFileSrc(img.src.replace(img.baseURI, baseDir + "/"))
+      const src = img.src.replace("%20", " ").replace("file:///", "")
+      img.src = convertFileSrc(src)
     } else {
       img.src = img.src.replace(img.baseURI, baseDir + "/")
     }
   }
   return el.innerHTML
+}
+
+export function convertRelativePath(fullPath: string, baseDir: string) {
+  return fullPath.replace(baseDir, "")
+}
+
+export function resolveWhitespace(path: string): string {
+  return path.replace(/\s/g, "%20")
 }
 
 export function fixMdFileName(fileName: string): string {

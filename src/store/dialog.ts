@@ -1,8 +1,9 @@
 import { create } from 'zustand'
+import useDocumentStore from './document'
 
 export interface UnsaveAlertProps {
   visible: boolean
-  doNext?: () => void
+  doNext?: () => void | Promise<void>
 }
 
 const initialDialogState = {
@@ -25,14 +26,28 @@ const { setState, getState } = useDialogStore
 
 class DialogActions {
 
-  public toggleCreateDialog = (vis: boolean) => {
-    setState((state) => ({ ...state, createDialog: vis }))
+  // public toggleUnsaveAlert = (visible: boolean, doNext?: () => void) => {
+  //   setState((state) => ({
+  //     ...state,
+  //     unsaveAlert: { visible, doNext, }
+  //   }))
+  // }
+
+  public showUnsaveAlertIfNeeded = ({ doNext }: { doNext: () => void }) => {
+    if (useDocumentStore.getState().shouldAlertSave()) {
+      setState((state) => ({
+        ...state,
+        unsaveAlert: { visible: true, doNext, }
+      }))
+    } else {
+      doNext()
+    }
   }
 
-  public toggleUnsaveAlert = (visible: boolean, doNext?: () => void) => {
+  public hideUnsaveAlert = () => {
     setState((state) => ({
       ...state,
-      unsaveAlert: { visible, doNext, }
+      unsaveAlert: { visible: false, doNext: () => { }, }
     }))
   }
 

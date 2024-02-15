@@ -51,7 +51,7 @@ export function WindowTitleBar() {
 
   async function willCloseWindow(): Promise<boolean> {
     if (shouldAlertSave) {
-      dialogActions.toggleUnsaveAlert(true, closeWindow)
+      dialogActions.showUnsaveAlertIfNeeded({ doNext: closeWindow })
       return false
     } else {
       closeWindow()

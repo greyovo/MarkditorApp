@@ -1,13 +1,12 @@
-import { appWindow, getCurrent } from '@tauri-apps/api/window'
-import { createDir, BaseDirectory, readDir, removeDir, renameFile, writeTextFile, readTextFile, removeFile, exists } from '@tauri-apps/api/fs';
+import { appWindow, } from '@tauri-apps/api/window'
+import { createDir, readDir, removeDir, renameFile, writeTextFile, readTextFile, removeFile, exists } from '@tauri-apps/api/fs';
 import { open as openDialog, save } from '@tauri-apps/api/dialog';
 import { invoke } from '@tauri-apps/api';
-import { CliArgs, IPlatformAPI } from "shared/platformApi";
+import { CliArgs, IPlatformAPI } from "shared/platform_api";
 import { getNameFromPath, isMarkdownFile } from '@/utils/path';
 import { open as openIn } from '@tauri-apps/api/shell';
 import { getMatches } from '@tauri-apps/api/cli';
-import { error } from 'console';
-import { UnlistenFn } from '@tauri-apps/api/event';
+import { IFileFilter, markdownFilter } from '@shared/file_filters';
 
 
 export const TauriAPI: IPlatformAPI = {
@@ -53,12 +52,9 @@ export const TauriAPI: IPlatformAPI = {
     return [...dirs, ...files];
   },
 
-  async selectFile(): Promise<DirectoryEntity | undefined> {
+  async selectFile(filter: IFileFilter = markdownFilter): Promise<DirectoryEntity | undefined> {
     const selectedPath = await openDialog({
-      filters: [{
-        name: 'Markdown Document',
-        extensions: ['md', 'markdown'],
-      }]
+      filters: [filter]
     });
     if (selectedPath && typeof selectedPath === 'string') {
       return {
@@ -202,7 +198,7 @@ export const TauriAPI: IPlatformAPI = {
       if (matches.args) {
         const args = matches.args
         try {
-          parsedArgs.source = args?.source?.value as string ??""
+          parsedArgs.source = args?.source?.value as string ?? ""
         } catch (err) {
           console.error(err);
         }

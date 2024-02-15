@@ -1,5 +1,5 @@
 import useDialogStore, { dialogActions } from "@/store/dialog";
-import { createNewDoc, saveDocument } from "@/store/document";
+import { saveDocument } from "@/store/document";
 import { Button, Dialog, Flex } from "@radix-ui/themes";
 
 export function UnsaveAlertDialog() {
@@ -7,7 +7,7 @@ export function UnsaveAlertDialog() {
   const doNext = useDialogStore((state) => state.unsaveAlert.doNext);
 
   function cancel() {
-    dialogActions.toggleUnsaveAlert(false);
+    dialogActions.hideUnsaveAlert();
   }
 
   async function handleDoNext(save: boolean) {
@@ -15,11 +15,11 @@ export function UnsaveAlertDialog() {
       await saveDocument()
     }
     doNext?.()
-    dialogActions.toggleUnsaveAlert(false);
+    dialogActions.hideUnsaveAlert();
   }
 
   return (
-    <Dialog.Root open={visible} onOpenChange={dialogActions.toggleUnsaveAlert}>
+    <Dialog.Root open={visible} onOpenChange={dialogActions.hideUnsaveAlert}>
       <Dialog.Content style={{ maxWidth: 450 }}>
         <Dialog.Title>文件未保存</Dialog.Title>
         <Dialog.Description size="2" mb="4">

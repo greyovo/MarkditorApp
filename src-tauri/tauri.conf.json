@@ -11,7 +11,7 @@
   },
   "tauri": {
     "allowlist": {
-      "all": false,
+      "all": true,
       "dialog": {
         "all": true,
         "ask": true,
@@ -24,15 +24,19 @@
         "all": true
       },
       "protocol": {
+        "all": true,
         "asset": true,
         "assetScope": [
-          "**"
+          "**/*",
+          "**\\*",
+          "*:\\**\\*",
+          "*:/**/*"
         ]
       },
       "fs": {
         "all": true,
         "scope": [
-          "**"
+          "**/*"
         ],
         "readFile": true,
         "writeFile": true,
@@ -101,7 +105,7 @@
       }
     },
     "security": {
-      "csp": null
+      "csp": "default-src 'self'; img-src 'self' asset: https://asset.localhost/"
     },
     "updater": {
       "active": false

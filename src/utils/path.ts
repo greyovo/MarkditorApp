@@ -71,8 +71,8 @@ export function convertImagePath(html: string, baseDir: string): string {
       continue
     }
     if (Constants.isTauri) {
-      const src = img.src.replace("%20", " ").replace("file:///", "")
-      img.src = convertFileSrc(src)
+      const decodedSrc = decodeURIComponent(img.src).replace("file:///", "")
+      img.src = convertFileSrc(decodedSrc)
     } else {
       img.src = img.src.replace(img.baseURI, baseDir + "/")
     }

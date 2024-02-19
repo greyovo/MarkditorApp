@@ -7,6 +7,7 @@ import { getNameFromPath, isMarkdownFile } from '@/utils/path';
 import { open as openIn } from '@tauri-apps/api/shell';
 import { getMatches } from '@tauri-apps/api/cli';
 import { IFileFilter, markdownFilter } from '@shared/file_filters';
+import { platform } from '@tauri-apps/api/os';
 
 
 export const TauriAPI: IPlatformAPI = {
@@ -204,6 +205,6 @@ export const TauriAPI: IPlatformAPI = {
         }
       }
       return parsedArgs
-    }
+    },
   }
 }

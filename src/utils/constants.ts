@@ -2,7 +2,9 @@ import { NotImplementError } from "./errors";
 
 const supportedBackends = ["electron", "tauri"]
 
-export class Constants {
+type OSType = 'win32' | 'darwin' | 'linux'
+
+export class EnvConstants {
   public static readonly CODE_LANGUAGES: string[] = ["mermaid", "abc", "apache",
     "js", "ts", "html",
     // common
@@ -22,6 +24,17 @@ export class Constants {
       return backend
     } else {
       throw new NotImplementError(`Unsupported backend: ${backend}.`)
+    }
+  }
+
+  public static get OS_TYPE(): OSType {
+    switch (__OS_TYPE__) {
+      case "win32":
+        return "win32"
+      case "darwin":
+        return "darwin"
+      default:
+        return "linux"
     }
   }
 

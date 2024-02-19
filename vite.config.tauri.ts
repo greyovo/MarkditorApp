@@ -2,6 +2,7 @@
 /// <reference types="./src/vite-env.d.ts" />
 
 import path from 'node:path'
+import { platform } from 'process';
 import { UserConfig, defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import pkg from './package.json'
@@ -9,7 +10,7 @@ import pkg from './package.json'
 // https://vitejs.dev/config/
 /** @type {import('vite').UserConfig} */
 // @ts-ignor
-export default defineConfig(({ command }) => {
+export default defineConfig(async ({ command }): Promise<UserConfig> => {
   const isServe = command === 'serve'
   const isBuild = command === 'build'
   const sourcemap = isServe || !!process.env.VSCODE_DEBUG
@@ -20,6 +21,9 @@ export default defineConfig(({ command }) => {
         '@': path.join(__dirname, 'src'),
         '@shared': path.join(__dirname, 'shared')
       },
+    },
+    define: {
+      "__OS_TYPE__": JSON.stringify(platform),
     },
     plugins: [react()],
     // prevent vite from obscuring rust errors

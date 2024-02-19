@@ -46,11 +46,11 @@ function resetDocState() {
 
 export function createNewDoc() {
   setState(state => ({
-    content: "",
+    content: undefined,
     path: undefined,
     baseDir: undefined,
     fileName: "Untitled.md",
-    saved: false,
+    saved: true,
   }))
 }
 

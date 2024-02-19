@@ -1,4 +1,4 @@
-import { Dialog, Button, DialogContent, DialogDescription, DialogTitle, Kbd, TextField, Flex, DropdownMenu, Select, Link, Separator, Switch, TextFieldInput } from "@radix-ui/themes";
+import { Dialog, Button, DialogContent, DialogDescription, DialogTitle, Kbd, TextField, Flex, DropdownMenu, Select, Link, Separator, Switch, TextFieldInput, Strong } from "@radix-ui/themes";
 import { useState } from "react";
 import { DialogProps } from "./DialogProps";
 import { getParentDirectory, isMarkdownFile, validateDirectoryName, fixMdFileName } from "@/utils/path";
@@ -46,7 +46,7 @@ export function CreateDialog({ show, entity, onOpenChange, newItemType }:
       <DialogContent className="w-[400px]">
         <DialogTitle>新建{newItemTypeStr}</DialogTitle>
         <DialogDescription className="my-3">
-          在<Kbd mx="1"> {targetDir.name} </Kbd>下新建{newItemTypeStr}：
+          在<Strong> {targetDir.name} </Strong>下新建{newItemTypeStr}：
           <TextField.Input
             my="2" value={inputName} placeholder={`请输入${newItemTypeStr}名`}
             onInput={(e) => setInputName(e.currentTarget.value)}

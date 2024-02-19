@@ -8,11 +8,6 @@ import { isMarkdownFile, validateDirectoryName, fixMdFileName } from "@/utils/pa
 
 export function RenameDialog({ show, entity, onOpenChange }: DialogProps) {
   const [inputName, setInputName] = useState(entity.name);
-  // const [reset, setReset] = useState(false);
-  // if (reset) {
-  //   setInputName(entity.name)
-  //   setReset(false)
-  // }
 
   async function confirm() {
     if (!validateDirectoryName(inputName)) {
@@ -34,7 +29,7 @@ export function RenameDialog({ show, entity, onOpenChange }: DialogProps) {
     if (result) {
       toast.success("重命名成功", { description: finalName });
     } else {
-      toast.error("重命名失败", { description: "文件或目录已存在" })
+      toast.error("重命名失败", { description: "文件或目录已存在，或正在被其他程序使用" })
     }
     // clear state
     onOpenChange(false);

@@ -1,5 +1,5 @@
 import { deleteDirectory, deleteFile } from "@/store/directory";
-import { Button, Dialog, DialogContent, DialogDescription, DialogTitle, Flex, Kbd } from "@radix-ui/themes";
+import { Button, Dialog, DialogContent, DialogDescription, DialogTitle, Flex, Kbd, Strong } from "@radix-ui/themes";
 import { toast } from "sonner";
 import { DialogProps } from "./DialogProps";
 
@@ -18,7 +18,7 @@ export function DeleteDialog({ show, entity, onOpenChange }: DialogProps) {
       })
     } else {
       toast.error(`删除失败: ${entity.name}`, {
-        description: "文件可能在打开状态，无法删除"
+        description: "文件可能正在被其他程序使用，无法删除"
       })
     }
   }
@@ -28,7 +28,7 @@ export function DeleteDialog({ show, entity, onOpenChange }: DialogProps) {
       <DialogContent>
         <DialogTitle>确认删除</DialogTitle>
         <DialogDescription>
-          要删除{entity.type === "dir" ? "文件夹" : "文件"}<Kbd mx="1">{entity.name}</Kbd>吗？删除后不可恢复。
+          要删除{entity.type === "dir" ? "文件夹" : "文件"}<Strong> {entity.name} </Strong>吗？删除后不可恢复。
         </DialogDescription>
 
         <Flex justify={"end"} gap={"2"}>

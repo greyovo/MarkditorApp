@@ -1,16 +1,17 @@
-import useDirectoryStore, { openFile } from "@/store/directory";
+import useDirectoryStore, { copyFileInPlace, openFile, refreshRootDir } from "@/store/directory";
 import { ContextMenu } from "@radix-ui/themes";
 import { useEffect, useState } from "react";
 import { CreateDialog } from "./dialogs/CreateDialog";
 import { RenameDialog } from "./dialogs/RenameDialog";
 import { DeleteDialog } from "./dialogs/DeleteDialog";
 import { PlatformAPI } from "@/ipc";
+import { getNameFromPath, getParentDirectory, resolveFromRelativePath } from "@/utils/path";
+import { toast } from "sonner";
 
-type DirectoryMenuItemsProps = {
+type NonRootDirectoryMenuItemsProps = {
   entity: DirectoryEntity;
   onRename: () => void;
   onDelete: () => void;
-  onCopy: () => void;
 }
 
 function openInSystem(entity: DirectoryEntity) {
@@ -20,12 +21,23 @@ function openInSystem(entity: DirectoryEntity) {
     PlatformAPI.locateFolder(entity.path);
 }
 
-function NonRootDirectoryMenuItems({ entity, onRename, onCopy, onDelete }: DirectoryMenuItemsProps) {
+function NonRootDirectoryMenuItems({ entity, onRename, onDelete }: NonRootDirectoryMenuItemsProps) {
+  async function handleCopy() {
+    if (entity.type === 'file') {
+      const destPath = await copyFileInPlace(entity.path)
+      if (destPath) {
+        toast.success("复制成功", { description: destPath });
+      } else {
+        toast.error("复制失败");
+      }
+    }
+  }
+
   return (
     <>
       <ContextMenu.Item onClick={() => openFile(entity.path)}>打开</ContextMenu.Item>
       <ContextMenu.Item onClick={onRename}>重命名</ContextMenu.Item>
-      <ContextMenu.Item onClick={onCopy}>创建副本</ContextMenu.Item>
+      {entity.type === 'file' && <ContextMenu.Item onClick={handleCopy}>创建副本</ContextMenu.Item>}
       <ContextMenu.Item color="red" onClick={onDelete}>删除</ContextMenu.Item>
     </>
   )
@@ -50,10 +62,6 @@ export function DirectoryContextMenu({ children, entity }: { children: React.Rea
     setShowCreate(true)
   }
 
-  function handleCopy() {
-    // TODO copy logic
-  }
-
   return (
     <>
       <ContextMenu.Root>
@@ -69,7 +77,6 @@ export function DirectoryContextMenu({ children, entity }: { children: React.Rea
               entity={entity}
               onRename={() => setShowRename(true)}
               onDelete={() => setShowDelete(true)}
-              onCopy={handleCopy}
             />
           }
           <ContextMenu.Separator />

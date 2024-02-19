@@ -1,5 +1,5 @@
 import { appWindow, } from '@tauri-apps/api/window'
-import { createDir, readDir, removeDir, renameFile, writeTextFile, readTextFile, removeFile, exists } from '@tauri-apps/api/fs';
+import { createDir, readDir, removeDir, renameFile, writeTextFile, readTextFile, removeFile, exists, copyFile } from '@tauri-apps/api/fs';
 import { open as openDialog, save } from '@tauri-apps/api/dialog';
 import { invoke } from '@tauri-apps/api';
 import { CliArgs, IPlatformAPI } from "shared/platform_api";
@@ -94,15 +94,30 @@ export const TauriAPI: IPlatformAPI = {
     try {
       await writeTextFile(path, content);
       return true;
-    } catch (error) {
+    } catch (error) {      
+      console.error(error);
       return false;
     }
   },
+
+  copyFile: async function (source: string, dest: string): Promise<boolean> {
+    try {
+      console.log("copy");
+      
+      await copyFile(source, dest);
+      return true;
+    } catch (error) {
+      console.error(error);
+      return false;
+    }
+  },
+
   async createDir(path: string): Promise<boolean> {
     try {
       await createDir(path, { recursive: true });
       return true;
     } catch (error) {
+      console.error(error);
       return false;
     }
   },
@@ -112,6 +127,7 @@ export const TauriAPI: IPlatformAPI = {
       await this.saveFile(path, "");
       return true;
     } catch (error) {
+      console.error(error);
       return false;
     }
   },
@@ -142,6 +158,7 @@ export const TauriAPI: IPlatformAPI = {
       await removeDir(path, { recursive: true });
       return true;
     } catch (error) {
+      console.error(error);
       return false;
     }
   },
@@ -151,6 +168,7 @@ export const TauriAPI: IPlatformAPI = {
       await removeFile(path);
       return true;
     } catch (error) {
+      console.error(error);
       return false;
     }
   },
@@ -210,7 +228,7 @@ export const TauriAPI: IPlatformAPI = {
     console.log("open in sys:", filePath);
 
     if (EnvConstants.OS_TYPE === "win32") {
-      const command = new Command("locate-file-win", ["/select", filePath])
+      const command = new Command("locate-file-win", ["/select", filePath]);
       command.execute();
     } else {
       throw Error(`Not implemented in os: ${EnvConstants.OS_TYPE}`);
@@ -221,10 +239,11 @@ export const TauriAPI: IPlatformAPI = {
     console.log("open in sys:", folderPath);
 
     if (EnvConstants.OS_TYPE === "win32") {
-      const command = new Command("locate-folder-win", ["/root", folderPath])
+      const command = new Command("locate-folder-win", ["/root", folderPath]);
       command.execute();
     } else {
       throw Error(`Not implemented in os: ${EnvConstants.OS_TYPE}`);
     }
-  }
+  },
+
 }

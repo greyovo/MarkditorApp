@@ -38,6 +38,8 @@ export interface IPlatformAPI {
 
   async createFile(path: string): Promise<boolean>;
 
+  async copyFile(source: string, dest: string): Promise<boolean>;
+
   async renameDir(oldPath: string, newPath: string): Promise<boolean>;
 
   async renameFile(oldPath: string, newPath: string): Promise<boolean>;

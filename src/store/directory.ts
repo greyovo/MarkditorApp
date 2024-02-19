@@ -59,6 +59,16 @@ export async function selectFile() {
   }
 }
 
+export async function copyFileInPlace(path: string): Promise<string | undefined> {
+  const parent = getParentDirectory(path)
+  const cpoiedFile = `${getNameFromPath(path, false)} - copy.md`
+  const res = await PlatformAPI.copyFile(path, `${parent.path}/${cpoiedFile}`)
+  if (res) {
+    refreshDirectory(getParentDirectory(path))
+    return cpoiedFile
+  }
+  return undefined
+}
 
 
 

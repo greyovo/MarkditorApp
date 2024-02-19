@@ -18,7 +18,7 @@
     "dev:tauri": "cargo tauri dev",
     "dev:tauri-args": "cargo tauri dev -- -- \"C:\\Users\\Grey\\Desktop\\my note.md\"",
     "build:electron": "tsc && vite build --mode=electron && electron-builder",
-    "build:before_tauri": "tsc && vite build --mode=tauri",
+    "build:before_tauri": "tsc && vite build --mode=tauri --config vite.config.tauri.ts",
     "build:tauri": "cargo tauri build",
     "preview": "vite preview",
     "pree2e": "vite build --mode=electron",

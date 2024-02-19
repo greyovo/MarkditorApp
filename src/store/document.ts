@@ -14,18 +14,23 @@ type DocumentState = {
   shouldAlertSave: () => boolean,
 }
 
+const initialDocumentState = {
+  content: undefined,
+  path: undefined,
+  baseDir: undefined,
+  fileName: undefined,
+  saved: true,
+}
+
 const useDocumentStore = create<DocumentState>(
   (set, get) => ({
-    content: undefined,
-    path: undefined,
-    baseDir: undefined,
-    fileName: undefined,
-    saved: false,
+    ...initialDocumentState,
 
     // computed
     hasDocOpened() { return !!get().fileName },
     shouldAlertSave() {
-      return get().hasDocOpened() && !get().saved
+      return (get().hasDocOpened() && !get().saved) ||
+        (get().content !== undefined && get().path === undefined)
     }
     // get hasDoc: () => !!get().content,
   }),
@@ -36,13 +41,7 @@ const { setState, getState, subscribe } = useDocumentStore
 // -----------------------------------------
 
 function resetDocState() {
-  setState(state => ({
-    content: undefined,
-    path: undefined,
-    baseDir: undefined,
-    fileName: undefined,
-    saved: false,
-  }))
+  setState(state => ({ ...initialDocumentState }))
 }
 
 export function createNewDoc() {
@@ -94,7 +93,7 @@ export async function saveDocument(force?: boolean): Promise<boolean> {
     path = await PlatformAPI.showSaveDialog()
     if (!path) return false
   }
-  
+
   try {
     await PlatformAPI.saveFile(path!, getState().content!)
     const fileName = getNameFromPath(path)

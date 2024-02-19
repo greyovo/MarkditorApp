@@ -44,7 +44,7 @@ const App = () => {
   const hasDoc = useDocumentStore((state) => state.hasDocOpened());
 
   return (
-    <div className="overflow-clip">
+    <div>
       <div style={{ height: titleBarHeight }}>
         <WindowTitleBar />
       </div>

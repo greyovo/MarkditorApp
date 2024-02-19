@@ -165,7 +165,6 @@ export const apiHandlers: IPlatformAPI = {
     onWillClose: function (callback: () => Promise<boolean>) {
       throw new Error("Method not implemented.");
     }
-
   },
 
   exists: async function (path: string): Promise<boolean> {
@@ -179,5 +178,14 @@ export const apiHandlers: IPlatformAPI = {
     readCliArgs: function (): Promise<CliArgs> {
       throw new Error("Function not implemented.");
     }
+  },
+  copyFile: function (source: string, dest: string): Promise<boolean> {
+    throw new Error("Function not implemented.");
+  },
+  locateFile: function (filePath: string): void {
+    throw new Error("Function not implemented.");
+  },
+  locateFolder: function (folderPath: string): void {
+    throw new Error("Function not implemented.");
   }
 }

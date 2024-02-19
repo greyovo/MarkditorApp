@@ -7,8 +7,6 @@ import { getNameFromPath, isMarkdownFile } from '@/utils/path';
 import { Command, open as openIn } from '@tauri-apps/api/shell';
 import { getMatches } from '@tauri-apps/api/cli';
 import { IFileFilter, markdownFilter } from '@shared/file_filters';
-import { platform } from '@tauri-apps/api/os';
-import { EnvConstants } from '@/utils/constants';
 
 
 export const TauriAPI: IPlatformAPI = {
@@ -94,7 +92,7 @@ export const TauriAPI: IPlatformAPI = {
     try {
       await writeTextFile(path, content);
       return true;
-    } catch (error) {      
+    } catch (error) {
       console.error(error);
       return false;
     }
@@ -103,7 +101,7 @@ export const TauriAPI: IPlatformAPI = {
   copyFile: async function (source: string, dest: string): Promise<boolean> {
     try {
       console.log("copy");
-      
+
       await copyFile(source, dest);
       return true;
     } catch (error) {
@@ -225,25 +223,17 @@ export const TauriAPI: IPlatformAPI = {
   },
 
   locateFile: function (filePath: string): void {
-    console.log("open in sys:", filePath);
-
-    if (EnvConstants.OS_TYPE === "win32") {
-      const command = new Command("locate-file-win", ["/select", filePath]);
-      command.execute();
-    } else {
-      throw Error(`Not implemented in os: ${EnvConstants.OS_TYPE}`);
-    }
+    console.log("locateFile in sys:", filePath);
+    // FIXME Only works for Windows
+    const command = new Command("locate-file-win", ["/select", filePath]);
+    command.execute();
   },
 
   locateFolder: function (folderPath: string): void {
-    console.log("open in sys:", folderPath);
-
-    if (EnvConstants.OS_TYPE === "win32") {
-      const command = new Command("locate-folder-win", ["/root", folderPath]);
-      command.execute();
-    } else {
-      throw Error(`Not implemented in os: ${EnvConstants.OS_TYPE}`);
-    }
+    console.log("locateFolder in sys:", folderPath);
+    // FIXME Only works for Windows
+    const command = new Command("locate-folder-win", ["/root", folderPath]);
+    command.execute();
   },
 
 }

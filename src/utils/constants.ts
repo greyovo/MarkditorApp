@@ -27,16 +27,6 @@ export class EnvConstants {
     }
   }
 
-  public static get OS_TYPE(): OSType {
-    switch (__OS_TYPE__) {
-      case "win32":
-        return "win32"
-      case "darwin":
-        return "darwin"
-      default:
-        return "linux"
-    }
-  }
 
   public static get isElectron(): boolean {
     return this.BACKEND === "electron"

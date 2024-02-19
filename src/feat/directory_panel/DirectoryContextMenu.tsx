@@ -58,7 +58,8 @@ export function DirectoryContextMenu({ children, entity }: { children: React.Rea
     <>
       <ContextMenu.Root>
         <ContextMenu.Trigger>{children}</ContextMenu.Trigger>
-        <ContextMenu.Content className="w-[11rem] max-w-[15rem]">
+        <ContextMenu.Content onContextMenu={(e) => e.stopPropagation()}
+          className="w-[11rem] max-w-[15rem]">
           <div className="line-clamp-1 text-xs text-ellipsis break-all py-1.5 px-3 mb-1 opacity-40 h-6">
             {entity.name}
           </div>
@@ -75,7 +76,7 @@ export function DirectoryContextMenu({ children, entity }: { children: React.Rea
 
           <ContextMenu.Item onClick={handleCreateFile}>新建文件</ContextMenu.Item>
           <ContextMenu.Item onClick={handleCreateDirectory}>新建文件夹</ContextMenu.Item>
-          
+
           <ContextMenu.Separator />
 
           <ContextMenu.Item onClick={() => openInSystem(entity)}>在文件管理器显示...</ContextMenu.Item>

@@ -1,7 +1,15 @@
+import { PlatformAPI } from "@/ipc";
 import useDocumentStore from "@/store/document"
 import { FolderOpenIcon } from "@heroicons/react/24/outline"
 import { Button, Flex, IconButton, Popover } from "@radix-ui/themes"
 import { CheckCircle2, FolderOpen, LoaderIcon } from "lucide-react"
+
+function openInSystem() {
+  const fullPath = useDocumentStore.getState().path;
+  if (fullPath) {
+    PlatformAPI.locateFile(fullPath);
+  }
+}
 
 function DocInfoPopover({ children }: { children: React.ReactNode }) {
   const fileName = useDocumentStore((state) => state.fileName ?? "<无标题>")
@@ -14,6 +22,7 @@ function DocInfoPopover({ children }: { children: React.ReactNode }) {
       lineCount++
   }
 
+
   return (
     <Popover.Root>
       <Popover.Trigger>
@@ -24,7 +33,7 @@ function DocInfoPopover({ children }: { children: React.ReactNode }) {
           <div className="line-clamp-1 font-bold">{fileName}</div>
           <Flex justify="between" align="center" gap="5">
             <div className="line-clamp-3">{path}</div>
-            <IconButton size="1" variant="soft"> <FolderOpen size={14} /></IconButton>
+            <IconButton size="1" variant="soft" onClick={openInSystem}> <FolderOpen size={14} /></IconButton>
           </Flex>
 
           <Flex justify="between">

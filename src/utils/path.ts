@@ -68,8 +68,6 @@ export function convertImagePath(html: string, baseDir: string): string {
   const imgs = el.getElementsByTagName("img")
   for (const img of imgs) {
     let src = img.getAttribute("src") ?? ""
-    console.log("raw:", src);
-
     if (src.startsWith("http://") || src.startsWith("https://")) {
       if (src.startsWith("http://localhost")) {
         // remove `localhost:port`
@@ -89,8 +87,6 @@ export function convertImagePath(html: string, baseDir: string): string {
     } else {
       img.src = img.src.replace(img.baseURI, baseDir + "/")
     }
-    console.log(img.src);
-
   }
   return el.innerHTML
 }
@@ -104,7 +100,7 @@ export function convertToRelativePath(fullPath: string, baseDir: string) {
   // 统一使用 "/" 作为分隔符
   fullPath = fullPath.replaceAll("\\", "/")
   baseDir = baseDir.replace("\\", "/")
-  
+
   const rel = fullPath.replace(baseDir, "")
   if (rel.startsWith("\\") || rel.startsWith("/")) {
     return rel.substring(1)
@@ -114,7 +110,6 @@ export function convertToRelativePath(fullPath: string, baseDir: string) {
 
 // Relative Path -> Full path
 export function resolveFromRelativePath(relativePath: string, baseDir: string) {
-  console.log("relativePath", relativePath);
   // 统一使用 "/" 作为分隔符
   relativePath = decodeURI(relativePath.replaceAll("\\", "/"))
   baseDir = baseDir.replaceAll("\\", "/")

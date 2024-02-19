@@ -49,13 +49,11 @@ export class EditorActions {
   }
 
   public getEditorSelection = (): string => {
-    console.log("getSelection");
     return getState().instance?.getSelection() ?? ""
   }
 
   public toggleRangeBold = (status: boolean) => {
     const selected = this.getEditorSelection()
-    console.log(selected, status);
 
     if (status) {
       getVditor()?.updateValue(`**${selected}**`)

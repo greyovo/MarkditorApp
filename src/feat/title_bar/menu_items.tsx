@@ -24,7 +24,6 @@ function ToggleFolderView() {
     icon: icon,
     label: '侧边栏',
     onClick: () => {
-      console.log("toggle!");
       toggleSidebarExpanded()
     },
     isDisabled: false,
@@ -55,8 +54,6 @@ function Save() {
 
 const NewFile = () => {
   const saved = useDocumentStore((state) => (state.saved));
-  console.log("已经保存", saved);
-
   const props: TitleMenuItemProps = {
     icon: <PlusCircleIcon size={iconSize} />,
     label: '新建文件',

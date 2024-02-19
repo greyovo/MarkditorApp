@@ -28,7 +28,7 @@ export async function selectRootDir() {
   const root = (await PlatformAPI.selectDirectory())
   if (root !== undefined) {
     setState((state) => ({ ...state, root, children: root.children }))
-    console.log(root);
+    console.log("selectRootDir", root);
     closeCurrentDoc()
     useNavigationStore.setState((state) => ({ ...state, sidebarExpanded: true }))
   } else {
@@ -83,7 +83,6 @@ export async function openDirectory(path: string) {
       ...getState().root!,
       children: rootChildren,
     }
-    console.log(path, "children:", dirChildren);
 
     setState((s) => ({ ...s, root: newRoot }))
   } catch (e) {

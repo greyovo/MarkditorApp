@@ -108,9 +108,6 @@ export const TauriAPI: IPlatformAPI = {
   },
 
   async createFile(path: string): Promise<boolean> {
-    // TODO
-    console.log(path);
-
     try {
       await this.saveFile(path, "");
       return true;

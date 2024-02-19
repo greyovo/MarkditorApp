@@ -57,7 +57,7 @@ export interface IPlatformAPI {
 
   async openInBrowser(url: string): Promise<void>;
 
-  // 在系统文件管理器中打开该文件
+  // 在系统文件管理器中打开文件
   async locateFile(filePath: string): void;
 
   // 在系统文件管理器中打开文件夹

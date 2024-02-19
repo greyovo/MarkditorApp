@@ -5,7 +5,7 @@ import { SidebarClose, SidebarOpen, SaveIcon, PlusCircleIcon, Search, Settings, 
 import { TitleMenuItem, TitleMenuItemProps } from "./TitleMenuItem";
 import { toast } from "sonner";
 import { TitleBarDropdownMenus } from "./TitleBarDropdownMenus";
-import { Constants } from "@/utils/constants";
+import { EnvConstants } from "@/utils/constants";
 import usePreferenceStore, { setThemeMode } from "@/store/preference";
 import { dialogActions } from "@/store/dialog";
 
@@ -88,7 +88,7 @@ function ShowSearch() {
 }
 
 function OpenDevTool() {
-  if (Constants.isTauri) {
+  if (EnvConstants.isTauri) {
     return <></>
   }
   const openDevToolMenuItem: TitleMenuItemProps = {

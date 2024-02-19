@@ -68,7 +68,6 @@ export async function closeCurrentDoc() {
 }
 
 export function updateContent(content: string) {
-  console.log("updateContent!");
   setState(state => ({ ...state, content, saved: false }))
 }
 

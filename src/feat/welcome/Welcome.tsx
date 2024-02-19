@@ -10,7 +10,7 @@ export function Welcome() {
         <p className="text-4xl select-none">
           🤗 Welcome to <b ><span className="text-blue-700">Mark</span><span >ditor</span>.</b>
         </p>
-
+        
         <Flex gap="3" mt="5">
           <Button size={"3"} onClick={createNewDoc}>
             <PencilIcon width={16} />新建 Markdown

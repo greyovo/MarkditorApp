@@ -2,14 +2,13 @@ import { NotImplementError } from "@/utils/errors"
 import { ElectronAPI } from "./electron_api";
 import { TauriAPI } from "./tauri_api";
 import { IPlatformAPI } from "shared/platform_api";
-import { Constants } from "@/utils/constants";
-
+import { EnvConstants } from "@/utils/constants";
 
 let PlatformAPI: IPlatformAPI
 
-if (Constants.isElectron) {
+if (EnvConstants.isElectron) {
   PlatformAPI = ElectronAPI
-} else if (Constants.isTauri) {
+} else if (EnvConstants.isTauri) {
   PlatformAPI = TauriAPI
 }
 

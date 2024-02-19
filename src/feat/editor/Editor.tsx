@@ -3,7 +3,7 @@ import Vditor from "vditor";
 import { EditorContextMenu } from "./EditorContextMenu";
 import useDocumentStore, { saveDocument, updateContent } from "@/store/document";
 import { BottomInfoBar } from "./BottomInfoBar";
-import { Constants } from "@/utils/constants";
+import { EnvConstants } from "@/utils/constants";
 import useEditorStore, { editorAction, getVditor } from "@/store/editor";
 import { convertImagePath } from "@/utils/path";
 import usePreferenceStore from "@/store/preference";
@@ -59,12 +59,11 @@ export function Editor() {
         },
       },
       input: (v) => {
-        console.log("input length:", v.length);
         updateContent(v)
       },
       preview: {
         hljs: {
-          langs: Constants.CODE_LANGUAGES
+          langs: EnvConstants.CODE_LANGUAGES
         }
       }
     }

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { CreateDialog } from "./dialogs/CreateDialog";
 import { RenameDialog } from "./dialogs/RenameDialog";
 import { DeleteDialog } from "./dialogs/DeleteDialog";
+import { PlatformAPI } from "@/ipc";
 
 type DirectoryMenuItemsProps = {
   entity: DirectoryEntity;
@@ -12,7 +13,14 @@ type DirectoryMenuItemsProps = {
   onCopy: () => void;
 }
 
-function DirectoryMenuItems({ entity, onRename, onCopy, onDelete }: DirectoryMenuItemsProps) {
+function openInSystem(entity: DirectoryEntity) {
+  if (entity.type === 'file')
+    PlatformAPI.locateFile(entity.path);
+  else
+    PlatformAPI.locateFolder(entity.path);
+}
+
+function NonRootDirectoryMenuItems({ entity, onRename, onCopy, onDelete }: DirectoryMenuItemsProps) {
   return (
     <>
       <ContextMenu.Item onClick={() => openFile(entity.path)}>打开</ContextMenu.Item>
@@ -56,18 +64,21 @@ export function DirectoryContextMenu({ children, entity }: { children: React.Rea
           </div>
           {
             !isRoot &&
-            <DirectoryMenuItems
+            <NonRootDirectoryMenuItems
               entity={entity}
               onRename={() => setShowRename(true)}
               onDelete={() => setShowDelete(true)}
               onCopy={handleCopy}
             />
           }
-
           <ContextMenu.Separator />
 
           <ContextMenu.Item onClick={handleCreateFile}>新建文件</ContextMenu.Item>
           <ContextMenu.Item onClick={handleCreateDirectory}>新建文件夹</ContextMenu.Item>
+          
+          <ContextMenu.Separator />
+
+          <ContextMenu.Item onClick={() => openInSystem(entity)}>在文件管理器显示...</ContextMenu.Item>
         </ContextMenu.Content>
       </ContextMenu.Root>
 

@@ -19,6 +19,10 @@ export interface IPlatformAPI {
     onWillClose(callback: () => Promise<boolean>): Promise<() => void>,
   }
 
+  os: {
+    async readCliArgs(): Promise<CliArgs>;
+  }
+
   async selectDirectory(): Promise<DirectoryEntity | undefined>;
 
   async listDirectories(path: string): Promise<DirectoryEntity[]>;
@@ -53,9 +57,11 @@ export interface IPlatformAPI {
 
   async openInBrowser(url: string): Promise<void>;
 
-  os: {
-    async readCliArgs(): Promise<CliArgs>;
-  }
+  // 在系统文件管理器中打开该文件
+  async locateFile(filePath: string): void;
+
+  // 在系统文件管理器中打开文件夹
+  async locateFolder(folderPath: string): void;
 }
 
 type CliArgs = {

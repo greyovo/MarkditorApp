@@ -101,6 +101,10 @@ function isFullPath(path: string): boolean {
 
 // Full Path -> Relative Path
 export function convertToRelativePath(fullPath: string, baseDir: string) {
+  // 统一使用 "/" 作为分隔符
+  fullPath = fullPath.replaceAll("\\", "/")
+  baseDir = baseDir.replace("\\", "/")
+  
   const rel = fullPath.replace(baseDir, "")
   if (rel.startsWith("\\") || rel.startsWith("/")) {
     return rel.substring(1)
@@ -111,6 +115,7 @@ export function convertToRelativePath(fullPath: string, baseDir: string) {
 // Relative Path -> Full path
 export function resolveFromRelativePath(relativePath: string, baseDir: string) {
   console.log("relativePath", relativePath);
+  // 统一使用 "/" 作为分隔符
   relativePath = decodeURI(relativePath.replaceAll("\\", "/"))
   baseDir = baseDir.replaceAll("\\", "/")
   if (relativePath.replace("file:///", "").startsWith(baseDir)) {

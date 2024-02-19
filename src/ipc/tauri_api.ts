@@ -4,10 +4,11 @@ import { open as openDialog, save } from '@tauri-apps/api/dialog';
 import { invoke } from '@tauri-apps/api';
 import { CliArgs, IPlatformAPI } from "shared/platform_api";
 import { getNameFromPath, isMarkdownFile } from '@/utils/path';
-import { open as openIn } from '@tauri-apps/api/shell';
+import { Command, open as openIn } from '@tauri-apps/api/shell';
 import { getMatches } from '@tauri-apps/api/cli';
 import { IFileFilter, markdownFilter } from '@shared/file_filters';
 import { platform } from '@tauri-apps/api/os';
+import { EnvConstants } from '@/utils/constants';
 
 
 export const TauriAPI: IPlatformAPI = {
@@ -51,6 +52,23 @@ export const TauriAPI: IPlatformAPI = {
       }
     }
     return [...dirs, ...files];
+  },
+
+  os: {
+    readCliArgs: async function (): Promise<CliArgs> {
+      const matches = await getMatches();
+      console.log("args:", JSON.stringify(matches, null, 2));
+      const parsedArgs: CliArgs = {};
+      if (matches.args) {
+        const args = matches.args;
+        try {
+          parsedArgs.source = args?.source?.value as string ?? "";
+        } catch (err) {
+          console.error(err);
+        }
+      }
+      return parsedArgs;
+    },
   },
 
   async selectFile(filter: IFileFilter = markdownFilter): Promise<DirectoryEntity | undefined> {
@@ -191,20 +209,25 @@ export const TauriAPI: IPlatformAPI = {
     await openIn(url);
   },
 
-  os: {
-    readCliArgs: async function (): Promise<CliArgs> {
-      const matches = await getMatches()
-      console.log("args:", JSON.stringify(matches, null, 2));
-      const parsedArgs: CliArgs = {}
-      if (matches.args) {
-        const args = matches.args
-        try {
-          parsedArgs.source = args?.source?.value as string ?? ""
-        } catch (err) {
-          console.error(err);
-        }
-      }
-      return parsedArgs
-    },
+  locateFile: function (filePath: string): void {
+    console.log("open in sys:", filePath);
+
+    if (EnvConstants.OS_TYPE === "win32") {
+      const command = new Command("locate-file-win", ["/select", filePath])
+      command.execute();
+    } else {
+      throw Error(`Not implemented in os: ${EnvConstants.OS_TYPE}`);
+    }
+  },
+
+  locateFolder: function (folderPath: string): void {
+    console.log("open in sys:", folderPath);
+
+    if (EnvConstants.OS_TYPE === "win32") {
+      const command = new Command("locate-folder-win", ["/root", folderPath])
+      command.execute();
+    } else {
+      throw Error(`Not implemented in os: ${EnvConstants.OS_TYPE}`);
+    }
   }
 }

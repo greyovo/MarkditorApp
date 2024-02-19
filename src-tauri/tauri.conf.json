@@ -68,7 +68,29 @@
         "all": true,
         "execute": true,
         "sidecar": true,
-        "open": true
+        "open": true,
+        "scope": [
+          {
+            "name": "locate-file-win",
+            "cmd": "Explorer",
+            "args": [
+              "/select,",
+              {
+                "validator": "\\S+"
+              }
+            ]
+          },
+          {
+            "name": "locate-folder-win",
+            "cmd": "Explorer",
+            "args": [
+              "/root,",
+              {
+                "validator": "\\S+"
+              }
+            ]
+          }
+        ]
       }
     },
     "bundle": {

@@ -3,7 +3,7 @@ import { create } from 'zustand'
 import usePreferenceStore from './preference'
 import { PlatformAPI } from '@/ipc'
 import { openFile, setRootDir } from './directory'
-import { convertRelativePath, getFileNameWithoutExtension, getParentDirectory, resolveWhitespace } from '@/utils/path'
+import { convertToRelativePath, getNameFromPath, getParentDirectory, resolveWhitespaceInPath } from '@/utils/path'
 import { imagesFilter } from '@shared/file_filters'
 import useDocumentStore from './document'
 
@@ -167,15 +167,16 @@ export class EditorActions {
     // TODO 插入图片
     const imgDirEntity = (await PlatformAPI.selectFile(imagesFilter))
     if (!imgDirEntity) return
-    const imgPath = resolveWhitespace(imgDirEntity.path)
+    const imgPath = resolveWhitespaceInPath(imgDirEntity.path)
     const baseDir = useDocumentStore.getState().baseDir
     if (imgPath) {
       let imgSrc = imgPath
-      // 转为相对路径而
+      // 转为相对路径
       if (baseDir) {
+        imgSrc = convertToRelativePath(imgPath, baseDir)
       }
       // const imgSrc = convertRelativePath(imgPath.path, baseDir)
-      getVditor()?.insertValue(`![${getFileNameWithoutExtension(imgDirEntity.name)}](${imgSrc})`)
+      getVditor()?.insertValue(`![${getNameFromPath(imgDirEntity.name, false)}](${imgSrc})`)
     }
   }
 

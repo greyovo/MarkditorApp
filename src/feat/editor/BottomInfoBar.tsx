@@ -31,9 +31,10 @@ export function BottomInfoBar() {
           <ListIcon width={iconSize} />
         </BottomInfoBarButton>
 
-        <BottomInfoBarButton tooltip={"源码模式"} onClick={() => { /* TODO 源码模式 */ }}>
+        {/*  TODO 源码模式  */}
+        {/* <BottomInfoBarButton tooltip={"源码模式"} onClick={() => { }}>
           <Code2Icon width={iconSize} />
-        </BottomInfoBarButton>
+        </BottomInfoBarButton> */}
 
         <BottomInfoBarButton tooltip={"撤销"} onClick={editorAction.undo}>
           <Undo2Icon width={iconSize} />

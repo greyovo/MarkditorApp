@@ -5,21 +5,27 @@ import useDocumentStore from './document'
 import useDirectoryStore from './directory'
 import { EnvConstants } from '@/utils/constants'
 
+export type PrefThemeMode = "light" | "dark" | "system";
+
+export type RealThemeMode = "light" | "dark";
+
 interface PreferenceState {
-  prefThemeMode: "light" | "dark" | "system", // Default to "system"
+  prefThemeMode: PrefThemeMode, // Default to "system"
   autoSaveTimeout: number, // Default to 8000 ms
+  autoSave: boolean, // Default to true
   fileHistory: string[], // Path to file
   folderHistory: string[], // Path to folder
   defaultShowToolbar: boolean, // Default to true
 }
 
 interface PreferenceComputedState {
-  themeMode: () => "light" | "dark",
+  themeMode: () => RealThemeMode,
 }
 
 const defaultState: PreferenceState = {
   prefThemeMode: "system",
   autoSaveTimeout: 8000,
+  autoSave: true,
   defaultShowToolbar: true,
   fileHistory: [],
   folderHistory: [],
@@ -45,7 +51,10 @@ const usePreferenceStore = create(
 const { setState, getState, subscribe } = usePreferenceStore
 
 class PreferenceActions {
-  public setThemeMode(prefThemeMode: "light" | "dark" | "system") {
+  prefActions(v: boolean): void {
+    throw new Error('Method not implemented.')
+  }
+  public setThemeMode(prefThemeMode: PrefThemeMode) {
     setState((state) => ({ ...state, prefThemeMode }))
     editorAction.syncTheme()
   }
@@ -73,8 +82,16 @@ class PreferenceActions {
     setState((state) => ({ ...state, defaultShowToolbar }))
   }
 
+  public toggleAutoSave(autoSave: boolean) {
+    setState((state) => ({ ...state, autoSave }))
+  }
 
-  private setAutoSaveTimeout(autoSaveTimeout: number) {
+  public toggleDefaultShowToolbar(show: boolean) {
+    setState((state) => ({ ...state, defaultShowToolbar: show }))
+  }
+
+  public setAutoSaveTimeout(autoSaveTimeout: number) {
+    if (autoSaveTimeout < 1000) return
     setState((state) => ({ ...state, autoSaveTimeout }))
   }
 }

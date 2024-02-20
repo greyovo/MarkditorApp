@@ -14,7 +14,7 @@ const _placeHolder = "在此开始记录..."
 
 export function Editor() {
   const themeMode = usePreferenceStore(s => s.themeMode())
-
+  const defaultShowToolbar = usePreferenceStore(s => s.defaultShowToolbar)
   useEffect(() => {
     let vditor: Vditor
     // vidtor options
@@ -33,7 +33,7 @@ export function Editor() {
       height: "100%",
       borderless: true,
       toolbarConfig: {
-        enable: false
+        enable: defaultShowToolbar
       },
       theme: themeMode === "light" ? "classic" : "dark",
       cache: {

@@ -12,6 +12,20 @@ const HistoryItems = () => {
 
   const fileHistory = usePreferenceStore((state) => state.fileHistory)
   const folderHistory = usePreferenceStore((state) => state.folderHistory)
+  const isAllEmpty = fileHistory.length === 0 && folderHistory.length === 0
+  let fileLabel = "文件"
+  let folderLabel = "文件夹"
+
+  if (fileHistory.length === 0) {
+    fileLabel = ("无最近文件")
+  } else {
+    fileLabel = ("文件")
+  }
+  if (folderHistory.length === 0) {
+    folderLabel = ("无最近文件夹")
+  } else {
+    folderLabel = ("文件夹")
+  }
 
   function handleClearHistory() {
     toast("清除所有历史记录？", {
@@ -30,7 +44,7 @@ const HistoryItems = () => {
   function handleOpenFile(file: string) {
     dialogActions.showUnsaveAlertIfNeeded({
       doNext: () => setFileByPath(file)
-    })    
+    })
   }
 
   function handleOpenFolder(folder: string) {
@@ -39,19 +53,20 @@ const HistoryItems = () => {
     })
   }
 
+
   return (
     <>
-      <DropdownMenu.Label>最近文件</DropdownMenu.Label>
+      <DropdownMenu.Label key={"fileLabel"}>{fileLabel}</DropdownMenu.Label>
       {fileHistory.map((file) => (
         <DropdownMenu.Item onClick={() => handleOpenFile(file)} key={file}>{file}</DropdownMenu.Item>)
       )}
       <DropdownMenu.Separator />
-      <DropdownMenu.Label>最近文件夹</DropdownMenu.Label>
+      <DropdownMenu.Label key={"folderLabel"}>{folderLabel}</DropdownMenu.Label>
       {folderHistory.map((folder) => (
         <DropdownMenu.Item onClick={() => handleOpenFolder(folder)} key={folder}>{folder}</DropdownMenu.Item>)
       )}
-      <DropdownMenu.Separator />
-      <DropdownMenu.Item onClick={handleClearHistory}>清除历史</DropdownMenu.Item>
+      {!isAllEmpty && <DropdownMenu.Separator />}
+      {!isAllEmpty && <DropdownMenu.Item onClick={handleClearHistory}>清除历史</DropdownMenu.Item>}
     </>
   )
 }
@@ -82,7 +97,6 @@ export function TitleBarDropdownMenus({ children }: { children: React.ReactNode 
           <DropdownMenu.Item onClick={handleSelectFile}>打开文件...</DropdownMenu.Item>
           <DropdownMenu.Item onClick={handleSelectRootDir}>打开文件夹...</DropdownMenu.Item>
 
-          {/* TODO  最近打开列表*/}
           <DropdownMenu.Sub>
             <DropdownMenu.SubTrigger>最近打开</DropdownMenu.SubTrigger>
             <DropdownMenu.SubContent>

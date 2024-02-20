@@ -11,22 +11,37 @@ import { Theme } from "@radix-ui/themes";
 import { Toaster } from "sonner";
 import { DialogProvider } from "./components/dialog/DialogContext";
 import usePreferenceStore from "./store/preference";
-import { onAppLaunch, onAppReady } from "./utils/lifecycle";
+import { onAppExit, onAppLaunch, onAppReady } from "./utils/lifecycle";
 import { UnsaveAlertDialog } from "./feat/editor/UnsaveAlertDialog";
+import { CheckCheck } from "lucide-react";
 
 // Do some initialization before DOM is ready.
 onAppLaunch()
 
 export function ThemedApp() {
   // Right after the DOM is ready
-  useEffect(() => { onAppReady() }, [])
+  useEffect(() => {
+    onAppReady()
+    return onAppExit
+  }, [])
 
   const themeMode = usePreferenceStore((state) => state.themeMode())
   return (
     <Theme appearance={themeMode} className={themeMode === "dark" ? "dark" : ""}>
       <App />
-      <Toaster position="bottom-right" className='-mr-3'
-        theme={themeMode} richColors closeButton duration={3000} />
+      <Toaster position="bottom-right"
+        theme={themeMode} closeButton duration={3000} richColors
+        toastOptions={{
+          actionButtonStyle: {
+            background: "transparent",
+            color: "transparent",
+          },
+          cancelButtonStyle: {
+            background: "transparent",
+            color: "transparent",
+          },
+        }}
+      />
 
       {/* Global Alert Dialogs */}
       <UnsaveAlertDialog />

@@ -11,6 +11,7 @@
           Root="HKCR"
           Key=".md"
           Action="create"
+          ForceCreateOnInstall="yes"
         >
           <RegistryValue
             Type="string"
@@ -34,7 +35,7 @@
           <RegistryValue
             Type="string"
             Name="DefaultIcon"
-            Value="C:\Users\Grey\AppData\Local\Markditor\Markditor.exe"
+            Value="C:\Program Files\Markditor\Markditor.exe"
           />
         </RegistryKey>
       </Component>
@@ -48,7 +49,7 @@
         >
           <RegistryValue
             Type="string"
-            Value='"C:\Users\Grey\AppData\Local\Markditor\Markditor.exe" "%1"'
+            Value='"C:\Program Files\Markditor\Markditor.exe" "%1"'
           />
         </RegistryKey>
       </Component>

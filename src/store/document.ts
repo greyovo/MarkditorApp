@@ -70,7 +70,7 @@ export function updateContent(content: string) {
   setState(state => ({ ...state, content, saved: false }))
 }
 
-export function setFile(path: string, content: string) {
+export function setDocument(path: string, content: string) {
   const fileName = getNameFromPath(path)
   const baseDir = getParentDirectory(path).path
   setState(state => ({

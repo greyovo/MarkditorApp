@@ -6,7 +6,7 @@ import { TitleMenuItem, TitleMenuItemProps } from "./TitleMenuItem";
 import { toast } from "sonner";
 import { TitleBarDropdownMenus } from "./TitleBarDropdownMenus";
 import { EnvConstants } from "@/utils/constants";
-import usePreferenceStore, { setThemeMode } from "@/store/preference";
+import usePreferenceStore, { prefActions } from "@/store/preference";
 import { dialogActions } from "@/store/dialog";
 
 const iconSize = 16
@@ -103,7 +103,7 @@ function ToggleThemeMode() {
     icon: themeMode === "light" ? <Sun size={iconSize} /> : <MoonIcon size={iconSize} />,
     label: '主题模式',
     onClick: () => {
-      setThemeMode(themeMode === "light" ? "dark" : "light")
+      prefActions.setThemeMode(themeMode === "light" ? "dark" : "light")
     },
     isDisabled: false,
   }

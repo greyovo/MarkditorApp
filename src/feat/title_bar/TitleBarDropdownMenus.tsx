@@ -1,10 +1,60 @@
-import { refreshRootDir, selectFile, selectRootDir } from "@/store/directory";
+import useDirectoryStore, { refreshRootDir, selectFile, selectRootDir, setFileByPath, setRootDirByPath } from "@/store/directory";
 import { closeCurrentDoc } from "@/store/document";
 import { DropdownMenu, Button, Flex } from "@radix-ui/themes";
 import { SettingDialog } from "../settings/SettingDialog";
 import { useState } from "react";
 import { RefreshCcw, Settings } from "lucide-react";
 import { dialogActions } from "@/store/dialog";
+import usePreferenceStore, { prefActions } from "@/store/preference";
+import { toast } from "sonner";
+
+const HistoryItems = () => {
+
+  const fileHistory = usePreferenceStore((state) => state.fileHistory)
+  const folderHistory = usePreferenceStore((state) => state.folderHistory)
+
+  function handleClearHistory() {
+    toast("清除所有历史记录？", {
+      id: "clear-history",
+      position: "top-center",
+      action: {
+        label: <Button size={"1"}>确认</Button>,
+        onClick: () => {
+          prefActions.clearAllHistory()
+          toast.success("已清除", { id: "clear-history-success" })
+        }
+      },
+    })
+  }
+
+  function handleOpenFile(file: string) {
+    dialogActions.showUnsaveAlertIfNeeded({
+      doNext: () => setFileByPath(file)
+    })    
+  }
+
+  function handleOpenFolder(folder: string) {
+    dialogActions.showUnsaveAlertIfNeeded({
+      doNext: () => setRootDirByPath(folder)
+    })
+  }
+
+  return (
+    <>
+      <DropdownMenu.Label>最近文件</DropdownMenu.Label>
+      {fileHistory.map((file) => (
+        <DropdownMenu.Item onClick={() => handleOpenFile(file)} key={file}>{file}</DropdownMenu.Item>)
+      )}
+      <DropdownMenu.Separator />
+      <DropdownMenu.Label>最近文件夹</DropdownMenu.Label>
+      {folderHistory.map((folder) => (
+        <DropdownMenu.Item onClick={() => handleOpenFolder(folder)} key={folder}>{folder}</DropdownMenu.Item>)
+      )}
+      <DropdownMenu.Separator />
+      <DropdownMenu.Item onClick={handleClearHistory}>清除历史</DropdownMenu.Item>
+    </>
+  )
+}
 
 
 export function TitleBarDropdownMenus({ children }: { children: React.ReactNode }) {
@@ -36,11 +86,7 @@ export function TitleBarDropdownMenus({ children }: { children: React.ReactNode 
           <DropdownMenu.Sub>
             <DropdownMenu.SubTrigger>最近打开</DropdownMenu.SubTrigger>
             <DropdownMenu.SubContent>
-              <DropdownMenu.Item>Move to project…</DropdownMenu.Item>
-              <DropdownMenu.Item>Move to folder…</DropdownMenu.Item>
-
-              <DropdownMenu.Separator />
-              <DropdownMenu.Item>Advanced options…</DropdownMenu.Item>
+              <HistoryItems />
             </DropdownMenu.SubContent>
           </DropdownMenu.Sub>
 

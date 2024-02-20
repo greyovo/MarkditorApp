@@ -51,6 +51,6 @@ pub fn set_window_shadow<R: Runtime>(app: &tauri::App<R>) {
 // }
 
 // reg add HKEY_CLASSES_ROOT\.md /ve /d "Markditor.markdown" /f
-// reg add "HKEY_CLASSES_ROOT\Markditor.markdown" /ve /d "Markdown File" /f
-// reg add HKEY_CLASSES_ROOT\Markditor.markdown\DefaultIcon /ve /d "C:\Users\Grey\AppData\Local\Markditor\Markditor.exe" /f
-// reg add HKEY_CLASSES_ROOT\Markditor.markdown\shell\open\command /ve /d "\"C:\Users\Grey\AppData\Local\Markditor\Markditor.exe\" \"%%1\"" /f
+// reg add HKEY_CLASSES_ROOT\Markditor.markdown /ve /d "Markdown File" /f
+// reg add HKEY_CLASSES_ROOT\Markditor.markdown\DefaultIcon /ve /d "C:\Program Files\Markditor\Markditor.exe" /f
+// reg add HKEY_CLASSES_ROOT\Markditor.markdown\shell\open\command /ve /d "\"C:\Program Files\Markditor\Markditor.exe\" \"%%1\"" /f

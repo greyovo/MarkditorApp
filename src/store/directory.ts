@@ -1,6 +1,6 @@
 import { PlatformAPI } from "@/ipc"
 import { create } from "zustand"
-import useDocumentStore, { closeCurrentDoc, closeDocIfNotExist, setFile } from "./document"
+import { closeCurrentDoc, closeDocIfNotExist, setDocument } from "./document"
 import { findTargetDirRecursive, getDirectoryFromPath, getNameFromPath, getParentDirectory, isMarkdownFile } from "@/utils/path"
 import useNavigationStore from "./navigation"
 
@@ -19,9 +19,32 @@ const { setState, getState, subscribe } = useDirectoryStore
 // -----------------------------------------
 
 export async function setRootDir(root: DirectoryEntity) {
+  if (root.path === getState().root?.path) return
+
   const children = (await PlatformAPI.listDirectories(root.path))
   root.children = children
   setState((state) => ({ ...state, root }))
+}
+
+export async function setRootDirByPath(path: string) {
+  if (path === getState().root?.path) return
+
+  const root = getDirectoryFromPath(path)
+  const children = (await PlatformAPI.listDirectories(root.path))
+  root.children = children
+  setState((state) => ({ ...state, root }))
+  closeCurrentDoc()
+}
+
+export async function setFileByPath(path: string) {
+  if (path !== undefined) {
+    const content = await PlatformAPI.readFile(path)
+    if (content === undefined) {
+      throw Error("setFileByPath: Failed to read file: " + path)
+    }
+    setDocument(path, content)
+    setRootDir(getParentDirectory(path))
+  }
 }
 
 export async function selectRootDir() {
@@ -52,9 +75,9 @@ export async function selectFile() {
   if (file !== undefined) {
     const content = await PlatformAPI.readFile(file.path)
     if (content === undefined) {
-      throw Error("selectFile: Failed to read file")
+      throw Error("selectFile: Failed to read file: " + file.path)
     }
-    setFile(file.path, content)
+    setDocument(file.path, content)
     setRootDir(getParentDirectory(file.path))
   }
 }
@@ -109,7 +132,7 @@ export async function openFile(path: string) {
     console.error("Error when reading file via IPC:", path);
     return
   }
-  setFile(path, content)
+  setDocument(path, content)
 }
 
 export async function refreshDirectory(dir: DirectoryEntity) {

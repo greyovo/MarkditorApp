@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Fragment>
+    <!-- these registry entries should be installed
+         to the target user's machine -->
+    <DirectoryRef Id="TARGETDIR">
+      <!-- groups together the registry entries to be installed -->
+      <!-- Note the unique `Id` we provide here -->
+      <Component Id="Entries1" Guid="*">
+        <RegistryKey
+          Root="HKCR"
+          Key=".md"
+          Action="create"
+        >
+          <RegistryValue
+            Type="string"
+            Value="Markditor.markdown"
+            KeyPath="yes"
+          />
+        </RegistryKey>
+      </Component>
+
+      <Component Id="Entries2" Guid="*">
+        <RegistryKey
+          Root="HKCR"
+          Key="Markditor.markdown"
+          ForceCreateOnInstall="yes"
+          Action="createAndRemoveOnUninstall"
+        >
+          <RegistryValue
+            Type="string"
+            Value="Markdown Document (Markditor)"
+          />
+          <RegistryValue
+            Type="string"
+            Name="DefaultIcon"
+            Value="C:\Users\Grey\AppData\Local\Markditor\Markditor.exe"
+          />
+        </RegistryKey>
+      </Component>
+
+      <Component Id="Entries3" Guid="*">
+        <RegistryKey
+          Root="HKCR"
+          Key="Markditor.markdown\shell\open\command"
+          ForceCreateOnInstall="yes"
+          Action="createAndRemoveOnUninstall"
+        >
+          <RegistryValue
+            Type="string"
+            Value='"C:\Users\Grey\AppData\Local\Markditor\Markditor.exe" "%1"'
+          />
+        </RegistryKey>
+      </Component>
+
+      <!-- <RegistryKey
+          Root="HKCR"
+          Key="Markditor.markdown"
+          Action="createAndRemoveOnUninstall"
+        >
+          <RegistryValue
+            Type="string"
+            Name="DefaultIcon"
+            Value="C:\Users\Grey\AppData\Local\Markditor\Markditor.exe"
+            KeyPath="yes"
+          />
+        </RegistryKey>
+
+        <RegistryKey
+          Root="HKCR"
+          Key="Markditor.markdown\shell\open\command"
+          Action="createAndRemoveOnUninstall"
+        >
+          <RegistryValue
+            Type="string"
+            Name="DefaultIcon"
+            Value='"C:\Users\Grey\AppData\Local\Markditor\Markditor.exe" "%1"'
+            KeyPath="yes"
+          />
+        </RegistryKey> -->
+    </DirectoryRef>
+  </Fragment>
+</Wix>

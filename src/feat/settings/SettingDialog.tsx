@@ -34,6 +34,10 @@ export const SettingDialog = ({ show, onOpenChange }: { show: boolean, onOpenCha
     PlatformAPI.openInBrowser(url)
   }
 
+  function setAsDefaultApp() {
+    PlatformAPI.os.setAsDefaultOpenApp()
+  }
+
   return (
     <Dialog.Root open={show} onOpenChange={onOpenChange}>
       <DialogContent className='pr-3'>
@@ -62,6 +66,15 @@ export const SettingDialog = ({ show, onOpenChange }: { show: boolean, onOpenCha
               trailing={
                 <Flex justify={"end"} align={"center"} gap={"2"}>
                   <TextFieldInput disabled className='w-[90px]' /> ms
+                </Flex>
+              }
+            />
+
+            <SettingItem title={'设为默认打开方式'}
+              subtitle={'设置 Markditor 为系统 Markdown 文件默认打开方式'}
+              trailing={
+                <Flex justify={"end"} align={"center"} gap={"2"}>
+                  <Button onClick={setAsDefaultApp}>设置默认</Button>
                 </Flex>
               }
             />

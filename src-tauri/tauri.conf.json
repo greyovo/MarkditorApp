@@ -89,6 +89,16 @@
                 "validator": "\\S+"
               }
             ]
+          },
+          {
+            "name": "set-default-open-win",
+            "cmd": "Explorer",
+            "args": [
+              "/root,",
+              {
+                "validator": "\\S+"
+              }
+            ]
           }
         ]
       }
@@ -108,7 +118,7 @@
         "icons/icon.icns",
         "icons/icon.ico"
       ],
-      "identifier": "me.grey.markditor",
+      "identifier": "Me.GreyApps.Markditor",
       "longDescription": "",
       "macOS": {
         "entitlements": null,
@@ -123,7 +133,17 @@
       "windows": {
         "certificateThumbprint": null,
         "digestAlgorithm": "sha256",
-        "timestampUrl": ""
+        "timestampUrl": "",
+        "wix": {
+          "fragmentPaths": [
+            "config\\wix-config.wxs"
+          ],
+          "componentRefs": [
+            "Entries1",
+            "Entries2",
+            "Entries3"
+          ]
+        }
       }
     },
     "updater": {

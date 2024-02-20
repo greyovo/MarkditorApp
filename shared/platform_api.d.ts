@@ -21,6 +21,9 @@ export interface IPlatformAPI {
 
   os: {
     async readCliArgs(): Promise<CliArgs>;
+
+    // 设置 Markditor 为 Markdown 文件的默认打开方式
+    async setAsDefaultOpenApp(): Promise<boolean>;  
   }
 
   async selectDirectory(): Promise<DirectoryEntity | undefined>;

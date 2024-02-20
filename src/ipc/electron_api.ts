@@ -76,6 +76,9 @@ export const ElectronAPI: IPlatformAPI = {
   os: {
     readCliArgs: function (): Promise<CliArgs> {
       throw new Error("Function not implemented.");
+    },
+    setAsDefaultOpenApp: function (): Promise<boolean> {
+      throw new Error("Function not implemented.");
     }
   },
   copyFile: function (source: string, dest: string): Promise<boolean> {

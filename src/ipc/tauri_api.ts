@@ -7,6 +7,7 @@ import { getNameFromPath, isMarkdownFile } from '@/utils/path';
 import { Command, open as openIn } from '@tauri-apps/api/shell';
 import { getMatches } from '@tauri-apps/api/cli';
 import { IFileFilter, markdownFilter } from '@shared/file_filters';
+import { error } from 'console';
 
 
 export const TauriAPI: IPlatformAPI = {
@@ -67,6 +68,16 @@ export const TauriAPI: IPlatformAPI = {
       }
       return parsedArgs;
     },
+
+    setAsDefaultOpenApp: async function (): Promise<boolean> {
+      try {
+        await invoke("set_default_open_win32")
+        return true
+      } catch (err) {
+        console.error(err);
+        return false
+      }
+    }
   },
 
   async selectFile(filter: IFileFilter = markdownFilter): Promise<DirectoryEntity | undefined> {

@@ -25,7 +25,7 @@ export function ThemedApp() {
   return (
     <Theme appearance={themeMode} className={themeMode === "dark" ? "dark" : ""}>
       <App />
-      <Toaster position="bottom-right" className='-mr-5'
+      <Toaster position="bottom-right" className='-mr-3'
         theme={themeMode} richColors closeButton duration={3000} />
 
       {/* Global Alert Dialogs */}

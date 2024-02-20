@@ -1,6 +1,6 @@
 {
   "name": "markditor",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "main": "dist-electron/main/index.js",
   "description": "A [mark]down e[ditor] that features in WYSIWYG mode.",
   "author": "greyovo <grey@foxmail.com>",

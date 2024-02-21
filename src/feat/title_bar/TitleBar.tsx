@@ -7,7 +7,7 @@ import { TitleBarMenuItems } from "./menu_items"
 import { Square2StackIcon } from "@heroicons/react/24/outline"
 import { PlatformAPI } from "@/ipc"
 import { WindowActionButton } from "./WindowActionButton"
-import { cn } from "@/utils"
+import { cn } from "@/utils/styles"
 import { dialogActions } from "@/store/dialog"
 
 function TitleSection({ className, title }: { className: string, title: string }) {

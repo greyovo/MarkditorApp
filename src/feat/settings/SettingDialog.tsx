@@ -1,7 +1,7 @@
 import { ReactNode, useState } from 'react';
 import { Dialog, Button, DialogContent, DialogDescription, DialogTitle, Kbd, TextField, Flex, DropdownMenu, Select, Link, Separator, Switch, TextFieldInput, ScrollArea } from "@radix-ui/themes";
 import { PlatformAPI } from '@/ipc';
-import { cn } from '@/utils';
+import { cn } from '@/utils/styles';
 import usePreferenceStore, { PrefThemeMode, prefActions } from '@/store/preference';
 
 type SettingItemProps = {

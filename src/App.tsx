@@ -6,17 +6,43 @@ import useNavigationStore from "./store/navigation";
 import { WindowTitleBar } from "./feat/title_bar/TitleBar";
 import useDocumentStore from "./store/document";
 import { Welcome } from "./feat/welcome/Welcome";
-import { Dialog } from "@radix-ui/react-dialog";
 import { Theme } from "@radix-ui/themes";
 import { Toaster } from "sonner";
-import { DialogProvider } from "./components/dialog/DialogContext";
 import usePreferenceStore from "./store/preference";
-import { onAppExit, onAppLaunch, onAppReady } from "./utils/lifecycle";
 import { UnsaveAlertDialog } from "./feat/editor/UnsaveAlertDialog";
-import { CheckCheck } from "lucide-react";
+import { PlatformAPI } from "@/ipc";
+import { openFile, setRootDir } from "@/store/directory";
+import { initDirectoryOpenListener } from "@/store/preference";
+import { getParentDirectory } from "./utils/path";
 
-// Do some initialization before DOM is ready.
-onAppLaunch()
+async function onAppLaunch() {
+  const pathArg = (await PlatformAPI.os.readCliArgs()).source
+  if (pathArg) {
+    if (await PlatformAPI.exists(pathArg)) {
+      openFile(pathArg)
+      setRootDir(getParentDirectory(pathArg))
+    }
+  }
+}
+
+let unlistenDirOpen: () => void | undefined
+
+// After DOM is ready
+async function onAppReady() {
+  registerListeners()
+}
+
+function onAppExit() {
+  unregisterListeners()
+}
+
+function registerListeners(): void {
+  unlistenDirOpen = initDirectoryOpenListener()
+}
+
+function unregisterListeners(): void {
+  unlistenDirOpen?.()
+}
 
 export function ThemedApp() {
   // Right after the DOM is ready
@@ -65,7 +91,6 @@ const App = () => {
       </div>
       <div className="flex border-t" style={{ height: `calc(100vh - ${titleBarHeight}px)` }} >
         {/* 侧边菜单栏 */}
-        {/* <AsideMenuBar /> */}
         <ResizablePanelGroup direction="horizontal">
           {showSidePanel && (
             <>
@@ -86,3 +111,6 @@ const App = () => {
     </div>
   )
 };
+
+
+onAppLaunch()

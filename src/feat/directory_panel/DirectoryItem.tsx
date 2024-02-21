@@ -7,7 +7,7 @@ import { useState } from "react"
 import { isMarkdownFile } from "@/utils/path"
 import { toast } from "sonner"
 import { DirectoryContextMenu } from "./DirectoryContextMenu"
-import { cn } from "@/utils"
+import { cn } from "@/utils/styles"
 import { dialogActions } from "@/store/dialog"
 
 interface DirectoryItemProps {

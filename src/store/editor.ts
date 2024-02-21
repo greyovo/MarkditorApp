@@ -110,9 +110,9 @@ export class EditorActions {
     getVditor()?.toggleOutline()
   }
 
-  public toggleToolbar = () => {
-    getVditor()?.toggleToolbar()
-    setState((state) => ({ ...state, toolbarVisible: getVditor()?.getToolbarVisible() }))
+  public toggleToolbar = (vis?: boolean) => {
+    getVditor()?.toggleToolbar(vis)
+    setState((state) => ({ ...state, toolbarVisible: vis ?? getVditor()?.getToolbarVisible() }))
   }
 
   public toggleSourceMode = () => {
@@ -201,6 +201,7 @@ export class EditorActions {
       toast.warning("暂不支持打开此链接", { description: href, id: "open-link-warning" + href })
     }
   }
+
 }
 
 export const editorAction = new EditorActions()

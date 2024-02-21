@@ -4,20 +4,18 @@ import { EditorContextMenu } from "./EditorContextMenu";
 import useDocumentStore, { saveDocument, updateContent } from "@/store/document";
 import { BottomInfoBar } from "./BottomInfoBar";
 import { EnvConstants } from "@/utils/constants";
-import useEditorStore, { editorAction, getVditor } from "@/store/editor";
-import { convertImagePath, isHttpUrl, isMarkdownFile, resolveFromRelativePath } from "@/utils/path";
-import usePreferenceStore, { RealThemeMode } from "@/store/preference";
+import { editorAction, getVditor } from "@/store/editor";
+import { convertImagePath } from "@/utils/path";
+import usePreferenceStore from "@/store/preference";
 import { handleEditorHotKey } from "@/utils/hotkeys";
-import { PlatformAPI } from "@/ipc";
-import { openFile, setFileByPath } from "@/store/directory";
-import { dialogActions } from "@/store/dialog";
-import { toast } from "sonner";
 
 // const _placeHolder = "# Welcome to Markditor \nHello, welcome to `Markditor`.\n# 欢迎使用 Markditor\n你好，欢迎使用 `Markditor`"
-
 function initVditor() {
   const themeMode = usePreferenceStore.getState().themeMode()
   const defaultShowToolbar = usePreferenceStore.getState().defaultShowToolbar
+  if (defaultShowToolbar) {
+    editorAction.toggleToolbar(true)
+  }
   const _placeHolder = "在此开始记录..."
 
   let vditor: Vditor
@@ -27,6 +25,9 @@ function initVditor() {
       const content = useDocumentStore.getState().content
       vditor.setValue(content ?? "")
       editorAction.initVditor(vditor)
+    },
+    input: (value) => {
+      updateContent(value)
     },
     placeholder: _placeHolder,
     cdn: "./lib",
@@ -61,9 +62,6 @@ function initVditor() {
         })
         return null
       },
-    },
-    input: (v) => {
-      updateContent(v)
     },
     preview: {
       hljs: {

@@ -106,7 +106,7 @@ export function EditorContextMenu(
         </ContextMenu.Sub> */}
 
         <ContextMenu.Separator />
-        <ContextMenu.Item onClick={editorAction.toggleToolbar}>
+        <ContextMenu.Item onClick={() => editorAction.toggleToolbar()}>
           {toolbarVisible ? "隐藏工具栏" : "显示工具栏"}
         </ContextMenu.Item>
       </ContextMenu.Content>

@@ -2,6 +2,7 @@ import { PlatformAPI } from '@/ipc'
 import { getNameFromPath, getParentDirectory } from '@/utils/path'
 import { create } from 'zustand'
 import useDirectoryStore, { openDirectory, refreshDirectory, setRootDir } from './directory'
+import usePreferenceStore from './preference'
 
 type DocumentState = {
   content?: string,
@@ -42,6 +43,7 @@ const { setState, getState, subscribe } = useDocumentStore
 
 function resetDocState() {
   setState(state => ({ ...initialDocumentState }))
+  cancelAutoSaveInterval()
 }
 
 export function createNewDoc() {
@@ -81,6 +83,8 @@ export function setDocument(path: string, content: string) {
     fileName,
     saved: true
   }))
+  cancelAutoSaveInterval()
+  startAutoSaveInterval()
 }
 
 export async function saveDocument(force?: boolean): Promise<boolean> {
@@ -112,7 +116,31 @@ export async function saveDocument(force?: boolean): Promise<boolean> {
   } catch (e) {
     throw e
   }
+}
 
+// ---------------- AUTO SAVE ----------------
+
+let autoSaveIntervalId: any | undefined
+
+function startAutoSaveInterval() {
+  const enabled = usePreferenceStore.getState().autoSave
+  if (!enabled) {
+    cancelAutoSaveInterval()
+    return
+  }
+
+  const interval = usePreferenceStore.getState().autoSaveInerval
+  autoSaveIntervalId = setInterval(() => {
+    console.log("Auto save in every", interval, "ms");
+    saveDocument()
+  }, interval)
+}
+
+function cancelAutoSaveInterval() {
+  if (autoSaveIntervalId !== undefined) {
+    clearInterval(autoSaveIntervalId)
+    autoSaveIntervalId = undefined
+  }
 }
 
 // markAsDirty: () => set((state) => ({ ...state, saved: false })),

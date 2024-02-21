@@ -11,7 +11,7 @@ export type RealThemeMode = "light" | "dark";
 
 interface PreferenceState {
   prefThemeMode: PrefThemeMode, // Default to "system"
-  autoSaveTimeout: number, // Default to 8000 ms
+  autoSaveInerval: number, // Default to 8000 ms
   autoSave: boolean, // Default to true
   fileHistory: string[], // Path to file
   folderHistory: string[], // Path to folder
@@ -24,7 +24,7 @@ interface PreferenceComputedState {
 
 const defaultState: PreferenceState = {
   prefThemeMode: "system",
-  autoSaveTimeout: 8000,
+  autoSaveInerval: 8000,
   autoSave: true,
   defaultShowToolbar: true,
   fileHistory: [],
@@ -51,9 +51,6 @@ const usePreferenceStore = create(
 const { setState, getState, subscribe } = usePreferenceStore
 
 class PreferenceActions {
-  prefActions(v: boolean): void {
-    throw new Error('Method not implemented.')
-  }
   public setThemeMode(prefThemeMode: PrefThemeMode) {
     setState((state) => ({ ...state, prefThemeMode }))
     editorAction.syncTheme()
@@ -90,9 +87,9 @@ class PreferenceActions {
     setState((state) => ({ ...state, defaultShowToolbar: show }))
   }
 
-  public setAutoSaveTimeout(autoSaveTimeout: number) {
-    if (autoSaveTimeout < 1000) return
-    setState((state) => ({ ...state, autoSaveTimeout }))
+  public setAutoSaveInerval(interval: number) {
+    if (interval < 1000 || interval > 2147483647) return
+    setState((state) => ({ ...state, autoSaveInerval: interval }))
   }
 }
 

@@ -46,14 +46,14 @@ export const SettingDialog = ({ show, onOpenChange }: { show: boolean, onOpenCha
 
   function closeDialog() {
     onOpenChange(false)
-    prefActions.setAutoSaveTimeout(tempAutoSaveTimeout)
+    prefActions.setAutoSaveInerval(tempAutoSaveInterval)
   }
 
   const prefThemeMode = usePreferenceStore(s => s.prefThemeMode)
   const autoSave = usePreferenceStore(s => s.autoSave)
   const defaultShowToolbar = usePreferenceStore(s => s.defaultShowToolbar)
-  const [tempAutoSaveTimeout, setTempAutoSaveTimeout] = useState<number>(0)
-  const autoSaveTimeout = usePreferenceStore(s => s.autoSaveTimeout)
+  const [tempAutoSaveInterval, setTempAutoSaveInterval] = useState<number>(0)
+  const autoSaveInerval = usePreferenceStore(s => s.autoSaveInerval)
 
   return (
     <Dialog.Root open={show} onOpenChange={onOpenChange}>
@@ -90,8 +90,8 @@ export const SettingDialog = ({ show, onOpenChange }: { show: boolean, onOpenCha
                 <Flex justify={"end"} align={"center"} gap={"2"}>
                   <TextFieldInput className='w-[90px]'
                     type="number"
-                    disabled={!autoSave} defaultValue={autoSaveTimeout}
-                    onInput={(v) => setTempAutoSaveTimeout(Number(v.currentTarget.value))}
+                    disabled={!autoSave} defaultValue={autoSaveInerval}
+                    onInput={(v) => setTempAutoSaveInterval(Number(v.currentTarget.value))}
                   /> ms
                 </Flex>
               }

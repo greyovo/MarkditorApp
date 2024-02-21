@@ -97,14 +97,14 @@ function FileItem(props: DirectoryItemProps) {
 
   return (
     <ListItem
-      className={cn(normalStyle, " border-l-primary")}
+      className={cn(normalStyle, "border-l-primary")}
       key={data.path}
       leadingSpace={15 * props.depth}
       leading={<div className="opacity-0">{fileIcon}</div>}
       onClick={handleClick}
       trailing={<span />}
     >
-      <div data-fileId={data.path} className="flex gap-2">{fileIcon} {data.name}</div>
+      <div className="flex gap-2">{fileIcon} {data.name}</div>
     </ListItem>
   )
 }

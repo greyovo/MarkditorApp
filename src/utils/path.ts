@@ -3,6 +3,9 @@ import { EnvConstants } from "./constants";
 import { convertFileSrc } from "@tauri-apps/api/tauri";
 
 export function getNameFromPath(path: string, withExtName: boolean = true): string {
+  if (path.endsWith("/") || path.endsWith("\\")) {
+    path = path.substring(0, path.length - 1);
+  }
   let pathParts = path.split('\\');
   if (pathParts.length === 0) {
     pathParts = path.split("/")
@@ -11,7 +14,12 @@ export function getNameFromPath(path: string, withExtName: boolean = true): stri
   if (withExtName) {
     return fileName;
   } else {
-    return fileName.substring(0, fileName.lastIndexOf("."));
+    const dotIndex = fileName.lastIndexOf(".");
+    if (dotIndex !== -1) {
+      return fileName.substring(0, dotIndex);
+    } else {
+      return fileName;
+    }
   }
 }
 

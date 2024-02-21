@@ -2,7 +2,7 @@ import { PlatformAPI } from "@/ipc"
 import { create } from "zustand"
 import { closeCurrentDoc, closeDocIfNotExist, setDocument } from "./document"
 import { findTargetDirRecursive, getDirectoryFromPath, getNameFromPath, getParentDirectory, isMarkdownFile } from "@/utils/path"
-import useNavigationStore from "./navigation"
+import useNavigationStore, { toggleSidebarExpanded } from "./navigation"
 
 interface DirectoryState {
   root?: DirectoryEntity,
@@ -33,6 +33,7 @@ export async function setRootDirByPath(path: string) {
   const children = (await PlatformAPI.listDirectories(root.path))
   root.children = children
   setState((state) => ({ ...state, root }))
+  toggleSidebarExpanded(true)
   closeCurrentDoc()
 }
 
@@ -53,7 +54,7 @@ export async function selectRootDir() {
     setState((state) => ({ ...state, root, children: root.children }))
     console.log("selectRootDir", root);
     closeCurrentDoc()
-    useNavigationStore.setState((state) => ({ ...state, sidebarExpanded: true }))
+    toggleSidebarExpanded(true)
   } else {
     console.error("selectRootDir:", "打开文件夹失败！");
   }

@@ -16,8 +16,8 @@ const { setState, getState, subscribe } = useNavigationStore
 
 // -----------------------------------------
 
-export function toggleSidebarExpanded() {
-  setState((state) => ({ ...state, sidebarExpanded: !state.sidebarExpanded }))
+export function toggleSidebarExpanded(expand?: boolean) {
+  setState((state) => ({ ...state, sidebarExpanded: expand ?? !state.sidebarExpanded }))
 }
 
 

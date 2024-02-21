@@ -13,19 +13,9 @@ const HistoryItems = () => {
   const fileHistory = usePreferenceStore((state) => state.fileHistory)
   const folderHistory = usePreferenceStore((state) => state.folderHistory)
   const isAllEmpty = fileHistory.length === 0 && folderHistory.length === 0
-  let fileLabel = "文件"
-  let folderLabel = "文件夹"
-
-  if (fileHistory.length === 0) {
-    fileLabel = ("无最近文件")
-  } else {
-    fileLabel = ("文件")
-  }
-  if (folderHistory.length === 0) {
-    folderLabel = ("无最近文件夹")
-  } else {
-    folderLabel = ("文件夹")
-  }
+  
+  const fileLabel = fileHistory.length === 0 ? "无最近文件" : "最近文件"
+  const folderLabel = folderHistory.length === 0 ? "无最近文件夹" : "最近文件夹"
 
   function handleClearHistory() {
     toast("清除所有历史记录？", {
@@ -52,7 +42,6 @@ const HistoryItems = () => {
       doNext: () => setRootDirByPath(folder)
     })
   }
-
 
   return (
     <>

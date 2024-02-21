@@ -3,9 +3,11 @@ import { create } from 'zustand'
 import usePreferenceStore from './preference'
 import { PlatformAPI } from '@/ipc'
 import { openFile, setRootDir } from './directory'
-import { convertToRelativePath, getNameFromPath, getParentDirectory, resolveWhitespaceInPath } from '@/utils/path'
+import { convertToRelativePath, getNameFromPath, getParentDirectory, isHttpUrl, isMarkdownFile, resolveFromRelativePath, resolveWhitespaceInPath } from '@/utils/path'
 import { imagesFilter } from '@shared/file_filters'
 import useDocumentStore from './document'
+import { toast } from 'sonner'
+import { dialogActions } from './dialog'
 
 interface EditorState {
   instance?: Vditor
@@ -180,6 +182,24 @@ export class EditorActions {
 
   public async insertTable() {
     // TODO 插入表格
+  }
+
+  public handleClickUrl(href: string | null) {
+    if (href === null) return
+
+    if (isHttpUrl(href)) {
+      PlatformAPI.openInBrowser(href)
+    } else if (isMarkdownFile(href)) {
+      const fullPath = resolveFromRelativePath(href, useDocumentStore.getState().baseDir ?? "")
+      dialogActions.showUnsaveAlertIfNeeded({
+        doNext: () => {
+          openFile(fullPath.replaceAll("/", "\\"))
+          document.querySelector("div")
+        }
+      })
+    } else {
+      toast.warning("暂不支持打开此链接", { description: href, id: "open-link-warning" + href })
+    }
   }
 }
 

@@ -2,9 +2,9 @@
 
 English | [简体中文](./README.zh-CN.mdss)
 
-A WYSIWYG Markdown editor, open-source alternative to Typora.
+A WYSIWYG Markdown editor.
 
-> ⚠️ Under active development. Only support Windows by now.
+> ⚠️ Under active development. Only supports Windows 10/11 by now.
 
 ## Technology Stack
 

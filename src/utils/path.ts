@@ -44,6 +44,10 @@ export function isMarkdownFile(fileName: string) {
   return fileName.endsWith(".md") || fileName.endsWith(".markdown");
 }
 
+export function isHttpUrl(url: string) {
+  return url.startsWith("http://") || url.startsWith("https://")
+}
+
 export function findTargetDirRecursive
   (children: DirectoryEntity[], targetPath: string): DirectoryEntity | undefined {
   if (!children || children.length === 0) {

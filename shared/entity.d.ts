@@ -23,8 +23,3 @@ interface DirectoryEntity {
   createDate?: number // unix timestamp
   lastModifiedDate?: number // unix timestamp
 }
-
-interface DocumentEntity {
-  file: FileEntity
-  content: string,
-}

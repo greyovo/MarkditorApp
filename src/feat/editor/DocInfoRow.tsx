@@ -1,6 +1,5 @@
 import { PlatformAPI } from "@/ipc";
 import useDocumentStore from "@/store/document"
-import { FolderOpenIcon } from "@heroicons/react/24/outline"
 import { Button, Flex, IconButton, Popover } from "@radix-ui/themes"
 import { CheckCircle2, FolderOpen, LoaderIcon } from "lucide-react"
 

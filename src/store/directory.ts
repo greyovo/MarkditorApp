@@ -133,6 +133,7 @@ export async function openFile(path: string) {
     return
   }
   setDocument(path, content)
+  openDirectory(getParentDirectory(path).path)
 }
 
 export async function refreshDirectory(dir: DirectoryEntity) {

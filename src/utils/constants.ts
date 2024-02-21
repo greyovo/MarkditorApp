@@ -36,6 +36,6 @@ export class EnvConstants {
     return this.BACKEND === "tauri"
   }
 
-  public static readonly MAX_HISTORY_LENGTH = 15
+  public static readonly MAX_HISTORY_LENGTH = 10
 
 }

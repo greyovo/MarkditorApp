@@ -33,6 +33,15 @@ const SettingItem = ({ className, title, subtitle, trailing, disabled }: Setting
   )
 }
 
+const AboutApp = () => {
+  return (
+    <DialogDescription className='flex gap-2 opacity-75 text-xs'>
+      <span><b>Markditor</b> is open-source on <Link onClick={() => openUrl("https://github.com/greyovo/MarkditorApp")}>Github</Link>.</span>
+      <span>© 2024 <Link onClick={() => openUrl("https://github.com/greyovo")}>@greyovo</Link></span>
+    </DialogDescription>
+  )
+}
+
 export const SettingDialog = ({ show, onOpenChange }: { show: boolean, onOpenChange: (v: boolean) => void }) => {
 
   function closeDialog() {
@@ -109,10 +118,7 @@ export const SettingDialog = ({ show, onOpenChange }: { show: boolean, onOpenCha
         </ScrollArea>
 
         <Flex gap="3" mr={"4"} justify="between" align={"center"}>
-          <DialogDescription className='flex gap-2 opacity-50 text-xs'>
-            <span><b>Markditor</b> is open-source on <Link onClick={() => openUrl("https://github.com/greyovo/MarkditorApp")}>Github</Link>.</span>
-            <span>© 2024 <Link onClick={() => openUrl("https://github.com/greyovo")}>@greyovo</Link></span>
-          </DialogDescription>
+          <AboutApp />
           <Button onClick={closeDialog}>确定</Button>
         </Flex>
 

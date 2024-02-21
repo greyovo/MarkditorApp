@@ -1,13 +1,17 @@
-import { ReactComponentElement, createElement, useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import Vditor from "vditor";
 import { EditorContextMenu } from "./EditorContextMenu";
 import useDocumentStore, { saveDocument, updateContent } from "@/store/document";
 import { BottomInfoBar } from "./BottomInfoBar";
 import { EnvConstants } from "@/utils/constants";
 import useEditorStore, { editorAction, getVditor } from "@/store/editor";
-import { convertImagePath } from "@/utils/path";
+import { convertImagePath, isHttpUrl, isMarkdownFile, resolveFromRelativePath } from "@/utils/path";
 import usePreferenceStore from "@/store/preference";
 import { handleEditorHotKey } from "@/utils/hotkeys";
+import { PlatformAPI } from "@/ipc";
+import { openFile, setFileByPath } from "@/store/directory";
+import { dialogActions } from "@/store/dialog";
+import { toast } from "sonner";
 
 // const _placeHolder = "# Welcome to Markditor \nHello, welcome to `Markditor`.\n# 欢迎使用 Markditor\n你好，欢迎使用 `Markditor`"
 const _placeHolder = "在此开始记录..."
@@ -21,11 +25,9 @@ export function Editor() {
     const optioins: IOptions = {
       undoDelay: 100,
       after: () => {
-        // TODO 显示上次关闭时未保存的内容？
-        // 是则 updateContent，否则设置空串
+        // TODO 显示上次关闭时未保存的内容？是则 updateContent，否则设置空串
         const content = useDocumentStore.getState().content
         vditor.setValue(content ?? "")
-        // updateContent(vditor.getValue())
         editorAction.initVditor(vditor)
       },
       placeholder: _placeHolder,
@@ -38,6 +40,24 @@ export function Editor() {
       theme: themeMode === "light" ? "classic" : "dark",
       cache: {
         enable: false
+      },
+      link: {
+        click: (bom: Element) => {
+          const href = bom.textContent ?? ""
+          if (isHttpUrl(href)) {
+            PlatformAPI.openInBrowser(href)
+          } else if (isMarkdownFile(href)) {
+            const fullPath = resolveFromRelativePath(href, useDocumentStore.getState().baseDir ?? "")
+            dialogActions.showUnsaveAlertIfNeeded({
+              doNext: () => {
+                openFile(fullPath.replaceAll("/", "\\"))
+                document.querySelector("div")
+              }
+            })
+          } else {
+            toast.warning("暂不支持打开此链接", { description: href, id: "open-link-warning" + href })
+          }
+        }
       },
       hooks: {
         ir: {
@@ -68,7 +88,7 @@ export function Editor() {
       }
     }
 
-    vditor = new Vditor("vditor", optioins);
+    vditor = new Vditor("vditor-container", optioins);
 
     // 监听新文件打开
     const unsubscribe = useDocumentStore.subscribe((state, prevState) => {
@@ -93,7 +113,7 @@ export function Editor() {
     };
   }, []);
 
-  const editorContainer = <div id="vditor" className="overflow-y-auto flex-grow bg-background" />
+  const editorContainer = <div id="vditor-container" className="overflow-y-auto flex-grow bg-background" />
 
   return (
     <div className="flex flex-col h-full">

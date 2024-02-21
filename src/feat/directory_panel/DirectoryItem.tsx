@@ -104,7 +104,7 @@ function FileItem(props: DirectoryItemProps) {
       onClick={handleClick}
       trailing={<span />}
     >
-      <div className="flex gap-2">{fileIcon} {data.name}</div>
+      <div data-fileId={data.path} className="flex gap-2">{fileIcon} {data.name}</div>
     </ListItem>
   )
 }

@@ -1,10 +1,9 @@
 import { Button, Dialog, DialogContent, DialogDescription, DialogTitle, Flex, Kbd, TextField } from "@radix-ui/themes";
 import { DialogProps } from "./DialogProps";
 import { useState } from "react";
-import { PlatformAPI } from "@/ipc";
 import { renameDirectory, renameFile } from "@/store/directory";
 import { toast } from "sonner";
-import { isMarkdownFile, validateDirectoryName, fixMdFileName } from "@/utils/path";
+import { validateDirectoryName, fixMdFileName } from "@/utils/path";
 
 export function RenameDialog({ show, entity, onOpenChange }: DialogProps) {
   const [inputName, setInputName] = useState(entity.name);

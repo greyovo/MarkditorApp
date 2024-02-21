@@ -1,11 +1,10 @@
 import useDirectoryStore, { copyFileInPlace, openFile, refreshRootDir } from "@/store/directory";
 import { ContextMenu } from "@radix-ui/themes";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { CreateDialog } from "./dialogs/CreateDialog";
 import { RenameDialog } from "./dialogs/RenameDialog";
 import { DeleteDialog } from "./dialogs/DeleteDialog";
 import { PlatformAPI } from "@/ipc";
-import { getNameFromPath, getParentDirectory, resolveFromRelativePath } from "@/utils/path";
 import { toast } from "sonner";
 
 type NonRootDirectoryMenuItemsProps = {

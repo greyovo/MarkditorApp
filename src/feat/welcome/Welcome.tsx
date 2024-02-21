@@ -2,8 +2,8 @@ import useDirectoryStore, { selectFile, selectRootDir, setFileByPath, setRootDir
 import { createNewDoc } from "@/store/document";
 import usePreferenceStore, { prefActions } from "@/store/preference";
 import { getNameFromPath } from "@/utils/path";
-import { Box, Button, DropdownMenu, Flex, Link, ScrollArea, Separator } from "@radix-ui/themes";
-import { FileTextIcon, FolderIcon, HomeIcon, PencilIcon } from "lucide-react";
+import { Button, DropdownMenu, Flex, Link, Separator } from "@radix-ui/themes";
+import { FileTextIcon, FolderIcon, PencilIcon } from "lucide-react";
 import { toast } from "sonner";
 
 function handleClearHistory() {

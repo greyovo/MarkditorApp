@@ -12,7 +12,6 @@ const initialDialogState = {
     visible: false,
     doNext: () => { }
   } as UnsaveAlertProps,
-  // relaunchAlert: false,
 }
 
 const useDialogStore =
@@ -25,13 +24,6 @@ const { setState, getState } = useDialogStore
 // -----------------------------------------
 
 class DialogActions {
-
-  // public toggleUnsaveAlert = (visible: boolean, doNext?: () => void) => {
-  //   setState((state) => ({
-  //     ...state,
-  //     unsaveAlert: { visible, doNext, }
-  //   }))
-  // }
 
   public showUnsaveAlertIfNeeded = ({ doNext }: { doNext: () => void }) => {
     if (useDocumentStore.getState().shouldAlertSave()) {
@@ -50,11 +42,6 @@ class DialogActions {
       unsaveAlert: { visible: false, doNext: () => { }, }
     }))
   }
-
-
-  // public toggleRelaunchAlert = (vis: boolean) => {
-  //   setState((state) => ({ ...state, relaunchAlert: vis }))
-  // }
 
 }
 

@@ -212,9 +212,11 @@ export const TauriAPI: IPlatformAPI = {
     close: function (): void {
       appWindow.close();
     },
+    
     minimize: function (): void {
       appWindow.minimize();
     },
+
     toggleMaximize: async function () {
       appWindow.toggleMaximize();
     },

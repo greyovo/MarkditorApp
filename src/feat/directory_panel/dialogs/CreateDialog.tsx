@@ -2,7 +2,6 @@ import { Dialog, Button, DialogContent, DialogDescription, DialogTitle, Kbd, Tex
 import { useState } from "react";
 import { DialogProps } from "./DialogProps";
 import { getParentDirectory, isMarkdownFile, validateDirectoryName, fixMdFileName } from "@/utils/path";
-import { PlatformAPI } from "@/ipc";
 import { toast } from "sonner";
 import { createDirectory, createFile } from "@/store/directory";
 

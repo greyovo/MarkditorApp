@@ -24,7 +24,7 @@ interface PreferenceComputedState {
 
 const defaultState: PreferenceState = {
   prefThemeMode: "system",
-  autoSaveInerval: 8000,
+  autoSaveInerval: 5000,
   autoSave: true,
   defaultShowToolbar: true,
   fileHistory: [],
@@ -71,6 +71,18 @@ class PreferenceActions {
     setState((state) => ({ ...state, folderHistory: [folderPath, ...history] }))
   }
 
+  // TODO 在打开文件失败时，从历史记录移除该文件
+  public removeFromFileHistory(filePath: string) {
+    const history = getState().fileHistory.filter((path) => path !== filePath)
+    setState((state) => ({ ...state, fileHistory: history }))
+  }
+
+  // TODO 在打开文件夹失败时，从历史记录移除该文件夹
+  public removeFromFolderHistory(folderPath: string) {
+    const history = getState().folderHistory.filter((path) => path !== folderPath)
+    setState((state) => ({ ...state, folderHistory: history }))
+  }
+
   public clearAllHistory() {
     setState((state) => ({ ...state, fileHistory: [], folderHistory: [] }))
   }
@@ -83,13 +95,13 @@ class PreferenceActions {
     setState((state) => ({ ...state, autoSave }))
   }
 
-  public toggleDefaultShowToolbar(show: boolean) {
-    setState((state) => ({ ...state, defaultShowToolbar: show }))
-  }
-
   public setAutoSaveInerval(interval: number) {
     if (interval < 1000 || interval > 2147483647) return
     setState((state) => ({ ...state, autoSaveInerval: interval }))
+  }
+
+  public toggleDefaultShowToolbar(show: boolean) {
+    setState((state) => ({ ...state, defaultShowToolbar: show }))
   }
 }
 

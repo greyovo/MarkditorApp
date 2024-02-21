@@ -1,8 +1,6 @@
 import { ListItem } from "@/components/ListItem"
-import { PlatformAPI } from "@/ipc"
 import { openDirectory, openFile } from "@/store/directory"
 import useDocumentStore from "@/store/document"
-import { FolderIcon, FolderOpenIcon } from "@heroicons/react/24/solid"
 import { DocumentTextIcon } from "@heroicons/react/24/outline"
 import { ChevronDown, ChevronRight, Folder, FolderClosed } from "lucide-react"
 import { useState } from "react"
@@ -10,7 +8,6 @@ import { isMarkdownFile } from "@/utils/path"
 import { toast } from "sonner"
 import { DirectoryContextMenu } from "./DirectoryContextMenu"
 import { cn } from "@/utils"
-import { Flex } from "@radix-ui/themes"
 import { dialogActions } from "@/store/dialog"
 
 interface DirectoryItemProps {

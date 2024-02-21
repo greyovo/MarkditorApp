@@ -10,12 +10,14 @@ type DocumentState = {
   baseDir?: string,
   saved: boolean,
   fileName?: string,
-  // computed
+}
+
+type DocumentComputedState = {
   hasDocOpened: () => boolean,
   shouldAlertSave: () => boolean,
 }
 
-const initialDocumentState = {
+const initialDocumentState: DocumentState = {
   content: undefined,
   path: undefined,
   baseDir: undefined,
@@ -23,7 +25,7 @@ const initialDocumentState = {
   saved: true,
 }
 
-const useDocumentStore = create<DocumentState>(
+const useDocumentStore = create<DocumentState & DocumentComputedState>(
   (set, get) => ({
     ...initialDocumentState,
 
@@ -33,7 +35,6 @@ const useDocumentStore = create<DocumentState>(
       return (get().hasDocOpened() && !get().saved) ||
         (get().content !== undefined && get().path === undefined)
     }
-    // get hasDoc: () => !!get().content,
   }),
 )
 
@@ -143,6 +144,5 @@ function cancelAutoSaveInterval() {
   }
 }
 
-// markAsDirty: () => set((state) => ({ ...state, saved: false })),
 
 export default useDocumentStore

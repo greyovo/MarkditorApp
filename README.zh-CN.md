@@ -49,7 +49,7 @@
 
 ## 开发
 
-> 注意：Markditor 最初是使用 Electron 创建的，**但当前首选 Tauri**。目前 Electron 仍在开发中，有一些未实现的 API，详见 `electron/main/handler`。将来可能会弃用 Electron。
+> 注意：Markditor 最初是使用 Electron 创建的，**但当前首选 Tauri**。目前 Electron 相关代码中仍有一些未实现的业务 API，详见 `electron/main/handler`。未来可能会弃用 Electron。
 >
 > 通过封装 IPC 通信（见 `shared/platform_api.d.ts` 和 `src/ipc`），Markditor 可以很快地迁移到其他后端，如 Tauri。
 

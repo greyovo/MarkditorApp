@@ -11,13 +11,13 @@ Yet another WYSIWYG Markdown editor written in TypeScript and Tauri. Aims to be 
 > **[Markditor]** = **[Mark]** down + e **[ditor]**.
 > Supports Windows 10 / 11 by now.
 
-> ⚠️ WIP. Be careful if you want to edit your important documents.
+> ⚠️ WIP. Be careful when editing your important documents.
 
 
 | light                                      | dark                                      |
 | ------------------------------------------ | ----------------------------------------- |
-| ![pic-light-0.png](assets\pic-light-0.png) | ![pic-dark-0.png](assets\pic-dark-0.png)  |
-| ![pic-light-0.png](assets\pic-light-1.png) | ![pic-light-0.png](assets\pic-dark-1.png) |
+| ![pic-light-0.png](assets/pic-light-0.png) | ![pic-dark-0.png](assets/pic-dark-0.png)  |
+| ![pic-light-0.png](assets/pic-light-1.png) | ![pic-light-0.png](assets/pic-dark-1.png) |
 
 ## Technology Stack
 

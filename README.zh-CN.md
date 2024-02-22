@@ -8,15 +8,15 @@
 
 又一个所见即所得的 Markdown 编辑器，使用 TypeScript 和 Tauri 编写。定一个小目标：成为Typora的精简版和它的开源替代品。
 
-> **[Markditor]** = **[Mark]** down + e **[ditor]**。目前仅支持Windows 10 / 11。
+> **[Markditor]** = **[Mark]** down + e **[ditor]**。目前仅支持 Windows 10 / 11。
 
 > ⚠️ 正在开发中，谨慎用它编辑重要文档。
 
 
 | light                                      | dark                                      |
 | ------------------------------------------ | ----------------------------------------- |
-| ![pic-light-0.png](assets\pic-light-0.png) | ![pic-dark-0.png](assets\pic-dark-0.png)  |
-| ![pic-light-0.png](assets\pic-light-1.png) | ![pic-light-0.png](assets\pic-dark-1.png) |
+| ![pic-light-0.png](assets/pic-light-0.png) | ![pic-dark-0.png](assets/pic-dark-0.png)  |
+| ![pic-light-0.png](assets/pic-light-1.png) | ![pic-light-0.png](assets/pic-dark-1.png) |
 
 ## 技术栈
 

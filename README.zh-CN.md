@@ -12,6 +12,7 @@
 
 > ⚠️ 正在开发中，谨慎用它编辑重要文档。
 
+
 | light                                      | dark                                      |
 | ------------------------------------------ | ----------------------------------------- |
 | ![pic-light-0.png](assets\pic-light-0.png) | ![pic-dark-0.png](assets\pic-dark-0.png)  |
@@ -19,19 +20,18 @@
 
 ## 技术栈
 
-Markditor 在很大程度上基于 [Vditor](https://github.com/Vanessa219/vditor)，我们使用了修改过的版本。[(查看仓库)](https://github.com/greyovo/vditor)。此外，我们还使用了以下技术栈：
+Markditor 的编辑功能基于 [Vditor](https://github.com/Vanessa219/vditor) 的修改版 [(查看仓库)](https://github.com/greyovo/vditor)。此外，还使用了以下技术栈：
 
 - React
 - **Tauri**（首选）/ Electron
-- Vditor（一个分支版本，见[这里](https://github.com/greyovo/vditor)）
 - Zustand
 - Radix-UI
 - Tailwind CSS
 - Vite
 
-## 功能
+## 特性
 
-* 实时渲染 Markdown 输入
+* 实时渲染 Markdown
 * 易用的表格编辑器
 * 自动保存
 * 支持深色模式
@@ -42,13 +42,13 @@ Markditor 在很大程度上基于 [Vditor](https://github.com/Vanessa219/vditor
 
 ## TODOs
 
-* [ ] 国际化（i18n）
-* [ ] 插入图片：拖放、粘贴（自动复制到 `asset` 文件夹）
-* [ ] 拖放：打开文件或插入图片
-* [ ] 加强文件管理：拖放移动文件、监视外部文件更改、在切换窗口时自动保存
-* [ ] 源代码模式
-* [ ] 导出为：PDF 或 HTML
-* [ ] 支持 macOS、Linux（在技术上可行，但缺乏设备来测试）
+* [ ]  国际化（i18n）
+* [ ]  插入图片：拖放、粘贴（自动复制到 `asset` 文件夹）
+* [ ]  拖放文件：打开文件或插入图片
+* [ ]  优化文件管理：拖放移动文件、监视外部文件更改、在切换窗口时自动保存
+* [ ]  源代码模式
+* [ ]  导出为：PDF 或 HTML
+* [ ]  支持 macOS、Linux（技术上可行，但缺乏设备来测试）
 
 ## 项目架构
 
@@ -73,8 +73,8 @@ Markditor 在很大程度上基于 [Vditor](https://github.com/Vanessa219/vditor
 
 ## 开发
 
-> 注意：Markditor 最初是使用 Electron 创建的，**但当前首选 Tauri**。目前 Electron 相关代码中仍有一些未实现的业务 API，详见 `electron/main/handler`。未来可能会弃用 Electron。
-> 
+> 注意：Markditor 最初是用 Electron 构建的，**但现在使用 Tauri**。目前 Electron 相关代码中仍有一些未实现的业务 API，详见 `electron/main/handler`。未来可能会弃用 Electron。
+>
 > 通过封装 IPC 通信（见 `shared/platform_api.d.ts` 和 `src/ipc`），Markditor 可以很快地迁移到其他后端，如 Tauri。
 
 安装依赖：
@@ -102,4 +102,3 @@ npm run build:tauri
 # 使用 Electron
 npm run build:electron
 ```
-

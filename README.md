@@ -6,26 +6,50 @@
   English | <a href="./README.zh-CN.md">简体中文</a>
 </p>
 
-Yet another WYSIWYG Markdown editor written in TypeScript and Tauri. Aims to be an open-source alternative to Typora.
+Yet another WYSIWYG Markdown editor written in TypeScript and Tauri. Aims to be an open-source alternative to Typora. 
 
-> **[Markditor]** = **[Mark]** down + e **[ditor]**. 
+> **[Markditor]** = **[Mark]** down + e **[ditor]**.
 > Supports Windows 10 / 11 by now.
 
-> ⚠️ WIP. Be careful if you want to edit your important documents. 
+> ⚠️ WIP. Be careful if you want to edit your important documents.
+
+
+| light                                      | dark                                      |
+| ------------------------------------------ | ----------------------------------------- |
+| ![pic-light-0.png](assets\pic-light-0.png) | ![pic-dark-0.png](assets\pic-dark-0.png)  |
+| ![pic-light-0.png](assets\pic-light-1.png) | ![pic-light-0.png](assets\pic-dark-1.png) |
 
 ## Technology Stack
 
+Markditor is heavily based on [Vditor](https://github.com/Vanessa219/vditor), and we used a modified version of it. [(Check out repo)](https://github.com/greyovo/vditor). In addition, we also built on top of the following technology stack:
+
 - React
 - **Tauri** (preferred) / Electron
-- Vditor (A forked version, see [here](https://github.com/greyovo/vditor))
 - Zustand
 - Radix-UI
 - Tailwind CSS
 - Vite
 
+## Features
+
+- Instant-render for Markdown typing
+- User-friendly table editor
+- Auto-save within internal seconds
+- Dark mode support
+
 ## Download
 
 Go to [releases](https://github.com/greyovo/MarkditorApp/releases) page.
+
+## TODOs
+
+- [ ]  Internationalization (i18n)
+- [ ]  Insert images by: dropping, pasting (automatically copy to `asset` folder)
+- [ ]  Drag & drop to: open files, or insert images
+- [ ]  Enhance file management: drag and drop to move files, watch file changes from outside, automatically save when switching windows.
+- [ ]  Source code mode
+- [ ]  Export to: PDF or HTML
+- [ ]  Support macOS, Linux (technically available, but lack of testing devices to confirm)
 
 ## Project Architecture
 
@@ -51,7 +75,7 @@ Go to [releases](https://github.com/greyovo/MarkditorApp/releases) page.
 ## Development
 
 > Note: Markditor is initially made with Electron, **but currently Tauri is preferred.** So far Electron is still in development but has some unimplemented Platform API. See `electron/main/handler`. Electron backend may be deprecated in the future.
-> 
+>
 > By encapsulating IPC communication (see `shared/platform_api.d.ts` and `src/ipc`), Markditor can be easily migrated to other backends such as Tauri.
 
 Install dependencies:

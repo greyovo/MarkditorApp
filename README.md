@@ -1,10 +1,10 @@
 # Markditor
 
-<center style="margin-bottom:10px">
+<p align="center" style="margin-bottom:10px">
   <img src="./assets/logo.png" width="128px" />
   <br>
   English | <a href="./README.zh-CN.md">简体中文</a>
-</center>
+</p>
 
 Yet another WYSIWYG Markdown editor written in TypeScript and Tauri. Aims to be an open-source alternative to Typora.
 

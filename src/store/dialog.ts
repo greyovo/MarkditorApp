@@ -1,7 +1,7 @@
 import { create } from 'zustand'
 import useDocumentStore from './document'
 
-export interface UnsaveAlertProps {
+interface UnsaveAlertProps {
   visible: boolean
   doNext?: () => void | Promise<void>
 }

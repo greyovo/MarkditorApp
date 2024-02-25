@@ -1,0 +1,53 @@
+{
+  "confirm": "Confirm",
+  "cancel": "Cancel",
+  "not_save": "Not save",
+  "save": "Save",
+  "welcome": {
+    "title1": "Welcome to,",
+    "title2": "🤗Markditor.",
+    "open_file": "Open file...",
+    "open_folder": "Open folder...",
+    "new_markdown": "New Markdown",
+    "recent_files": "Recent files",
+    "recent_folders": "Recent folders",
+    "clear_history": "Clear history"
+  },
+  "titlebar_dropdown": {
+    "open_file": "Open file...",
+    "open_folder": "Open folder...",
+    "recent_files": "Recent files",
+    "settings": "Settings",
+    "refresh": "Refresh",
+    "clear_history": "Clear history"
+  },
+  "titlebar_menu": {
+    "sidebar": "Sidebar",
+    "new_file": "New file",
+    "save": "Save",
+    "theme_mode": "Theme mode",
+    "more": "More"
+  },
+  "settings": {
+    "title": "Settings",
+    "theme_mode": {
+      "title": "Theme mode",
+      "description": "Choose the theme mode",
+      "item_dark": "Dark",
+      "item_light": "Light",
+      "item_system": "System"
+    },
+    "auto_save": {
+      "title": "Auto save",
+      "description": "Auto save the file when the content changes"
+    },
+    "auto_save_interval": {
+      "title": "Auto save interval",
+      "description": "Auto save interval in milliseconds. Must greater than 1000."
+    },
+    "default_show_toolbar": {
+      "title": "Show toolbar",
+      "description": "Whether show toolbar on the top of the editor."
+    }
+  }
+}

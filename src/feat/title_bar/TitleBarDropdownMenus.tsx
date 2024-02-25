@@ -7,13 +7,14 @@ import { RefreshCcw, Settings } from "lucide-react";
 import { dialogActions } from "@/store/dialog";
 import usePreferenceStore, { prefActions } from "@/store/preference";
 import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
 
 const HistoryItems = () => {
 
   const fileHistory = usePreferenceStore((state) => state.fileHistory)
   const folderHistory = usePreferenceStore((state) => state.folderHistory)
   const isAllEmpty = fileHistory.length === 0 && folderHistory.length === 0
-  
+
   const fileLabel = fileHistory.length === 0 ? "无最近文件" : "最近文件"
   const folderLabel = folderHistory.length === 0 ? "无最近文件夹" : "最近文件夹"
 
@@ -76,6 +77,8 @@ export function TitleBarDropdownMenus({ children }: { children: React.ReactNode 
     })
   }
 
+  const { t } = useTranslation()
+
   return (
     <>
       <DropdownMenu.Root>
@@ -83,7 +86,7 @@ export function TitleBarDropdownMenus({ children }: { children: React.ReactNode 
           <div>{children}</div>
         </DropdownMenu.Trigger>
         <DropdownMenu.Content>
-          <DropdownMenu.Item onClick={handleSelectFile}>打开文件...</DropdownMenu.Item>
+          <DropdownMenu.Item onClick={handleSelectFile}>{t("titlebar_dropdown.open_file")}</DropdownMenu.Item>
           <DropdownMenu.Item onClick={handleSelectRootDir}>打开文件夹...</DropdownMenu.Item>
 
           <DropdownMenu.Sub>

@@ -2,8 +2,9 @@ import useDirectoryStore, { selectFile, selectRootDir, setFileByPath, setRootDir
 import { createNewDoc } from "@/store/document";
 import usePreferenceStore, { prefActions } from "@/store/preference";
 import { getNameFromPath } from "@/utils/path";
-import { Button, DropdownMenu, Flex, Link, Separator } from "@radix-ui/themes";
+import { Button, Flex, Link, Separator } from "@radix-ui/themes";
 import { FileTextIcon, FolderIcon, PencilIcon } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 
 function handleClearHistory() {
@@ -32,36 +33,37 @@ const HistoryItems = () => {
     (state) => state.folderHistory.filter((_, i) => i < MAX_HISTORY_ITEMS)
   )
 
-  if (root!== undefined || (fileHistory.length === 0 && folderHistory.length === 0)) {
+  if (root !== undefined || (fileHistory.length === 0 && folderHistory.length === 0)) {
     return <div></div>
   }
 
   const fileLabel = fileHistory.length === 0 ? "无最近文件" : "最近文件"
   const folderLabel = folderHistory.length === 0 ? "无最近文件夹" : "最近文件夹"
 
+  const { t } = useTranslation()
+  const clearHistoryStr = t("welcome.clear_history")
+
   return (
-    <>
-      <Flex direction={"column"} className="text-sm" gap={"2"} mt={"6"}>
-        <Flex direction={"column"} gap={"2"}>
-          <DropdownMenu.Label>{fileLabel}</DropdownMenu.Label>
-          {fileHistory.map((file) => (
-            <HistoryItem key={file} path={file} onClick={() => setFileByPath(file)} />
-          ))}
-        </Flex>
-
-        <Separator className="w-full my-2" />
-        <Flex direction={"column"} gap={"2"}>
-          <DropdownMenu.Label>{folderLabel}</DropdownMenu.Label>
-          {folderHistory.map((folder) => (
-            <HistoryItem key={folder} path={folder} onClick={() => setRootDirByPath(folder)} />
-          ))}
-        </Flex>
-
-        <Link mt={"3"} size={"1"} className="opacity-70 hover:opacity-100" onClick={handleClearHistory}>
-          清除历史
-        </Link>
+    <Flex direction={"column"} className="text-sm" gap={"2"} mt={"6"}>
+      <Flex direction={"column"} gap={"2"}>
+        <div className="opacity-45 text-xs">{fileLabel}</div>
+        {fileHistory.map((file) => (
+          <HistoryItem key={file} path={file} onClick={() => setFileByPath(file)} />
+        ))}
       </Flex>
-    </>
+
+      <Separator className="w-full my-2" />
+      <Flex direction={"column"} gap={"2"}>
+        <div className="opacity-45 text-xs">{folderLabel}</div>
+        {folderHistory.map((folder) => (
+          <HistoryItem key={folder} path={folder} onClick={() => setRootDirByPath(folder)} />
+        ))}
+      </Flex>
+
+      <Link mt={"3"} size={"1"} className="opacity-70 hover:opacity-100" onClick={handleClearHistory}>
+        {clearHistoryStr}
+      </Link>
+    </Flex>
   )
 }
 
@@ -79,13 +81,13 @@ export function Welcome() {
   return (
     <div className="flex bg-background p-10 gap-9 justify-center items-center" style={{ height: "100%" }}>
       <div className=" flex-shrink-0">
-        <p className="select-none">
-          <p className="mb-1 text-xl ml-2">Welcome to,</p>
-          <p className="text-4xl tracking-wider">
+        <div className="select-none">
+          <div className="mb-1 text-xl ml-2">Welcome to,</div>
+          <div className="text-4xl tracking-wider">
             <b>🤗<span className="text-blue-700">Mark</span><span >ditor</span>.</b>
-          </p>
-        </p>
-        
+          </div>
+        </div>
+
         <Flex gap="3" mt="3" direction={"column"}>
           <Button size={"3"} onClick={createNewDoc}>
             <PencilIcon size={16} />新建 Markdown

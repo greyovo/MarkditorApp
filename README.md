@@ -53,7 +53,7 @@ Go to [releases](https://github.com/greyovo/MarkditorApp/releases) page.
 
 ## Project Architecture
 
-```
+```js
 ├─build           // Build assets used by electron-builder
 ├─dist            // Web contents build output
 ├─dist-electron   // Electron prebuilt files
@@ -75,8 +75,8 @@ Go to [releases](https://github.com/greyovo/MarkditorApp/releases) page.
 ## Development
 
 > Note: Markditor is initially made with Electron, **but currently Tauri is preferred.** So far Electron is still in development but has some unimplemented Platform API. See `electron/main/handler`. Electron backend may be deprecated in the future.
->
-> By encapsulating IPC communication (see `shared/platform_api.d.ts` and `src/ipc`), Markditor can be easily migrated to other backends such as Tauri.
+
+By encapsulating IPC communication (see `shared/platform_api.d.ts` and `src/ipc`), Markditor can be easily migrated to other backends such as Tauri.
 
 Install dependencies:
 

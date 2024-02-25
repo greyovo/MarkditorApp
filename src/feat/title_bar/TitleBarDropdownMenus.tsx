@@ -1,32 +1,34 @@
-import useDirectoryStore, { refreshRootDir, selectFile, selectRootDir, setFileByPath, setRootDirByPath } from "@/store/directory";
-import { closeCurrentDoc } from "@/store/document";
+import { refreshRootDir, selectFile, selectRootDir, setFileByPath, setRootDirByPath } from "@/store/directory";
 import { DropdownMenu, Button, Flex } from "@radix-ui/themes";
 import { SettingDialog } from "../settings/SettingDialog";
 import { useState } from "react";
-import { RefreshCcw, Settings } from "lucide-react";
 import { dialogActions } from "@/store/dialog";
 import usePreferenceStore, { prefActions } from "@/store/preference";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
+import i18next from "i18next";
 
 const HistoryItems = () => {
+  const { t } = useTranslation()
 
   const fileHistory = usePreferenceStore((state) => state.fileHistory)
   const folderHistory = usePreferenceStore((state) => state.folderHistory)
   const isAllEmpty = fileHistory.length === 0 && folderHistory.length === 0
 
-  const fileLabel = fileHistory.length === 0 ? "无最近文件" : "最近文件"
-  const folderLabel = folderHistory.length === 0 ? "无最近文件夹" : "最近文件夹"
+  const fileLabel = fileHistory.length === 0 ? t("history.empty_files") : t("history.recent_files")
+  const folderLabel = folderHistory.length === 0 ? t("history.empty_folders") : t("history.recent_folders")
 
   function handleClearHistory() {
-    toast("清除所有历史记录？", {
+    toast(i18next.t("history.clear_confirm_text"), {
       id: "clear-history",
       position: "top-center",
       action: {
-        label: <Button size={"1"}>确认</Button>,
+        label: (
+          <Button size={"1"}>{i18next.t("confirm")}</Button>
+        ),
         onClick: () => {
           prefActions.clearAllHistory()
-          toast.success("已清除", { id: "clear-history-success" })
+          toast.success(i18next.t("history.clear_success"), { id: "clear-history-success" })
         }
       },
     })
@@ -56,7 +58,10 @@ const HistoryItems = () => {
         <DropdownMenu.Item onClick={() => handleOpenFolder(folder)} key={folder}>{folder}</DropdownMenu.Item>)
       )}
       {!isAllEmpty && <DropdownMenu.Separator />}
-      {!isAllEmpty && <DropdownMenu.Item onClick={handleClearHistory}>清除历史</DropdownMenu.Item>}
+      {!isAllEmpty && <DropdownMenu.Item onClick={handleClearHistory}>
+        {t("titlebar_dropdown.clear_history")}
+      </DropdownMenu.Item>
+      }
     </>
   )
 }
@@ -87,10 +92,10 @@ export function TitleBarDropdownMenus({ children }: { children: React.ReactNode 
         </DropdownMenu.Trigger>
         <DropdownMenu.Content>
           <DropdownMenu.Item onClick={handleSelectFile}>{t("titlebar_dropdown.open_file")}</DropdownMenu.Item>
-          <DropdownMenu.Item onClick={handleSelectRootDir}>打开文件夹...</DropdownMenu.Item>
+          <DropdownMenu.Item onClick={handleSelectRootDir}>{t("titlebar_dropdown.open_folder")}</DropdownMenu.Item>
 
           <DropdownMenu.Sub>
-            <DropdownMenu.SubTrigger>最近打开</DropdownMenu.SubTrigger>
+            <DropdownMenu.SubTrigger>{t("titlebar_dropdown.recently_open")}</DropdownMenu.SubTrigger>
             <DropdownMenu.SubContent>
               <HistoryItems />
             </DropdownMenu.SubContent>
@@ -99,9 +104,9 @@ export function TitleBarDropdownMenus({ children }: { children: React.ReactNode 
           {/* <DropdownMenu.Item onClick={closeCurrentDoc}>关闭当前</DropdownMenu.Item> */}
 
           <DropdownMenu.Separator />
-          <DropdownMenu.Item onClick={refreshRootDir}>刷新</DropdownMenu.Item>
+          <DropdownMenu.Item onClick={refreshRootDir}>{t("titlebar_dropdown.refresh")}</DropdownMenu.Item>
           <DropdownMenu.Item onClick={() => setSettingVisible(true)}>
-            <Flex gap={"2"} align={"center"}> {/*<Settings size={14} />*/} 设置</Flex>
+            <Flex gap={"2"} align={"center"}>{t("titlebar_dropdown.settings")}</Flex>
           </DropdownMenu.Item>
           {/* <DropdownMenu.Item>Share</DropdownMenu.Item> */}
           {/* <DropdownMenu.Item>Add to favorites</DropdownMenu.Item> */}

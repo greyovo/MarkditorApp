@@ -90,20 +90,22 @@ const App = () => {
         <WindowTitleBar />
       </div>
       <div className="flex border-t" style={{ height: `calc(100vh - ${titleBarHeight}px)` }} >
-        {/* 侧边菜单栏 */}
         <ResizablePanelGroup direction="horizontal">
+
+          {/* Sidebar - directory panel */}
           {showSidePanel && (
             <>
               <ResizablePanel id="DirectorySidePanel" order={1}
                 defaultSize={panelSize} minSize={15} maxSize={45}
                 onResize={onResize}>
-                <DirectoryPanel /> {/* 侧边文件夹栏 */}
+                <DirectoryPanel />
               </ResizablePanel>
               <ResizableHandle style={{ width: 0 }} id="handle" />
             </>
           )}
+
+          {/* Main Editor, or Welcome page. */}
           <ResizablePanel id="mainEditor" order={2}>
-            {/* 右侧主体 */}
             {hasDoc ? <Editor /> : <Welcome />}
           </ResizablePanel>
         </ResizablePanelGroup>

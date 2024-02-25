@@ -3,20 +3,26 @@
   "cancel": "Cancel",
   "not_save": "Not save",
   "save": "Save",
+  "history": {
+    "clear_confirm_text": "Are you sure to clear history?",
+    "clear_success": "Successfully cleared.",
+    "recent_files": "Recent files",
+    "recent_folders": "Recent folders",
+    "empty_files": "No recent files",
+    "empty_folders": "No recent folders"
+  },
   "welcome": {
     "title1": "Welcome to,",
     "title2": "🤗Markditor.",
     "open_file": "Open file...",
     "open_folder": "Open folder...",
     "new_markdown": "New Markdown",
-    "recent_files": "Recent files",
-    "recent_folders": "Recent folders",
     "clear_history": "Clear history"
   },
   "titlebar_dropdown": {
     "open_file": "Open file...",
     "open_folder": "Open folder...",
-    "recent_files": "Recent files",
+    "recently_open": "Recently open",
     "settings": "Settings",
     "refresh": "Refresh",
     "clear_history": "Clear history"
@@ -27,6 +33,33 @@
     "save": "Save",
     "theme_mode": "Theme mode",
     "more": "More"
+  },
+  "dir_panel_context_menu": {
+    "open": "Open",
+    "rename": "Rename",
+    "copy": "Copy",
+    "delete": "Delete",
+    "create_file": "Create file",
+    "create_folder": "Create folder",
+    "open_in_finder": "Open in Finder...",
+    "open_in_explorer": "Open in Explorer..."
+  },
+  "editor": {},
+  "create_dialog": {
+    "title_file": "Create file",
+    "title_folder": "Create folder",
+    "desc_file": "Create file under {dir_name}:",
+    "desc_folder": "Create folder under {dir_name}:"
+  },
+  "delete_dialog": {
+    "title": "Delete file",
+    "content": "Are you sure you want to delete this file?",
+    "confirm": "Delete",
+    "cancel": "Cancel"
+  },
+  "rename_dialog": {
+    "title": "Rename file",
+    "input_placeholder": "Input new file name"
   },
   "settings": {
     "title": "Settings",

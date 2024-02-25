@@ -16,6 +16,7 @@ interface PreferenceState {
   fileHistory: string[], // Path to file
   folderHistory: string[], // Path to folder
   defaultShowToolbar: boolean, // Default to true
+  languageCode: string, // Default to "en-US"
 }
 
 interface PreferenceComputedState {
@@ -29,20 +30,25 @@ const defaultState: PreferenceState = {
   defaultShowToolbar: true,
   fileHistory: [],
   folderHistory: [],
+  languageCode: "en-US",
 }
 
 const usePreferenceStore = create(
   persist<PreferenceState & PreferenceComputedState>(
-    (set, get) => ({
-      ...defaultState,
+    (set, get) => {
+      const languageCode = navigator.language || "en-US"
+      return {
+        ...defaultState,
+        languageCode,
 
-      themeMode: function () {
-        if (get().prefThemeMode === "system") {
-          return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"
+        themeMode: function () {
+          if (get().prefThemeMode === "system") {
+            return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"
+          }
+          return get().prefThemeMode === "light" ? "light" : "dark"
         }
-        return get().prefThemeMode === "light" ? "light" : "dark"
       }
-    }),
+    },
 
     { name: 'markditor-pref-storage' },
   )

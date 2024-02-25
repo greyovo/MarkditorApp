@@ -25,6 +25,7 @@ const MAX_HISTORY_ITEMS = 5;
 
 const HistoryItems = () => {
   const root = useDirectoryStore(s => s.root)
+  const { t } = useTranslation()
 
   const fileHistory = usePreferenceStore(
     (state) => state.fileHistory.filter((_, i) => i < MAX_HISTORY_ITEMS)
@@ -37,11 +38,10 @@ const HistoryItems = () => {
     return <div></div>
   }
 
-  const fileLabel = fileHistory.length === 0 ? "无最近文件" : "最近文件"
-  const folderLabel = folderHistory.length === 0 ? "无最近文件夹" : "最近文件夹"
+  const fileLabel = fileHistory.length === 0 ? t("history.empty_files") : t("history.recent_files")
+  const folderLabel = folderHistory.length === 0 ? t("history.empty_folders") : t("history.recent_folders")
 
-  const { t } = useTranslation()
-  const clearHistoryStr = t("welcome.clear_history")
+  const clearHistoryLabel = t("welcome.clear_history")
 
   return (
     <Flex direction={"column"} className="text-sm" gap={"2"} mt={"6"}>
@@ -61,7 +61,7 @@ const HistoryItems = () => {
       </Flex>
 
       <Link mt={"3"} size={"1"} className="opacity-70 hover:opacity-100" onClick={handleClearHistory}>
-        {clearHistoryStr}
+        {clearHistoryLabel}
       </Link>
     </Flex>
   )
@@ -78,26 +78,29 @@ function HistoryItem({ path, onClick }: { path: string, onClick: () => void }) {
 
 export function Welcome() {
 
+  const { t } = useTranslation();
+
   return (
     <div className="flex bg-background p-10 gap-9 justify-center items-center" style={{ height: "100%" }}>
       <div className=" flex-shrink-0">
         <div className="select-none">
-          <div className="mb-1 text-xl ml-2">Welcome to,</div>
+          <div className="mb-1 text-xl ml-2">{t("welcome.title1")}</div>
           <div className="text-4xl tracking-wider">
-            <b>🤗<span className="text-blue-700">Mark</span><span >ditor</span>.</b>
+            {/* <b>🤗<span className="text-blue-700">Mark</span><span >ditor</span>.</b> */}
+            <b>{t("welcome.title2")}</b>
           </div>
         </div>
 
         <Flex gap="3" mt="3" direction={"column"}>
           <Button size={"3"} onClick={createNewDoc}>
-            <PencilIcon size={16} />新建 Markdown
+            <PencilIcon size={16} />{t("welcome.new_markdown")}
           </Button>
           <Flex gap="3">
             <Button variant="soft" size={"3"} onClick={selectFile}>
-              <FileTextIcon size={16} />打开文档 ...
+              <FileTextIcon size={16} />{t("welcome.open_file")}
             </Button>
             <Button variant="soft" size={"3"} onClick={selectRootDir}>
-              <FolderIcon size={16} />打开文件夹 ...
+              <FolderIcon size={16} />{t("welcome.open_folder")}
             </Button>
           </Flex>
         </Flex>

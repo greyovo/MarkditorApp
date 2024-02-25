@@ -3,6 +3,7 @@ import { Dialog, Button, DialogContent, DialogDescription, DialogTitle, Kbd, Tex
 import { PlatformAPI } from '@/ipc';
 import { cn } from '@/utils/styles';
 import usePreferenceStore, { PrefThemeMode, prefActions } from '@/store/preference';
+import { useTranslation } from 'react-i18next';
 
 type SettingItemProps = {
   className?: string,
@@ -55,29 +56,31 @@ export const SettingDialog = ({ show, onOpenChange }: { show: boolean, onOpenCha
   const [tempAutoSaveInterval, setTempAutoSaveInterval] = useState<number>(0)
   const autoSaveInerval = usePreferenceStore(s => s.autoSaveInerval)
 
+  const { t } = useTranslation()
+
   return (
     <Dialog.Root open={show} onOpenChange={onOpenChange}>
       <DialogContent className='pr-3'>
 
-        <DialogTitle>设置</DialogTitle>
+        <DialogTitle>{t("settings.title")}</DialogTitle>
 
         <ScrollArea className=' h-[55vh] my-5 pr-5'>
           <Flex direction={"column"} gap={"4"} className=' overflow-y-auto'>
-            <SettingItem title={'主题模式'} subtitle={'浅色、深色或跟随系统'}
+            <SettingItem title={t("settings.theme_mode.title")} subtitle={t("settings.theme_mode.description")}
               trailing={
                 <Select.Root value={prefThemeMode}
                   onValueChange={(v) => prefActions.setThemeMode(v as PrefThemeMode)}>
                   <Select.Trigger className='w-[120px]' />
                   <Select.Content>
-                    <Select.Item value="light">浅色</Select.Item>
-                    <Select.Item value="dark">深色</Select.Item>
-                    <Select.Item value="system">跟随系统</Select.Item>
+                    <Select.Item value="light">{t("settings.theme_mode.item_light")}</Select.Item>
+                    <Select.Item value="dark">{t("settings.theme_mode.item_dark")}</Select.Item>
+                    <Select.Item value="system">{t("settings.theme_mode.item_system")}</Select.Item>
                   </Select.Content>
                 </Select.Root>
               }
             />
 
-            <SettingItem title={'自动保存'} subtitle={''}
+            <SettingItem title={t("settings.auto_save.title")} subtitle={t("settings.auto_save.description")}
               trailing={
                 <Switch checked={autoSave}
                   onCheckedChange={(v) => prefActions.toggleAutoSave(v)}
@@ -85,7 +88,9 @@ export const SettingDialog = ({ show, onOpenChange }: { show: boolean, onOpenCha
               }
             />
 
-            <SettingItem className={!autoSave ? 'opacity-45' : ""} title={'自动保存间隔'} subtitle={'单位：毫秒，不低于 1000 ms'}
+            <SettingItem className={!autoSave ? 'opacity-45' : ""}
+              title={t("settings.auto_save_interval.title")}
+              subtitle={t("settings.auto_save_interval.description")}
               trailing={
                 <Flex justify={"end"} align={"center"} gap={"2"}>
                   <TextFieldInput className='w-[90px]'
@@ -97,7 +102,8 @@ export const SettingDialog = ({ show, onOpenChange }: { show: boolean, onOpenCha
               }
             />
 
-            <SettingItem title={'默认显示工具栏'} subtitle={'可以在右键菜单中关闭或展示顶部工具栏，下次启动软件生效'}
+            <SettingItem title={t("settings.default_show_toolbar.title")} 
+            subtitle={t("settings.default_show_toolbar.description")}
               trailing={
                 <Switch checked={defaultShowToolbar}
                   onCheckedChange={(v) => prefActions.toggleDefaultShowToolbar(v)}
@@ -119,7 +125,7 @@ export const SettingDialog = ({ show, onOpenChange }: { show: boolean, onOpenCha
 
         <Flex gap="3" mr={"4"} justify="between" align={"center"}>
           <AboutApp />
-          <Button onClick={closeDialog}>确定</Button>
+          <Button onClick={closeDialog}>{t("confirm")}</Button>
         </Flex>
 
       </DialogContent>

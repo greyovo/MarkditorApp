@@ -5,6 +5,7 @@ const supportedBackends = ["electron", "tauri"]
 type OSType = 'win32' | 'darwin' | 'linux'
 
 export class EnvConstants {
+
   public static readonly CODE_LANGUAGES: string[] = ["mermaid", "abc", "apache",
     "js", "ts", "html",
     // common

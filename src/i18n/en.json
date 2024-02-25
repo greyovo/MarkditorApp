@@ -48,8 +48,8 @@
   "create_dialog": {
     "title_file": "Create file",
     "title_folder": "Create folder",
-    "desc_file": "Create file under {dir_name}:",
-    "desc_folder": "Create folder under {dir_name}:"
+    "desc_file": "Create file under {{dir_name}}:",
+    "desc_folder": "Create folder under {{dir_name}}:"
   },
   "delete_dialog": {
     "title": "Delete file",

@@ -77,6 +77,19 @@ export default defineConfig(({ command }) => {
       return {
         host: url.hostname,
         port: +url.port,
+        build: {
+          chunkSizeWarningLimit: 1000, // 将警告限制提高到1000KB
+          rollupOptions: {
+            output: {
+              manualChunks: {
+                // 手动拆分大依赖包
+                'i18n': ['i18next', 'react-i18next'],
+                'vditor': ['vditor'],
+                'radix-ui': [/@radix-ui/]
+              }
+            }
+          }
+        }
       }
     })(),
     clearScreen: false,

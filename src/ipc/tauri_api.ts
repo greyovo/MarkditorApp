@@ -1,13 +1,15 @@
-import { appWindow, } from '@tauri-apps/api/window'
-import { createDir, readDir, removeDir, renameFile, writeTextFile, readTextFile, removeFile, exists, copyFile } from '@tauri-apps/api/fs';
-import { open as openDialog, save } from '@tauri-apps/api/dialog';
-import { invoke } from '@tauri-apps/api';
+import { getCurrentWindow  } from '@tauri-apps/api/window'
+import { mkdir, readDir, remove, rename, writeTextFile, readTextFile, exists, copyFile } from '@tauri-apps/plugin-fs';
+import { open as openDialog, save } from '@tauri-apps/plugin-dialog';
+import { invoke } from '@tauri-apps/api/core';
 import { CliArgs, IPlatformAPI } from "shared/platform_api";
 import { getNameFromPath, isMarkdownFile } from '@/utils/path';
-import { Command, open as openIn } from '@tauri-apps/api/shell';
-import { getMatches } from '@tauri-apps/api/cli';
+import { Command, open as openIn } from '@tauri-apps/plugin-shell';
+import { getMatches } from '@tauri-apps/plugin-cli';
 import { IFileFilter, markdownFilter } from '@shared/file_filters';
-import { error } from 'console';
+import { platform } from '@tauri-apps/plugin-os';
+
+const appWindow = getCurrentWindow()
 
 
 export const TauriAPI: IPlatformAPI = {
@@ -32,19 +34,20 @@ export const TauriAPI: IPlatformAPI = {
     const dirs: DirectoryEntity[] = [];
     const files: DirectoryEntity[] = [];
     for (const entry of entries) {
-      if (entry.children) {
+      if (entry.isDirectory) {
         dirs.push({
           type: "dir",
           name: entry.name ?? "",
-          path: entry.path,
+          path: path,
           children: []
         });
       } else {
-        if (isMarkdownFile(entry.name ?? "")) {
+        var filePath = path + "/" + entry.name;
+        if (isMarkdownFile(filePath  ?? "")) {
           files.push({
             type: "file",
             name: entry.name ?? "",
-            path: entry.path,
+            path: path + "/" + entry.name,
             children: []
           });
         }
@@ -123,7 +126,7 @@ export const TauriAPI: IPlatformAPI = {
 
   async createDir(path: string): Promise<boolean> {
     try {
-      await createDir(path, { recursive: true });
+      await mkdir(path, { recursive: true });
       return true;
     } catch (error) {
       console.error(error);
@@ -154,7 +157,7 @@ export const TauriAPI: IPlatformAPI = {
 
   async renameFile(oldPath: string, newPath: string): Promise<boolean> {
     try {
-      await renameFile(oldPath, newPath);
+      await rename(oldPath, newPath);
       return true;
     } catch (err) {
       console.error(err);
@@ -164,7 +167,7 @@ export const TauriAPI: IPlatformAPI = {
 
   async deleteDir(path: string): Promise<boolean> {
     try {
-      await removeDir(path, { recursive: true });
+      await remove(path, { recursive: true });
       return true;
     } catch (error) {
       console.error(error);
@@ -174,7 +177,7 @@ export const TauriAPI: IPlatformAPI = {
 
   async deleteFile(path: string): Promise<boolean> {
     try {
-      await removeFile(path);
+      await remove(path);
       return true;
     } catch (error) {
       console.error(error);
@@ -238,14 +241,24 @@ export const TauriAPI: IPlatformAPI = {
   locateFile: function (filePath: string): void {
     console.log("locateFile in sys:", filePath);
     // FIXME Only works for Windows
-    const command = new Command("locate-file-win", ["/select", filePath]);
-    command.execute();
+    if (platform()==='windows') {
+      const command = Command.create("locate-file-win", ["/select", filePath]);
+      command.execute();
+      return
+    } else if (platform()==='macos') {
+      console.log("locateFile: macOS");
+      const command = Command.create("open", [filePath]);
+      command.execute();
+      return
+    } else {
+      console.error("locateFile: Unsupported platform:", platform());
+    }
   },
 
   locateFolder: function (folderPath: string): void {
     console.log("locateFolder in sys:", folderPath);
     // FIXME Only works for Windows
-    const command = new Command("locate-folder-win", ["/root", folderPath]);
+    const command = Command.create("locate-folder-win", ["/root", folderPath]);
     command.execute();
   },
 

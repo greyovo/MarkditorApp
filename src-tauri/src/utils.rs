@@ -1,6 +1,5 @@
 use tauri::{Manager, Runtime};
 #[cfg(target_os = "windows")]
-use window_shadows::set_shadow;
 #[cfg(target_os = "windows")]
 extern crate winreg;
 // use std::env::current_exe;
@@ -9,8 +8,6 @@ extern crate winreg;
 
 pub fn set_window_shadow<R: Runtime>(app: &tauri::App<R>) {
     let window = app.get_webview_window("main").unwrap();
-    #[cfg(target_os = "windows")]
-    set_shadow(&window, true).expect("Unsupported platform!");
 }
 
 // #[tauri::command]

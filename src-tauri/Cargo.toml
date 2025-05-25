@@ -28,7 +28,6 @@ tauri-plugin-dialog = "2.2.1"
 tauri-plugin-notification = "2.2.2"
 [target.'cfg(windows)'.dependencies]
 winreg = { version = "0.6.2", optional = true }
-window-shadows = "0.2.1"
 [target.'cfg(any(target_os = "windows"))'.dependencies]
 winreg = "0.6.2"
 

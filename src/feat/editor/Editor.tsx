@@ -30,7 +30,7 @@ function initVditor() {
       updateContent(value)
     },
     placeholder: _placeHolder,
-    cdn: "dist/vditor",
+    cdn: "../lib",
     height: "100%",
     borderless: true,
     toolbarConfig: {

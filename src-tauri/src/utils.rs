@@ -1,14 +1,10 @@
-use tauri::{Manager, Runtime};
-#[cfg(target_os = "windows")]
-#[cfg(target_os = "windows")]
-extern crate winreg;
+// use tauri::{Manager, Runtime};
+// #[cfg(target_os = "windows")]
+// extern crate winreg;
 // use std::env::current_exe;
 // use std::io::{Error, ErrorKind};
 // use winreg::{enums::*, RegKey};
 
-pub fn set_window_shadow<R: Runtime>(app: &tauri::App<R>) {
-    let window = app.get_webview_window("main").unwrap();
-}
 
 // #[tauri::command]
 // pub fn set_default_open_win32() {

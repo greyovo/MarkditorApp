@@ -2,164 +2,58 @@
   "build": {
     "beforeBuildCommand": "npm run build:before_tauri",
     "beforeDevCommand": "npm run dev:before_tauri",
-    "devPath": "http://localhost:5173",
-    "distDir": "../dist"
+    "frontendDist": "../dist",
+    "devUrl": "http://localhost:5173"
   },
-  "package": {
-    "productName": "Markditor",
-    "version": "1.0.0"
-  },
-  "tauri": {
-    "allowlist": {
-      "all": true,
-      "dialog": {
-        "all": true,
-        "ask": true,
-        "confirm": true,
-        "message": true,
-        "open": true,
-        "save": true
-      },
-      "path": {
-        "all": true
-      },
-      "protocol": {
-        "all": true,
-        "asset": true,
-        "assetScope": [
-          "**/*",
-          "**\\*",
-          "*:\\**\\*",
-          "*:/**/*"
-        ]
-      },
-      "fs": {
-        "all": true,
-        "scope": [
-          "**/*"
+  "bundle": {
+    "active": true,
+    "category": "DeveloperTool",
+    "copyright": "",
+    "targets": "all",
+    "externalBin": [],
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/256x256.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ],
+    "windows": {
+      "certificateThumbprint": null,
+      "digestAlgorithm": "sha256",
+      "timestampUrl": "",
+      "wix": {
+        "fragmentPaths": [
+          "config\\wix-config.wxs"
         ],
-        "readFile": true,
-        "writeFile": true,
-        "readDir": true,
-        "copyFile": true,
-        "createDir": true,
-        "removeDir": true,
-        "removeFile": true,
-        "renameFile": true,
-        "exists": true
-      },
-      "window": {
-        "all": false,
-        "close": true,
-        "hide": true,
-        "show": true,
-        "maximize": true,
-        "minimize": true,
-        "unmaximize": true,
-        "unminimize": true,
-        "startDragging": true
-      },
-      "clipboard": {
-        "all": true,
-        "writeText": true,
-        "readText": true
-      },
-      "shell": {
-        "all": true,
-        "execute": true,
-        "sidecar": true,
-        "open": true,
-        "scope": [
-          {
-            "name": "locate-file-win",
-            "cmd": "Explorer",
-            "args": [
-              "/select,",
-              {
-                "validator": "\\S+"
-              }
-            ]
-          },
-          {
-            "name": "locate-folder-win",
-            "cmd": "Explorer",
-            "args": [
-              "/root,",
-              {
-                "validator": "\\S+"
-              }
-            ]
-          },
-          {
-            "name": "set-default-open-win",
-            "cmd": "Explorer",
-            "args": [
-              "/root,",
-              {
-                "validator": "\\S+"
-              }
-            ]
-          }
+        "componentRefs": [
+          "Entries1",
+          "Entries2",
+          "Entries3"
         ]
       }
     },
-    "bundle": {
-      "active": true,
-      "category": "DeveloperTool",
-      "copyright": "",
+    "longDescription": "",
+    "macOS": {
+      "entitlements": null,
+      "exceptionDomain": "",
+      "frameworks": [],
+      "providerShortName": null,
+      "signingIdentity": null
+    },
+    "resources": [],
+    "shortDescription": "",
+    "linux": {
       "deb": {
         "depends": []
-      },
-      "externalBin": [],
-      "icon": [
-        "icons/32x32.png",
-        "icons/128x128.png",
-        "icons/256x256.png",
-        "icons/icon.icns",
-        "icons/icon.ico"
-      ],
-      "identifier": "Me.GreyApps.Markditor",
-      "longDescription": "",
-      "macOS": {
-        "entitlements": null,
-        "exceptionDomain": "",
-        "frameworks": [],
-        "providerShortName": null,
-        "signingIdentity": null
-      },
-      "resources": [],
-      "shortDescription": "",
-      "targets": "all",
-      "windows": {
-        "certificateThumbprint": null,
-        "digestAlgorithm": "sha256",
-        "timestampUrl": "",
-        "wix": {
-          "fragmentPaths": [
-            "config\\wix-config.wxs"
-          ],
-          "componentRefs": [
-            "Entries1",
-            "Entries2",
-            "Entries3"
-          ]
-        }
       }
-    },
-    "updater": {
-      "active": false
-    },
-    "windows": [
-      {
-        "label": "main",
-        "fullscreen": false,
-        "decorations": false,
-        "height": 600,
-        "resizable": true,
-        "title": "Markditor",
-        "width": 1000
-      }
-    ],
+    }
+  },
+  "productName": "Markditor",
+  "mainBinaryName": "Markditor",
+  "version": "1.0.0",
+  "identifier": "Me.GreyApps.Markditor",
+  "plugins": {
     "cli": {
       "description": "Markditor CLI",
       "longDescription": "Markditor App CLI.",
@@ -173,5 +67,29 @@
         }
       ]
     }
+  },
+  "app": {
+    "security": {
+      "assetProtocol": {
+        "scope": [
+          "**/*",
+          "assets/**/*",
+          "dist/vditor/**/*"
+        ],
+        "enable": true
+      }
+    },
+    "windows": [
+      {
+        "label": "main",
+        "fullscreen": false,
+        "decorations": false,
+        "height": 600,
+        "resizable": true,
+        "title": "Markditor",
+        "width": 1000,
+        "useHttpsScheme": true
+      }
+    ]
   }
 }

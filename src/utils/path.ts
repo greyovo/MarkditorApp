@@ -1,6 +1,6 @@
 import { URI, Utils } from "vscode-uri";
 import { EnvConstants } from "./constants";
-import { convertFileSrc } from "@tauri-apps/api/tauri";
+import { convertFileSrc } from "@tauri-apps/api/core";
 
 export function getNameFromPath(path: string, withExtName: boolean = true): string {
   if (path.endsWith("/") || path.endsWith("\\")) {

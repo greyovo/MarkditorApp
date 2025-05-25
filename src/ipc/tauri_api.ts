@@ -3,7 +3,7 @@ import { mkdir, readDir, remove, rename, writeTextFile, readTextFile, exists, co
 import { open as openDialog, save } from '@tauri-apps/plugin-dialog';
 import { invoke } from '@tauri-apps/api/core';
 import { CliArgs, IPlatformAPI } from "shared/platform_api";
-import { getNameFromPath, isMarkdownFile } from '@/utils/path';
+import { getNameFromPath, isMarkdownFile, pathJoin } from '@/utils/path';
 import { Command, open as openIn } from '@tauri-apps/plugin-shell';
 import { getMatches } from '@tauri-apps/plugin-cli';
 import { IFileFilter, markdownFilter } from '@shared/file_filters';
@@ -29,11 +29,12 @@ export const TauriAPI: IPlatformAPI = {
     return undefined;
   },
 
-  async listDirectories(path: string): Promise<DirectoryEntity[]> {
-    const entries = await readDir(path);
+  async listDirectories(parentPath: string): Promise<DirectoryEntity[]> {
+    const entries = await readDir(parentPath);
     const dirs: DirectoryEntity[] = [];
     const files: DirectoryEntity[] = [];
     for (const entry of entries) {
+      const path = pathJoin(parentPath, entry.name ?? "")
       if (entry.isDirectory) {
         dirs.push({
           type: "dir",
@@ -42,12 +43,11 @@ export const TauriAPI: IPlatformAPI = {
           children: []
         });
       } else {
-        var filePath = path + "/" + entry.name;
-        if (isMarkdownFile(filePath  ?? "")) {
+        if (isMarkdownFile(path  ?? "")) {
           files.push({
             type: "file",
             name: entry.name ?? "",
-            path: path + "/" + entry.name,
+            path: path,
             children: []
           });
         }
@@ -260,6 +260,18 @@ export const TauriAPI: IPlatformAPI = {
     // FIXME Only works for Windows
     const command = Command.create("locate-folder-win", ["/root", folderPath]);
     command.execute();
+  },
+
+  isWindows: function (): boolean {
+    return platform() === "windows";
+  },
+
+  isMacOS: function (): boolean {
+    return platform() === "macos";
+  },
+
+  isLinux: function (): boolean {
+    return platform() === "linux";
   },
 
 }

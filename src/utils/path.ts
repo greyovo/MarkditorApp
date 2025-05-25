@@ -1,6 +1,7 @@
 import { URI, Utils } from "vscode-uri";
 import { EnvConstants } from "./constants";
 import { convertFileSrc } from "@tauri-apps/api/core";
+import { PlatformAPI } from "@/ipc";
 
 export function getNameFromPath(path: string, withExtName: boolean = true): string {
   if (path.endsWith("/") || path.endsWith("\\")) {
@@ -144,4 +145,39 @@ export function fixMdFileName(fileName: string): string {
 
 export function validateDirectoryName(dirName: string): boolean {
   return (dirName.trim().match(/[\\/:*?"<>|]/g)?.length ?? 0) === 0
+}
+
+export function pathJoin(...paths: string[]): string {
+  // Windows 使用反斜杠 `\`，其他系统使用正斜杠 `/`
+  const separator = PlatformAPI.isWindows() ? '\\' : '/';
+
+  // 过滤掉空字符串，并确保路径之间不出现多余的分隔符
+  const filteredPaths = paths.filter(path => path !== '');
+
+  // 拼接路径并规范化避免重复的分隔符（如 `\\` 或 `//`）
+  let result = filteredPaths.reduce((acc, curr) => {
+    return acc === '' ? curr : `${acc}${separator}${curr}`;
+  }, '');
+
+  // 规范化路径（去除多余的 . 和 ..）
+  const normalizedPath = normalizePath(result, separator);
+
+  return normalizedPath;
+}
+
+function normalizePath(path: string, separator: string): string {
+  const parts = path.split(separator);
+  const normalizedParts: string[] = [];
+
+  for (const part of parts) {
+    if (part === '..') {
+      if (normalizedParts.length > 0) {
+        normalizedParts.pop(); // 移除上一级目录
+      }
+    } else if (part !== '.' && part !== '') {
+      normalizedParts.push(part);
+    }
+  }
+
+  return normalizedParts.join(separator);
 }

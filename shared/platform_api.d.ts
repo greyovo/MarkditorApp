@@ -23,7 +23,7 @@ export interface IPlatformAPI {
     async readCliArgs(): Promise<CliArgs>;
 
     // 设置 Markditor 为 Markdown 文件的默认打开方式
-    async setAsDefaultOpenApp(): Promise<boolean>;  
+    async setAsDefaultOpenApp(): Promise<boolean>;
   }
 
   async selectDirectory(): Promise<DirectoryEntity | undefined>;
@@ -67,6 +67,12 @@ export interface IPlatformAPI {
 
   // 在系统文件管理器中打开文件夹
   async locateFolder(folderPath: string): void;
+
+  isWindows: function (): boolean;
+
+  isMacOS: function (): boolean;
+
+  isLinux: function (): boolean;
 }
 
 type CliArgs = {

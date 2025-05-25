@@ -78,10 +78,18 @@ Go to [releases](https://github.com/greyovo/MarkditorApp/releases) page.
 
 By encapsulating IPC communication (see `shared/platform_api.d.ts` and `src/ipc`), Markditor can be easily migrated to other backends such as Tauri.
 
+Prequisites:
+- Node.js (v18.x)
+- Rust (v1.78.0+), for Tauri
+
 Install dependencies:
 
 ```bash
 npm install
+
+cd src-tauri
+cargo update
+cargo install tauri-cli
 ```
 
 Run in dev mode:

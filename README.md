@@ -80,7 +80,7 @@ By encapsulating IPC communication (see `shared/platform_api.d.ts` and `src/ipc`
 
 Prequisites:
 - Node.js (v18.x)
-- Rust (v1.78.0+), for Tauri
+- Rust (v1.60+), for Tauri
 
 Install dependencies:
 
